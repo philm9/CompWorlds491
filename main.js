@@ -1,8 +1,8 @@
-// var moveFly = false;
-// Fly.radius = 25;
-// Fly.x;
-// Fly.y;
-// var score = 0;
+var moveFly = false;
+Fly.radius = 25;
+Fly.x;
+Fly.y;
+var score = 0;
 
 function distance(a, b) {
     var difX = a.x - b.x;
@@ -135,66 +135,68 @@ Platform.prototype.draw = function (ctx) {
     ctx.fillRect(this.x, this.y, this.width, this.height);
 }
 
-// function Background(game) {
-//    Entity.call(this, game, 0, 400);
-//    this.radius = 20;
-// }
-//
-// Background.prototype = new Entity();
-// Background.prototype.constructor = Background;
-//
-// Background.prototype.update = function () {
-// }
-//
-// Background.prototype.draw = function (ctx) {
-//    ctx.fillStyle = "SaddleBrown";
-//    ctx.fillRect(0, 500, 800, 300);
-//    ctx.fillRect(300, 350, 300, 40);
-//    ctx.font = "18px serif";
-//    ctx.fillText("Control:", 10, 50);
-//    ctx.fillText("Space = jump, A = move left, D = move right, S = get down", 10, 80);
-//    ctx.fillText("Q = attack, X = die (press space, A, or D to resurrect", 10, 100);
-//    Entity.prototype.draw.call(this);
-// }
-//
-// function Fly(game) {
-//    this.flyAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 750, 0, 51, 29, 0.5, 2, true, false);
-//    this.radius = Fly.radius;
-//    Entity.call(this, game, 210, 210);
-// }
-// Fly.prototype = new Entity();
-// Fly.prototype.constructor = Fly;
-// Fly.prototype.update = function () {
-//    Fly.x = this.x;
-//    Fly.y = this.y;
-//    if (this.flyAnimation.isDone()) {
-//        this.flyAnimation.elapsedTime = 0;
-//    }
-//    var jumpDistance = this.flyAnimation.elapsedTime / this.flyAnimation.totalTime;
-//    var totalHeight = 2;
-//    if (jumpDistance > 0.5)
-//        jumpDistance = 1 - jumpDistance;
-//    var height = jumpDistance * 2 * totalHeight;
-//    //var height = totalHeight * (-4 * (jumpDistance * jumpDistance - jumpDistance));
-//    this.y -= height;
-//    this.y = this.y + 1;
-//    if (moveFly) {
-//        moveFly = false;
-//        //this.game.removeFromWorld = true;
-//        this.x = Math.floor(Math.random() * (750 - 50 + 1)) + 50;
-//        this.y = Math.floor(Math.random() * (210 - 400 + 1)) +400;     
-//        // console.log('false');
-//    }
-//    //console.log(moveFly);
-//    Entity.prototype.update.call(this);
-// }
-//
-// Fly.prototype.draw = function (ctx) {
-//    this.flyAnimation.drawFrame(this.game.clockTick, ctx, this.x-23, this.y-10);
-//    Entity.prototype.draw.call(this);
-// }
+function Background(game) {
+   Entity.call(this, game, 0, 400);
+   this.radius = 20;
+}
 
-var x;
+Background.prototype = new Entity();
+Background.prototype.constructor = Background;
+
+Background.prototype.update = function () {
+}
+
+Background.prototype.draw = function (ctx) {
+   ctx.fillStyle = "SaddleBrown";
+   ctx.fillRect(0, 500, 800, 300);
+   ctx.fillRect(300, 350, 300, 40);
+   ctx.font = "18px serif";
+   ctx.fillText("Control:", 10, 50);
+   ctx.fillText("Space = jump, A = move left, D = move right, S = get down", 10, 80);
+   ctx.fillText("Q = attack, X = die (press space, A, or D to resurrect", 10, 100);
+   Entity.prototype.draw.call(this);
+}
+
+function Fly(game) {
+   this.flyAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 750, 0, 51, 29, 0.5, 2, true, false);
+   this.radius = Fly.radius;
+   this.boundingbox = new BoundingBox(this.x + 25, this.y, this.flyAnimation.frameWidth - 40, this.flyAnimation.frameHeight);
+   this.boxes = true;
+   Entity.call(this, game, 1400, 110);
+}
+Fly.prototype = new Entity();
+Fly.prototype.constructor = Fly;
+Fly.prototype.update = function () {
+   Fly.x = this.x;
+   Fly.y = this.y;
+   if (this.flyAnimation.isDone()) {
+       this.flyAnimation.elapsedTime = 0;
+   }
+   var jumpDistance = this.flyAnimation.elapsedTime / this.flyAnimation.totalTime;
+   var totalHeight = 2;
+   if (jumpDistance > 0.5)
+       jumpDistance = 1 - jumpDistance;
+   var height = jumpDistance * 2 * totalHeight;
+   //var height = totalHeight * (-4 * (jumpDistance * jumpDistance - jumpDistance));
+   this.y -= height;
+   this.y = this.y + 1;
+   if (moveFly) {
+       moveFly = false;
+       //this.game.removeFromWorld = true;
+       this.x = Math.floor(Math.random() * (750 - 50 + 1)) + 50;
+       this.y = Math.floor(Math.random() * (210 - 400 + 1)) +400;     
+       // console.log('false');
+   }
+   //console.log(moveFly);
+   Entity.prototype.update.call(this);
+}
+
+Fly.prototype.draw = function (ctx) {
+   this.flyAnimation.drawFrame(this.game.clockTick, ctx, this.x-23, this.y-10);
+   Entity.prototype.draw.call(this);
+}
+
+var FlyX;
 function Link(game) {
    this.standAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 0, 45, 79, 0.7, 2, true, false);
    //this.sleepAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 160, 45, 79, 1.5, 2, true, false);
@@ -502,6 +504,7 @@ Link.prototype.update = function () {
    
        //move the map
    if (this.x >= 770) {
+       Fly.x = 100;
         this.x = 0;
         for (var i = 0; i < this.game.platforms.length; i++) { //looping through all platforms
             var pf = this.game.platforms[i].x;
@@ -670,13 +673,13 @@ Link.prototype.collide = function (other) {
 
 
 
-// Link.prototype.hitFly = function () {
-//    //needs further development
-//    return ((this.y <= Fly.y + 29 && this.y >= Fly.y ||
-//    this.y + 101 <= Fly.y + 29 && this.y + 101 >= Fly.y) &&
-//    (this.x + 75 >= Fly.x && this.x + 75 <= Fly.x + 51 ||
-//    this.x >= Fly.x && this.x <= Fly.x + 51));
-// }
+Link.prototype.hitFly = function () {
+   //needs further development
+   return ((this.y <= Fly.y + 29 && this.y >= Fly.y ||
+   this.y + 101 <= Fly.y + 29 && this.y + 101 >= Fly.y) &&
+   (this.x + 75 >= Fly.x && this.x + 75 <= Fly.x + 51 ||
+   this.x >= Fly.x && this.x <= Fly.x + 51));
+}
 //var ground = [ //this is a map
 //    [],
 //    [],
@@ -894,11 +897,13 @@ ASSET_MANAGER.downloadAll(function () {
     gameEngine.addEntity(pf);
     platforms.push(pf);
 
-    // var fly = new Fly(gameEngine);
+    var fly = new Fly(gameEngine);
+    
+    platforms.push(fly);
     var link = new Link(gameEngine);
     //var dungeon = new Dungeon(gameEngine);
     // var tp = new TilePalette(gameEngine);
-    // gameEngine.addEntity(fly);
+    gameEngine.addEntity(fly);
     //gameEngine.addEntity(dungeon);
     // gameEngine.addEntity(tp);
     gameEngine.addEntity(link);
