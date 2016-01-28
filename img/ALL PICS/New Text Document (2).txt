@@ -1,0 +1,35 @@
+Standing Animation NORMAL: amount of frames: 2 (0,0,45,79)
+Standing Animation FLIPPED: amount of frames: 2 (0,81,45,79)
+
+Sleeping Animation NORMAL: amount of frames: 2 (0, 160, 45, 78)
+Sleeping Animation Flipped: amount of frames: 2 (0, 240, 45, 78)
+
+Running Animation NORMAL: amount of frames: 10 (0, 319, 75, 72)
+Running Animation Flipped: amount of frames: 10 (0, 392, 75, 72)
+
+
+Jumping Animation NORMAL: amount of frames: 3 (0, 465, 75, 101)
+Jumping Animation Flipped: amount of frames: 3 (0, 567, 75, 101)
+
+Dying Animation NORMAL: amount of frames: 4 (0, 669 , 96, 99)
+Dying Animation Flipped: amount of frames: 4 (0, 769, 96, 99)
+
+Dead animation NORMAL: 288, 742, 96, 26
+Dead animation REVERSED: 288, 842, 96, 26
+
+Down Animation NORMAL: 225, 510, 75, 56
+Down Animation REVERSED: 225, 612, 75, 56
+
+Slash 1 Animation NORMAL: 0, 869, 150, 111
+Slash 1 Animation REVERSED: 0, 981, 150, 111
+
+Slash 2 Animation NORMAL: 0, 1093, 125, 93
+Slash 2 Animation REVERSED: 0, 1187, 125, 93
+
+Slash 3 Animation NORMAL: 0, 1281, 140, 86
+Slash 3 Animation REVERSED: 0, 1368, 140, 86
+
+Fly animation 750, 0, 51, 29
+
+
+44, 1310, 85, 78
