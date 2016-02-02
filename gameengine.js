@@ -10,7 +10,6 @@ window.requestAnimFrame = (function () {
             };
 })();
 
-
 function Timer() {
     this.gameTime = 0;
     this.maxStep = 0.05;
@@ -44,18 +43,17 @@ GameEngine.prototype.init = function (ctx) {
     this.surfaceHeight = this.ctx.canvas.height;
     this.startInput();
     this.timer = new Timer();
-    console.log('game initialized');
+    //console.log('game initialized');
 }
 
 GameEngine.prototype.start = function () {
-    console.log("starting game");
+    //console.log("starting game");
     var that = this;
     (function gameLoop() {
         that.loop();
         requestAnimFrame(gameLoop, that.ctx.canvas);
     })();
 }
-
 GameEngine.prototype.startInput = function () {
     console.log('Starting input');
     var that = this;
@@ -69,11 +67,10 @@ GameEngine.prototype.startInput = function () {
     }
 
     this.ctx.canvas.addEventListener("click", function (e) {
-        //console.log(getXandY(e));
         that.click = getXandY(e);
     }, false);
+
     this.ctx.canvas.addEventListener("mousemove", function (e) {
-        //console.log(getXandY(e));
         that.mouse = getXandY(e);
     }, false);
 
@@ -82,6 +79,7 @@ GameEngine.prototype.startInput = function () {
         if (!(currentKey == String.fromCharCode(e.which))) {
             if (String.fromCharCode(e.which) === 'Z') that.Z = true;
             if (String.fromCharCode(e.which) === 'X') that.X = true;
+            if (String.fromCharCode(e.which) === 'K') that.skills = true;
             if (e.keyCode == 32) that.space = true;
 
             if (String.fromCharCode(e.which) === 'S') that.S = true;
@@ -98,6 +96,7 @@ GameEngine.prototype.startInput = function () {
         if (e.keyCode == 32) that.space = false;
         if (String.fromCharCode(e.which) === 'X') that.X = false;
         if (String.fromCharCode(e.which) === 'Z') that.Z = false;
+        if (String.fromCharCode(e.which) === 'K') that.skills = false;
         if (String.fromCharCode(e.which) === 'S') that.S = false;
 
         if (String.fromCharCode(e.which) === 'D') that.D = false;
@@ -110,15 +109,18 @@ GameEngine.prototype.startInput = function () {
 }
 
 GameEngine.prototype.addEntity = function (entity) {
-    console.log('added entity');
+    //console.log('added entity');
     this.entities.push(entity);
 }
 
-GameEngine.prototype.draw = function () {
+GameEngine.prototype.draw = function (drawCallback) {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     this.ctx.save();
     for (var i = 0; i < this.entities.length; i++) {
         this.entities[i].draw(this.ctx);
+    }
+    if (drawCallback) {
+        drawCallback(this);
     }
     this.ctx.restore();
 }
@@ -146,6 +148,13 @@ GameEngine.prototype.loop = function () {
     this.update();
     this.draw();
     this.space = null;
+    this.click = null;
+}
+
+GameEngine.prototype.reset = function () {
+    for (var i = 0; i < this.entities.length; i++) {
+        this.entities[i].reset();
+    }
 }
 
 function Entity(game, x, y) {
@@ -156,6 +165,9 @@ function Entity(game, x, y) {
 }
 
 Entity.prototype.update = function () {
+}
+
+Entity.prototype.reset = function () {
 }
 
 Entity.prototype.draw = function (ctx) {
