@@ -101,7 +101,7 @@ GameEngine.prototype.startInput = function () {
 
         if (String.fromCharCode(e.which) === 'D') that.D = false;
         if (String.fromCharCode(e.which) === 'A') that.A = false;
-        if (String.fromCharCode(e.which) === 'Q') that.Q = false;
+        //if (String.fromCharCode(e.which) === 'Q') that.Q = false;
         currentKey = null;
         e.preventDefault();
     }, false);
@@ -149,6 +149,7 @@ GameEngine.prototype.loop = function () {
     this.draw();
     this.space = null;
     this.click = null;
+    this.Q = null;
 }
 
 GameEngine.prototype.reset = function () {
