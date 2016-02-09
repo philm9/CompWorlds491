@@ -256,8 +256,8 @@ Platform.prototype.draw = function (ctx) {
     ctx.fillRect(this.x, this.y, this.width, this.height);
 }
 
-function Background(game, x, y, ctx) {
-    this.ctx = ctx;
+
+function Background(game, x, y) {
     this.animation = new Animation(ASSET_MANAGER.getAsset("./img/background0.png"), 0, 0, 3840, 1080, 1, 1, true, false);
     this.startX = x;
     this.startY = y;
@@ -300,10 +300,6 @@ Background.prototype.update = function () {
             var pf = this.game.enemiesArr[i].x;
             this.game.enemiesArr[i].x -= 4;
         }
-        // for (var i = 0; i < this.game.dungeon.dungeon.length; i++) { //looping through all map tiles
-        //     var pf = this.game.dungeon.dungeon[i].x;
-        //     this.game.dungeon.dungeon[i].x -= 4;
-        // }
         for (var i = 0; i < this.game.dEnemy.length; i++) { //looping through all map tiles
             var pf = this.game.dEnemy[i].x;
             this.game.dEnemy[i].x -= 4;
@@ -1128,6 +1124,28 @@ Link.prototype.update = function () {
         //       this.tileM = tile;
         //       this.jumpAnimation.elapsedTime = 0;
     //    }
+       //for (var i = 0; i < this.game.mapArr.length; i++) {
+       //    var tile = this.game.mapArr[i];
+       //    //console.log(this.boundingbox.top);
+       //    //console.log(tile.boundingbox.bottom);
+       //    if (this.boundingbox.collide(tile.boundingbox) &&
+       //                     this.boundingbox.top + 50 < tile.boundingbox.bottom + 1000 &&
+       //                     this.lastBottom > tile.boundingbox.bottom) {
+       //        this.jumping = false;
+       //        //this.y = tile.boundingbox.top - this.animation.frameHeight + 10;
+       //        this.jumpAnimation.elapsedTime = 0;
+       //        this.tileM = tile;
+       //        this.falling = true;
+       //        //console.log('true');
+       //    }
+       //    //console.log(pf.y);
+       //    if (this.boundingbox.collide(tile.boundingbox) && this.lastBottom < tile.boundingbox.top) {
+       //        this.jumping = false;
+       //        this.y = tile.boundingbox.top - this.jumpAnimation.frameHeight + 25;
+       //        this.tileM = tile;
+       //        this.jumpAnimation.elapsedTime = 0;
+       //    }
+       //}
        /*****************************END***************TEST***TEST****TEST*/
    }
    
@@ -1237,6 +1255,7 @@ Link.prototype.update = function () {
            this.slash3Animation.isDone() || this.slash3Animation.isDone()) {
            this.slash1Animation.elapsedTime = 0;
            this.slash1Animation.elapsedTime = 0
+
            this.slash2Animation.elapsedTime = 0;
            this.slash2Animation.elapsedTime = 0;
            this.slash3Animation.elapsedTime = 0;
@@ -1457,6 +1476,7 @@ Link.prototype.hitFly = function () {
    (this.x + 75 >= Fly.x && this.x + 75 <= Fly.x + 51 ||
    this.x >= Fly.x && this.x <= Fly.x + 51));
 }
+
 function TileMap(game, ctx) {
     this.x = 0;
     this.y = 0;
@@ -1478,6 +1498,71 @@ function TileMap(game, ctx) {
                         
                         ];
     this.tileMap = testTileMap;
+
+//var ground = [ //this is a map
+//    [],
+//    [],
+//    [0, 0, 0, 42, 43, 39],
+//    [0, 0, 0, 0, 0, 0, 50, , , , , , 42, 39],
+//    [0, 0, 0, 0, 0, 0, 50, , , , , , , , , , , , , 50],
+//    [0, 0, 0, 0, 0, 0, 50, 37, 38, 0, , , , , , , , , 42, 43, 43, 43, 39],
+//    [0, 0, 0, 0, 0, 0, 50],
+//    [0, 0, 0, 0, 0, 0, 6, 50],
+//    [0, 0, 0, 0, 0, 50, 6, 6, 50, , , , , , , , , 26],
+//    [21, 22, 22, 22, 22, 22, 22, 22, 22, 62, 0, 0, 0, 0, 0, 0, 21, 22, 22, 22, 62],
+//    [],
+//    [, , , , , , , , , , , , , , 50],
+//    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, , , 50, 6],
+//    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 50, 50, 6, 6, 50],
+//    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 21, 22, 22, 51, 51, 51, 51, 51, 62],
+//    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, , , , 23, 4, 4, 8, 50, 50],
+//    [0, 0, 0, 0, 44, 44, 0, 50, 0, 0, 0, 0, 0, 0, , 4, 4, 50, 50, 50],
+//    [51, 51, 51, 51, 51, 51, 51, 1, 0, 0, 0, 0, 0, 0, 0, 61, 4, 51, 51, 51, 51, 51, 51, 51, 51, 51]
+//];
+function Dungeon(game) {
+    Entity.call(this, game, 0, 0);
+//
+    this.dungeon = new Array(32);
+    for (var i = 0; i < this.dungeon.length; i++) {
+        this.dungeon[i] = new Array(24);
+    }
+    this.sprites = new Array(48);
+//
+    var testDungeon = [ [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0], // bottom --->>>
+                        [0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]];
+//
+    this.dungeon = testDungeon;
+//
     this.sprites[0] = null;
     this.sprites[1] = ASSET_MANAGER.getAsset("./img/separatePng/tile_00.png");
     this.sprites[2] = ASSET_MANAGER.getAsset("./img/separatePng/tile_01.png");
@@ -1488,6 +1573,7 @@ function TileMap(game, ctx) {
     this.sprites[7] = ASSET_MANAGER.getAsset("./img/separatePng/tile_06.png");
     this.sprites[8] = ASSET_MANAGER.getAsset("./img/separatePng/tile_07.png");
     this.sprites[9] = ASSET_MANAGER.getAsset("./img/separatePng/tile_08.png");
+
 }
 TileMap.prototype = new Entity();
 TileMap.prototype.constructor = TileMap;
@@ -1513,6 +1599,86 @@ TileMap.prototype.draw = function (ctx) {
         }
     }
 }
+
+//
+}
+Dungeon.prototype = new Entity();
+Dungeon.prototype.constructor = Dungeon;
+  //
+Dungeon.prototype.update = function () {
+    //if (this.game.click) {
+    //    if (this.game.click.x < 32) {
+    //        this.dungeon[this.game.click.x][this.game.click.y] = game.mouseShadow.tile;
+    //    }
+    //}
+    Entity.prototype.update.call(this);
+}
+Dungeon.prototype.draw = function (ctx) {
+    for (var i = 0; i < this.dungeon.length; i++) {
+        for (var j = 0; j < 24; j++) {
+            var sprite = this.sprites[this.dungeon[i][j]];
+            if (sprite) {
+                ctx.drawImage(sprite, i * 32, j * 32);
+            }
+        }
+    }
+}
+// function TilePalette(game) {
+//     Entity.call(this, game, 33, 2);
+//     this.sprites = new Array(15);
+//     this.tiles = new Array(15);
+//
+//     this.sprites[0] = ASSET_MANAGER.getAsset("./img/separatePng/tile_00.png");
+//     this.sprites[1] = ASSET_MANAGER.getAsset("./img/separatePng/tile_01.png");
+//     this.sprites[2] = ASSET_MANAGER.getAsset("./img/separatePng/tile_02.png");
+//     this.sprites[3] = ASSET_MANAGER.getAsset("./img/separatePng/tile_03.png");
+//     this.sprites[4] = ASSET_MANAGER.getAsset("./img/separatePng/tile_04.png");
+//     this.sprites[5] = ASSET_MANAGER.getAsset("./img/separatePng/tile_05.png");
+//     this.sprites[6] = ASSET_MANAGER.getAsset("./img/separatePng/tile_06.png");
+//     this.sprites[7] = ASSET_MANAGER.getAsset("./img/separatePng/tile_07.png");
+//     this.sprites[8] = ASSET_MANAGER.getAsset("./img/separatePng/tile_08.png");
+//
+//     this.tiles[0] = 1;
+//     this.tiles[1] = 2;
+//     this.tiles[2] = 6;
+//     this.tiles[3] = 10;
+//     this.tiles[4] = 14;
+//     this.tiles[5] = 16;
+//     this.tiles[6] = 17;
+//     this.tiles[7] = 21;
+//     this.tiles[8] = 25;
+//     this.tiles[9] = 29;
+//     this.tiles[10] = 31;
+//     this.tiles[11] = 32;
+//     this.tiles[12] = 36;
+//     this.tiles[13] = 40;
+//     this.tiles[14] = 44;
+//
+// }
+// TilePalette.prototype = new Entity();
+// TilePalette.prototype.constructor = TilePalette;
+// TilePalette.prototype.update = function () {
+//     if (this.game.click) {
+//         if ((this.game.click.x >= this.x * 32) && (this.game.click.x < (this.x + 1) * 32)) {
+//             flag = false; //true if click on button
+//             for (var i = 0; i < 15; i++) {
+//                 if ((this.game.click.y >= (this.y + i) * 32 + 8 * i) && (this.game.click.y < (this.y + i + 1) * 32 + 8 * i)) {
+//                     flag = true;
+//                     break;
+//                 }
+//             }
+//             if (flag) {
+//                 this.game.mouseShadow.changeTile(this.tiles[i]);
+//             }
+//         }
+//     }
+// }
+// TilePalette.prototype.draw = function () {
+//     for (var i = 0; i < 15; i++) {
+//         this.drawImage(this.sprites[i], this.x * 32, (this.y + i) * 32 + 8*i);
+//     }
+// }
+
 
 var ASSET_MANAGER = new AssetManager();
 
@@ -1545,6 +1711,10 @@ var platforms = [];
 var coinsArr = [];
 var spikesArr = [];
 var flyArr = [];
+<<<<<<< HEAD
+=======
+// var mapArr = [];
+>>>>>>> 7657d88d544ca537a1138669b0c69ef3c61851ae
 var enemiesArr = []
 var center = 200;
 var dEnemy = [];
@@ -1972,9 +2142,14 @@ function startPlaying(gameEngine) {
 
     gameEngine.dEnemy = dEnemy;
 
+
     var tMap = new TileMap(gameEngine);
     gameEngine.addEntity(tMap);
     gameEngine.tileMap = tMap;
+
+    var dungeon = new Dungeon(gameEngine);
+    gameEngine.addEntity(dungeon);
+    gameEngine.dungeon = dungeon;
 }
 
 function characterSelection(gameEngine) {
