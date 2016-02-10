@@ -1,5 +1,6 @@
 var start = false;
 var start2 = false;
+var start3 = false;
 var character = 0;
 var score = 0;
 var lives = 3;
@@ -8,6 +9,7 @@ var originalHealth = 150;
 var health = 150;
 var scrollSpeed = 4;
 var score = 0;
+var level = 0;
 
 var movX = 0;
 var movY = 0;
@@ -92,7 +94,7 @@ BoundingBox.prototype.collide = function (oth) {
 function StartButton(game, x, y) {
     this.animationWait = new Animation(ASSET_MANAGER.getAsset("./img/button-start.png"), 0, 0, 150, 53, 1, 1, true, false);
     this.animationHover = new Animation(ASSET_MANAGER.getAsset("./img/button-start.png"), 0, 53, 150, 53, 1, 1, true, false);
-    this.animationClick = new Animation(ASSET_MANAGER.getAsset("./img/button-start.png"), 0, 106, 150, 54, 1, 10, true, false);
+    this.animationClick = new Animation(ASSET_MANAGER.getAsset("./img/button-start.png"), 0, 106, 150, 54, 0.1, 1, false, false);
     this.hover = false;
     this.click = false;
     Entity.call(this, game, x, y);
@@ -108,8 +110,6 @@ StartButton.prototype.update = function () {
             if (this.game.click) {
                 this.hover = false;
                 this.click = true;
-                start = true;
-                this.removeFromWorld = true;
             }
         }
         else this.hover = false;
@@ -123,6 +123,10 @@ StartButton.prototype.draw = function (ctx) {
     }
     else if (this.click){
         this.animationClick.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+        if (this.animationClick.isDone()) {
+            this.removeFromWorld = true;
+            start = true;
+        }
     }
     else {
         this.animationWait.drawFrame(this.game.clockTick, ctx, this.x, this.y);
@@ -131,8 +135,7 @@ StartButton.prototype.draw = function (ctx) {
 }
 
 function PlayGame(game, x, y) {
-    //console.log('hi');
-    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/long.png"), 0, 0, 7498, 1152, 1, 1, true, false);
+    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/aliencraft1.png"), 0, 0, 800, 576, 1, 1, true, false);
     Entity.call(this, game, x, y);
 }
 
@@ -145,17 +148,56 @@ PlayGame.prototype.constructor = PlayGame;
 PlayGame.prototype.update = function () {
     if (start) {
         characterSelection(this.game);
+        //levelSelectionPanel(this.game);
         this.removeFromWorld = true;
     }
 }
 
 PlayGame.prototype.draw = function (ctx) {
-    this.animation.drawFrame(this.game.clockTick, ctx, this.x-255, this.y - 350);
+    this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+    Entity.prototype.draw.call(this);
+}
+
+function LevelSelect(game) {
+    this.animationBackground = new Animation(ASSET_MANAGER.getAsset("./img/aliencraft1.png"), 0, 0, 800, 576, 1, 1, true, false);
+    //this.animationFrame = new Animation(ASSET_MANAGER.getAsset("./img/frame.png"), 0, 0, 400, 300, 1, 1, true, false);
+    this.animationLevel1 = new Animation(ASSET_MANAGER.getAsset("./img/level1.png"), 0, 0, 200, 150, 1, 1, true, false);
+    Entity.call(this, game, 0, 0);
+}
+
+LevelSelect.prototype = new Entity();
+LevelSelect.prototype.constructor = LevelSelect;
+
+//PlayGame.prototype.reset = function () {
+//    this.game.running = false;
+//}
+LevelSelect.prototype.update = function () {
+    if (this.game.click) {
+        if (this.game.click.x < 300 && this.game.click.y < 250 && this.game.click.x > 100 && this.game.click.y > 100) {
+            start3 = true;
+            this.removeFromWorld = true;
+            level = 1;
+        }
+        else {
+            start3 = true;
+            this.removeFromWorld = true;
+            level = 2;
+        }
+    }
+    if (start3) {
+        startPlaying(this.game);
+        this.removeFromWorld = true;
+    }
+}
+
+LevelSelect.prototype.draw = function (ctx) {
+    this.animationBackground.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+    this.animationLevel1.drawFrame(this.game.clockTick, ctx, 100, 100);
     Entity.prototype.draw.call(this);
 }
 
 function CharacterSelectionBackground(game, x, y) {
-    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/ChooseCharacterBackground.png"), 0, 0, 800, 576, 1, 1, true, false);
+    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/aliencraft1.png"), 0, 0, 800, 576, 1, 1, true, false);
     Entity.call(this, game, x, y);
 }
 CharacterSelectionBackground.prototype = new Entity();
@@ -163,9 +205,14 @@ CharacterSelectionBackground.prototype.constructor = CharacterSelectionBackgroun
 
 CharacterSelectionBackground.prototype.update = function () {
     if (start2) {
-        startPlaying(this.game);
+        levelSelectionPanel(this.game);
+        //startPlaying(this.game);
         this.removeFromWorld = true;
     }
+}
+CharacterSelectionBackground.prototype.draw = function (ctx) {
+    this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+    Entity.prototype.draw.call(this);
 }
 
 function LinkSelect(game, x, y) {
@@ -256,6 +303,15 @@ Platform.prototype.draw = function (ctx) {
     ctx.fillRect(this.x, this.y, this.width, this.height);
 }
 
+//sleep, dealy, wait function
+function sleep(milliseconds) {
+    var start = new Date().getTime();
+    for (var i = 0; i < 1e7; i++) {
+        if ((new Date().getTime() - start) > milliseconds) {
+            break;
+        }
+    }
+}
 
 function Background(game, x, y) {
     this.animation = new Animation(ASSET_MANAGER.getAsset("./img/background0.png"), 0, 0, 3840, 1080, 1, 1, true, false);
@@ -1356,8 +1412,9 @@ function TileMap(game, ctx) {
         this.boundingbox[i] = new Array(37);
     }
     this.sprites = new Array(48);
-
-    var testTileMap = [ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0],
+    var testTileMap;
+    if (level === 1) {
+        testTileMap = [ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0],
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0],
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
@@ -1391,8 +1448,47 @@ function TileMap(game, ctx) {
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        ];
+    }
+    else {
+        testTileMap = [ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    ];
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        ];
+    }
     this.tileMap = testTileMap;
 
     this.sprites[0] = null;
@@ -1484,6 +1580,7 @@ ASSET_MANAGER.queueDownload("./img/FierceLINK.png");
 ASSET_MANAGER.queueDownload("./img/FierceLINK-Choose.png");
 ASSET_MANAGER.queueDownload("./img/link-blueQUICK1.png");
 ASSET_MANAGER.queueDownload("./img/button-start.png");
+
 ASSET_MANAGER.queueDownload("./img/separatePng/tile_00.png");
 ASSET_MANAGER.queueDownload("./img/separatePng/tile_01.png");
 ASSET_MANAGER.queueDownload("./img/separatePng/tile_02.png");
@@ -1495,8 +1592,9 @@ ASSET_MANAGER.queueDownload("./img/separatePng/tile_07.png");
 ASSET_MANAGER.queueDownload("./img/separatePng/tile_08.png");
 ASSET_MANAGER.queueDownload("./img/separatePng/tile_09.png");
 
-
-ASSET_MANAGER.queueDownload("./img/long.png");
+ASSET_MANAGER.queueDownload("./img/level1.png");
+ASSET_MANAGER.queueDownload("./img/frame.png");
+ASSET_MANAGER.queueDownload("./img/aliencraft1.png");
 ASSET_MANAGER.queueDownload("./img/coins.png");
 ASSET_MANAGER.queueDownload("./img/background0.png");
 ASSET_MANAGER.queueDownload("./img/Slime_First Gen_Weak.png");
@@ -1946,6 +2044,14 @@ function characterSelection(gameEngine) {
 
     var linkSelect = new LinkSelect(gameEngine, 0, 0);
     gameEngine.addEntity(linkSelect);
+}
+
+function levelSelectionPanel(gameEngine) {
+    var lSelect = new LevelSelect(gameEngine);
+    gameEngine.addEntity(lSelect);
+
+    //var linkSelect = new LinkSelect(gameEngine, 0, 0);
+    //gameEngine.addEntity(linkSelect);
 }
 
 
