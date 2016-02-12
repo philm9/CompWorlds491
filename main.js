@@ -91,6 +91,36 @@ BoundingBox.prototype.collide = function (oth) {
     return false;
 }
 
+function reset(game) {
+    this.game.end.removeFromWorld = true;
+    character = 1;
+    score = 0;
+    lives = 3;
+    health = 150;
+    this.game.background.removeFromWorld = true;
+    for (var i = 0; i < this.game.coinsArr.length; i++) this.game.coinsArr[i].removeFromWorld = true;
+    for (var i = 0; i < this.game.spikesArr.length; i++) this.game.spikesArr[i].removeFromWorld = true;
+    for (var i = 0; i < this.game.flyArr.length; i++) this.game.flyArr[i].removeFromWorld = true;
+    for (var i = 0; i < this.game.enemiesArr.length; i++) this.game.enemiesArr[i].removeFromWorld = true;
+    for (var i = 0; i < this.game.dEnemy.length; i++) this.game.dEnemy[i].removeFromWorld = true;
+    coinsArr = [];
+    spikesArr = [];
+    flyArr = [];
+    enemiesArr = [];
+    dEnemy = [];
+    tileArrBB = [];
+    this.game.tileMap.removeFromWorld = true;
+    this.game.score.removeFromWorld = true;
+    this.game.lives.removeFromWorld = true;
+    this.game.skills.removeFromWorld = true;
+    this.game.restart.removeFromWorld = true;
+    this.game.spikes.removeFromWorld = true;
+    this.game.health.removeFromWorld = true;
+    this.game.tileMapFront.removeFromWorld = true;
+    this.game.door.removeFromWorld = true;
+    startPlaying(this.game);
+}
+
 function StartButton(game, x, y) {
     this.animationWait = new Animation(ASSET_MANAGER.getAsset("./img/button-start.png"), 0, 0, 150, 53, 1, 1, true, false);
     this.animationHover = new Animation(ASSET_MANAGER.getAsset("./img/button-start.png"), 0, 53, 150, 53, 1, 1, true, false);
@@ -254,44 +284,150 @@ LinkSelect.prototype.draw = function (ctx) {
     Entity.prototype.draw.call(this);
 }
 
-function Platform(game, x, y, width, height) {
-    this.width = width;
-    this.height = height;
+function Door(game, x, y) {
+    this.animationDoorClosed = new Animation(ASSET_MANAGER.getAsset("./img/door.png"), 0, 0, 97, 143, 1, 1, true, false);
+    this.animationDoorOpened = new Animation(ASSET_MANAGER.getAsset("./img/door.png"), 97, 0, 97, 143, 0.1, 3, false, false);
+    this.animationDoorStay = new Animation(ASSET_MANAGER.getAsset("./img/door.png"), 388, 0, 97, 143, 1, 1, true, false);
     this.startX = x;
     this.startY = y;
+    this.x = x;
+    this.y = y;
+    this.openDoor = false;
+    this.openedDoor = false;
     this.boxes = true;
-    this.boundingbox = new BoundingBox(x, y, width, height);
+    this.boundingbox = new BoundingBox(this.x, this.y, 97, 143);
     Entity.call(this, game, x, y);
 }
 
-Platform.prototype = new Entity();
-Platform.prototype.constructor = Platform;
+Door.prototype = new Entity();
+Door.prototype.constructor = Door;
 
-Platform.prototype.reset = function () {
+Door.prototype.reset = function () {
     this.x = this.startX;
     this.y = this.startY;
 }
-var moveF = false;
-Platform.prototype.update = function () {
-    //if (moveF) {
-        this.boundingbox = new BoundingBox(this.x, this.y, this.width, this.height);
-    //}
+Door.prototype.update = function () {
+        this.boundingbox = new BoundingBox(this.x, this.y, 97, 143);
+        if(this.boundingbox.collide(this.game.link.boundingbox)) {
+            this.openDoor = true;
+            if(this.animationDoorOpened.isDone()) {
+                this.openDoor = false;
+                this.openedDoor = true;
+                this.game.link.removeFromWorld = true;
+            }
+            scorePanel(this.game);
+        }
+
 }
 
-Platform.prototype.draw = function (ctx) {
+Door.prototype.draw = function (ctx) {
     if (this.boxes) {
         ctx.strokeStyle = "red";
-        ctx.strokeRect(this.x, this.y, this.width, this.height);
+        ctx.strokeRect(this.x, this.y, 97, 143);
     }
+    if(this.openDoor) this.animationDoorOpened.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+    else if (this.openedDoor) this.animationDoorStay.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+    else this.animationDoorClosed.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+}
 
-    var grad;
-    var offset = 0;
+function EndScore(game) {
+    this.boundingbox = new BoundingBox(490, 786 / 2 - 80, 120, 40)
+    this.boundingbox2 = new BoundingBox(660, 786 / 2 - 80, 160, 40)
+    this.clickReplay = false;
+    this.clickContinue = false;
+    Entity.call(this, game, 1280/2-200, 786/2-100);
+}
+EndScore.prototype = new Entity();
+EndScore.prototype.constructor = EndScore;
 
-    grad = ctx.createLinearGradient(0, this.y, 0, this.y + this.height);
-    grad.addColorStop(0, 'green');
-    ctx.fillStyle = grad;
+EndScore.prototype.update = function () {
+    if (this.game.mouse) {
+        if(this.game.mouse.x > this.boundingbox.left && 
+            this.game.mouse.x < this.boundingbox.right &&
+            this.game.mouse.y > this.boundingbox.top &&
+            this.game.mouse.y < this.boundingbox.bottom) {
+            if (this.game.click) {
+                //level = 1;
+                this.game.end.removeFromWorld = true;
+                character = 1;
+                score = 0;
+                lives = 3;
+                health = 150;
+                this.game.background.removeFromWorld = true;
+                for (var i = 0; i < this.game.coinsArr.length; i++) this.game.coinsArr[i].removeFromWorld = true;
+                for (var i = 0; i < this.game.spikesArr.length; i++) this.game.spikesArr[i].removeFromWorld = true;
+                for (var i = 0; i < this.game.flyArr.length; i++) this.game.flyArr[i].removeFromWorld = true;
+                for (var i = 0; i < this.game.enemiesArr.length; i++) this.game.enemiesArr[i].removeFromWorld = true;
+                for (var i = 0; i < this.game.dEnemy.length; i++) this.game.dEnemy[i].removeFromWorld = true;
+                coinsArr = [];
+                spikesArr = [];
+                flyArr = [];
+                enemiesArr = [];
+                dEnemy = [];
+                tileArrBB = [];
+                this.game.tileMap.removeFromWorld = true;
+                this.game.score.removeFromWorld = true;
+                this.game.lives.removeFromWorld = true;
+                this.game.skills.removeFromWorld = true;
+                this.game.restart.removeFromWorld = true;
+                this.game.spikes.removeFromWorld = true;
+                this.game.health.removeFromWorld = true;
+                this.game.tileMapFront.removeFromWorld = true;
+                this.game.door.removeFromWorld = true;
+                startPlaying(this.game);
+            }
+        } else if (this.game.mouse.x > this.boundingbox2.left && 
+            this.game.mouse.x < this.boundingbox2.right &&
+            this.game.mouse.y > this.boundingbox2.top &&
+            this.game.mouse.y < this.boundingbox2.bottom) {
+            if (this.game.click) {
+                level++;
+                this.game.end.removeFromWorld = true;
+                character = 1;
+                score = 0;
+                lives = 3;
+                health = 150;
+                this.game.background.removeFromWorld = true;
+                for (var i = 0; i < this.game.coinsArr.length; i++) this.game.coinsArr[i].removeFromWorld = true;
+                for (var i = 0; i < this.game.spikesArr.length; i++) this.game.spikesArr[i].removeFromWorld = true;
+                for (var i = 0; i < this.game.flyArr.length; i++) this.game.flyArr[i].removeFromWorld = true;
+                for (var i = 0; i < this.game.enemiesArr.length; i++) this.game.enemiesArr[i].removeFromWorld = true;
+                for (var i = 0; i < this.game.dEnemy.length; i++) this.game.dEnemy[i].removeFromWorld = true;
+                coinsArr = [];
+                spikesArr = [];
+                flyArr = [];
+                enemiesArr = [];
+                dEnemy = [];
+                tileArrBB = [];
+                this.game.tileMap.removeFromWorld = true;
+                this.game.score.removeFromWorld = true;
+                this.game.lives.removeFromWorld = true;
+                this.game.skills.removeFromWorld = true;
+                this.game.restart.removeFromWorld = true;
+                this.game.spikes.removeFromWorld = true;
+                this.game.health.removeFromWorld = true;
+                this.game.tileMapFront.removeFromWorld = true;
+                this.game.door.removeFromWorld = true;
+                startPlaying(this.game);
+            }
+        }
+    }
+}
 
-    ctx.fillRect(this.x, this.y, this.width, this.height);
+EndScore.prototype.draw = function (ctx) {
+    ctx.strokeStyle = "red";
+    ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
+    ctx.strokeRect(this.boundingbox2.x, this.boundingbox2.y, this.boundingbox2.width, this.boundingbox2.height);
+
+    ctx.font = "40px serif";
+    ctx.fillText("Your Score: " + score, 1280/2-100, 786/2-100);
+
+    ctx.font = "40px serif";
+    ctx.fillText("Replay", 1280/2-150, 786/2-50);
+
+    ctx.font = "40px serif";
+    ctx.fillText("Continue", 1280/2+20, 786/2-50);
+    Entity.prototype.draw.call(this);
 }
 
 //sleep, dealy, wait function
@@ -522,7 +658,6 @@ Score.prototype = new Entity();
 Score.prototype.constructor = Score;
 
 Score.prototype.update = function () {
-
 }
 
 Score.prototype.draw = function (ctx) {
@@ -792,36 +927,7 @@ Link.prototype.update = function () {
         this.fallDead = true;
     }
     if (this.boundingbox.bottom > 3000) {
-        this.x = 100;
-        this.y = 425;
-        movX = 0;
-        movY = 0;
-        this.fallDead = false;
-        lives--;
-        this.game.background.x = this.game.background.startX
-        this.game.background.y = this.game.background.startY;
-        for (var i = 0; i < tileArrBB.length; i++) {
-            var tl = tileArrBB[i];
-            tl.left -= this.game.background.tileX;
-            tl.right -= this.game.background.tileX;
-        }
-        this.game.background.tileX = 0;
-        for (var i = 0; i < this.game.coinsArr.length; i++) {
-            this.game.coinsArr[i].x = this.game.coinsArr[i].startX;
-            this.game.coinsArr[i].y = this.game.coinsArr[i].startY;
-        }
-        for (var i = 0; i < this.game.spikesArr.length; i++) {
-            this.game.spikesArr[i].x = this.game.spikesArr[i].startX;
-            this.game.spikesArr[i].y = this.game.spikesArr[i].startY;
-        }
-        for (var i = 0; i < this.game.flyArr.length; i++) {
-            this.game.flyArr[i].x = this.game.flyArr[i].startX;
-            this.game.flyArr[i].y = this.game.flyArr[i].startY;
-        }
-        for (var i = 0; i < this.game.enemiesArr.length; i++) {
-            this.game.enemiesArr[i].x = this.game.enemiesArr[i].startX;
-            this.game.enemiesArr[i].y = this.game.enemiesArr[i].startY;
-        }
+        //reset(this.game);
     }
     linkX = this.x;
     Link.y = this.y;
@@ -1361,6 +1467,42 @@ function TileMap(game, ctx) {
                          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0],
                          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] //this row has to be all zeroes
         ];
+        backgroundTileMap = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0], //the column on the very right has to be all zeroes
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 1, 5, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 1, 5, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 1, 5, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 1, 5, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 1, 5, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 5, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 5, 1, 5, 5, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 5, 1, 5, 5, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 5, 1, 5, 5, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 5, 1, 5, 5, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 5, 1, 5, 5, 0], ///// bottom
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 5, 1, 5, 5, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 5, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 5, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 5, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 5, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 5, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 5, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 5, 0], /// --> bottom
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 5, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] //this row has to be all zeroes
+        ];
     }
     this.tileMap = testTileMap;
     this.backgroundTileMap = backgroundTileMap;
@@ -1462,11 +1604,9 @@ function TileMapFront(game, ctx) {
     this.x = 0;
     this.y = 0;
     Entity.call(this, game, 0, 0);
-    this.boundingbox = new Array(32);
     this.tileMapFront = new Array(32);
     for (var i = 0; i < this.tileMapFront.length; i++) {
         this.tileMapFront[i] = new Array(24);
-        this.boundingbox[i] = new Array(24);
     }
     this.sprites = new Array(48);
     var testTileMapFront;
@@ -1510,7 +1650,7 @@ function TileMapFront(game, ctx) {
         ];
     }
     else { //2nd level
-        testTileMap = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 5, 0], //the column on the very right has to be all zeroes
+        testTileMapFront = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 5, 0], //the column on the very right has to be all zeroes
                          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 5, 0],
                          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 5, 0],
                          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 5, 0],
@@ -1567,8 +1707,6 @@ TileMapFront.prototype.update = function () {
     Entity.prototype.update.call(this);
 }
 TileMapFront.prototype.draw = function (ctx) {
-    /*********************************************************/
-    /*****************TILE MAP REAL***************************/
     for (var i = 0; i < this.tileMapFront.length; i++) {
         for (var j = 0; j < 24; j++) {
             var sprite = this.sprites[this.tileMapFront[i][j]];
@@ -1605,13 +1743,12 @@ ASSET_MANAGER.queueDownload("./img/coins.png");
 ASSET_MANAGER.queueDownload("./img/background0.png");
 ASSET_MANAGER.queueDownload("./img/Slime_First Gen_Weak.png");
 ASSET_MANAGER.queueDownload("./img/spikes.png");
+ASSET_MANAGER.queueDownload("./img/door.png");
 
-var platforms = [];
 var coinsArr = [];
 var spikesArr = [];
 var flyArr = [];
 var enemiesArr = []
-var center = 200;
 var dEnemy = [];
 var tileArrBB = [];
 ASSET_MANAGER.downloadAll(function () {
@@ -1816,6 +1953,10 @@ function startPlaying(gameEngine) {
     var tMapfront = new TileMapFront(gameEngine);
     gameEngine.addEntity(tMapfront);
     gameEngine.tileMapFront = tMapfront;
+
+    var door = new Door(gameEngine, 350, 400);
+    gameEngine.addEntity(door);
+    gameEngine.door = door;
 }
 
 function characterSelection(gameEngine) {
@@ -1831,5 +1972,10 @@ function levelSelectionPanel(gameEngine) {
     gameEngine.addEntity(lSelect);
 }
 
+function scorePanel(gameEngine) {
+    var end = new EndScore(gameEngine);
+    gameEngine.addEntity(end);
+    gameEngine.end = end;
+}
 
 
