@@ -116,8 +116,8 @@ function reset(game) {
     this.game.restart.removeFromWorld = true;
     this.game.spikes.removeFromWorld = true;
     this.game.health.removeFromWorld = true;
-    this.game.tileMapFront.removeFromWorld = true;
-    this.game.door.removeFromWorld = true;
+    //this.game.tileMapFront.removeFromWorld = true;
+    //this.game.door.removeFromWorld = true;
     startPlaying(this.game);
 }
 
@@ -372,8 +372,8 @@ EndScore.prototype.update = function () {
                 this.game.restart.removeFromWorld = true;
                 this.game.spikes.removeFromWorld = true;
                 this.game.health.removeFromWorld = true;
-                this.game.tileMapFront.removeFromWorld = true;
-                this.game.door.removeFromWorld = true;
+                //this.game.tileMapFront.removeFromWorld = true;
+                //this.game.door.removeFromWorld = true;
                 startPlaying(this.game);
             }
         } else if (this.game.mouse.x > this.boundingbox2.left && 
@@ -406,8 +406,8 @@ EndScore.prototype.update = function () {
                 this.game.restart.removeFromWorld = true;
                 this.game.spikes.removeFromWorld = true;
                 this.game.health.removeFromWorld = true;
-                this.game.tileMapFront.removeFromWorld = true;
-                this.game.door.removeFromWorld = true;
+                //this.game.tileMapFront.removeFromWorld = true;
+                //this.game.door.removeFromWorld = true;
                 startPlaying(this.game);
             }
         }
@@ -452,7 +452,15 @@ Background.prototype = new Entity();
 Background.prototype.constructor = Background;
 var moveUp = false;
 var moveDown = false;
+
 Background.prototype.update = function () {
+
+    music.addEventListener('ended', function () {
+        this.currentTime = 0;
+        this.play();
+    }, false);
+    music.play();
+
     // move the map slowly
     /**************************/
     //move map right
@@ -718,6 +726,8 @@ Coin.prototype.update = function () {
     if (this.boundingbox.collide(this.game.link.boundingbox)) {
         this.removeFromWorld = true;
         score++;
+        coin = new Audio('./img/coin.mp3');
+        coin.play();
     }
 }
 
@@ -780,15 +790,17 @@ Health.prototype.draw = function (ctx) {
 }
 
 
-function DEnemy(game, x, y, speed) {
+function DEnemy(game, x, y, speed, moveSpeed) {
+    this.mSpeed = moveSpeed;
     Entity.call(this, game, x, y);
     this.x = x;
     this.y = y;
     this.falling = true;
     this.boxes = true;
     this.left = false;
-    this.jumpAnimation = new Animation(ASSET_MANAGER.getAsset("./img/Slime_First Gen_Weak.png"), 8, 12, 19, 22, speed, 9, true, false);
-    this.boundingbox = new BoundingBox(this.x+3, this.y, 19-6, 22);
+    this.jumpAnimation = new Animation(ASSET_MANAGER.getAsset("./img/Slime_First Gen_Weak.png"), 12, 15, 40, 53, speed, 9, true, false);
+    this.boundingbox = new BoundingBox(this.x, this.y, 39, 53);
+    this.boundingboxDanger = new BoundingBox(this.x, this.y, 0, 0);
 }
 DEnemy.prototype = new Entity();
 DEnemy.prototype.constructor = DEnemy;
@@ -797,34 +809,49 @@ DEnemy.prototype.update = function () {
     if (this.falling) {
         this.lastBottom = this.boundingbox.bottom;
         this.y += this.game.clockTick / this.jumpAnimation.totalTime * 1 * 50;
-        this.boundingbox = new BoundingBox(this.x+3, this.y, this.jumpAnimation.frameWidth-6, this.jumpAnimation.frameHeight);
+        this.boundingbox = new BoundingBox(this.x, this.y, this.jumpAnimation.frameWidth, this.jumpAnimation.frameHeight);
+        this.boundingboxDanger = new BoundingBox(this.boundingbox.x - 100, this.boundingbox.y, this.boundingbox.width + 200, this.boundingbox.height);
 
-        //for (var i = 0; i < this.game.platforms.length; i++) {
-        //    var pf = this.game.platforms[i];
-        //    if (this.boundingbox.collide(pf.boundingbox)) {
-        //        this.falling = false;
-        //        this.y = pf.boundingbox.top - this.jumpAnimation.frameHeight;
-        //        this.platform = pf;
-        //        this.jumpAnimation.elapsedTime = 0;
-        //    }
-        //}
+        for (var i = 0; i < tileArrBB.length; i++) {
+            var tl = tileArrBB[i];
+            if (this.boundingbox.collide(tl)) {
+                this.falling = false;
+                this.y = tl.top - this.jumpAnimation.frameHeight + 2;
+                this.tileT = tl;
+                this.jumpAnimation.elapsedTime = 0;
+            }
+        }
+
     }
     if (!this.falling) {
-        this.boundingbox = new BoundingBox(this.x+3, this.y, this.jumpAnimation.frameWidth-6, this.jumpAnimation.frameHeight);
-        //if (this.boundingbox.right >= this.platform.boundingbox.right) this.left = true;
-        //if (this.boundingbox.left <= this.platform.boundingbox.left) this.left = false;
+        this.boundingbox = new BoundingBox(this.x, this.y, this.jumpAnimation.frameWidth, this.jumpAnimation.frameHeight);
+        this.boundingboxDanger = new BoundingBox(this.boundingbox.x - 100, this.boundingbox.y, this.boundingbox.width + 200, this.boundingbox.height);
+        if (this.boundingbox.right >= this.tileT.right) this.left = true;
+        if (this.boundingbox.left <= this.tileT.left) this.left = false;
     }
 
     if (this.jumpAnimation.currentFrame() >= 3 && this.jumpAnimation.currentFrame() <= 6) {
-        if (this.left) this.x -= 0.5;
-        else this.x += 0.5;
+        if (this.left) this.x -= this.mSpeed;
+        else this.x += this.mSpeed;
     }
+    if (this.game.link.boundingbox.collide(this.boundingbox)) {
+        health -= 5;
+        if (this.game.link.left) this.game.link.x += 10;
+        if (!this.game.link.left) this.game.link.x -= 10;
+    }
+    if (this.game.link.boundingbox.collide(this.boundingboxDanger)) {
+        if (this.game.link.boundingbox.left > this.boundingbox.right) this.left = false;
+        if (this.game.link.boundingbox.right < this.boundingbox.left) this.left = true;
+    }
+    if(this.game.link.swordBox.collide(this.boundingbox)) this.removeFromWorld = true;
 }
 DEnemy.prototype.draw = function (ctx) {
-    //if (this.boxes) {
-    //    ctx.strokeStyle = "red";
-    //    ctx.strokeRect(this.x+3, this.y, 19-6, 22);
-    //}
+    if (this.boxes) {
+        ctx.strokeStyle = "red";
+        ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
+        ctx.strokeStyle = "black";
+        ctx.strokeRect(this.boundingboxDanger.x, this.boundingboxDanger.y, this.boundingboxDanger.width, this.boundingboxDanger.height);
+    }
     this.jumpAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
     Entity.prototype.draw.call(this);
 }
@@ -877,13 +904,13 @@ function Link(game) {
    this.dyingAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 669, 96, 99, 0.15, 3, false, false);
    this.deadAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 288, 742, 96, 99, 0.2, 1, true, false);
    this.downAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 225, 510, 75, 56, 1, 1, true, false);
-   this.slash2Animation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 869, 150, 111, 0.1, 2, false, false);
-   this.slash3Animation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 1093, 125, 93, 0.1, 2, false, false);
-   this.slash1Animation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 1281, 140, 86, 0.1, 2, false, false);
-    this.fallAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 150, 465, 75, 101, 0.20, 1, true, false);
+   this.slash2Animation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 869, 150, 111, 0.05, 2, false, false);
+   this.slash3Animation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 1093, 125, 93, 0.05, 2, false, false);
+   this.slash1Animation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 1281, 140, 86, 0.05, 2, false, false);
+   this.fallAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 150, 465, 75, 101, 0.20, 1, true, false);
    //this.fallAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 150, 465, 200, 101, 0.24, 1, true, false);
 
-
+   this.swordBox = new BoundingBox(this.x - 80, this.y - 15, 96, 99);
    this.lives = 3;
    this.left = false;
    this.sleeping = false;
@@ -954,6 +981,7 @@ Link.prototype.update = function () {
    ////*********START RUNNING RIGHT*********//
    ////*************************************//
    if (this.game.D) {
+       this.slash = false;
        this.boundingbox = new BoundingBox(this.x+5, this.y, this.runningAnimation.frameWidth -20, this.runningAnimation.frameHeight);
        for (var i = 0; i < tileArrBB.length; i++) {
            var tl = tileArrBB[i];
@@ -970,6 +998,7 @@ Link.prototype.update = function () {
    ////*********START RUNNING LEFT**********//
    ////*************************************//
    if (this.game.A) {
+       this.slash = false;
        this.boundingbox = new BoundingBox(this.x, this.y, this.runningAnimation.frameWidth - 25, this.runningAnimation.frameHeight);
        for (var i = 0; i < tileArrBB.length; i++) {
            var tl = tileArrBB[i];
@@ -991,12 +1020,14 @@ Link.prototype.update = function () {
    ////*************************************//
    ////*********ACTIVATE SLASH**************//
    ////*************************************//
-   if (this.game.Q) {
+   if (this.game.Q && !this.falling && !this.jumping && !this.running) {
+       slash = new Audio('./img/sword.mp3');
+       slash.play();
        if (this.left) {
-           this.swordBox = new BoundingBox(this.x - 80, this.y - 15, this.dyingAnimation.frameWidth, this.dyingAnimation.frameHeight);
+           this.swordBox = new BoundingBox(this.x - 80, this.y - 15, 96, 99);
        }
        else {
-           this.swordBox = new BoundingBox(this.x + 32, this.y - 15, this.dyingAnimation.frameWidth, this.dyingAnimation.frameHeight);
+           this.swordBox = new BoundingBox(this.x + 32, this.y - 15, 96, 99);
        }
        this.slash = true;
    }
@@ -1013,10 +1044,13 @@ Link.prototype.update = function () {
    //***********JUMPING LOGIC*************//
     //*************************************//
    if (this.game.space && !this.jumping && !this.falling) {
+       jump = new Audio('./img/jump.wav');
+       jump.play();
        this.jumping = true;
        this.base = this.y;
    }
    if (this.jumping) {
+       this.slash = false;
        this.running = false;
        var height = 0;
        var duration = this.jumpAnimation.elapsedTime + this.game.clockTick;
@@ -1052,6 +1086,7 @@ Link.prototype.update = function () {
    }
    
    if (this.falling) {
+       this.slash = false;
        this.running = false;
        this.jumping = false;
        this.lastBottom = this.boundingbox.bottom;
@@ -1226,7 +1261,7 @@ Link.prototype.draw = function (ctx) {
        else if (this.slash) {
            if (this.boxes) {
                ctx.strokeStyle = "red";
-               ctx.strokeRect(this.x-80, this.y - 15, this.dyingAnimation.frameWidth, this.dyingAnimation.frameHeight);
+               ctx.strokeRect(this.x - 80, this.y - 15, 96, 99);
            }
            ctx.save();
            ctx.scale(-1, 1);
@@ -1315,7 +1350,7 @@ Link.prototype.draw = function (ctx) {
        else if (this.slash) {
            if (this.boxes) {
                ctx.strokeStyle = "red";
-               ctx.strokeRect(this.x + 32, this.y-15, this.dyingAnimation.frameWidth, this.dyingAnimation.frameHeight);
+               ctx.strokeRect(this.x + 32, this.y-15, 96, 99);
            }
            if (animNum == 1) this.slash1Animation.drawFrame(this.game.clockTick, ctx, this.x - 15, this.y - 7); //OK
            if (animNum == 2) this.slash2Animation.drawFrame(this.game.clockTick, ctx, this.x - 22, this.y - 32); //OK
@@ -1361,16 +1396,16 @@ function TileMap(game, ctx) {
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 5, 0],
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 5, 0],
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 5, 0],
-                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 5, 0],
-                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0, 0, 0, 1, 0, 0, 0, 1, 1, 5, 0],
-                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 5, 5, 0],
-                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 5, 5, 0],
-                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 5, 5, 0],
-                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 5, 5, 0],
-                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 5, 5, 0], ///// bottom
-                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 5, 5, 0],
-                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 5, 5, 0],
-                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 5, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 5, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 5, 0, 0, 0, 1, 0, 0, 0, 0, 1, 5, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 5, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 5, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 5, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 5, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 5, 0], ///// bottom
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 5, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 5, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 5, 0],
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 5, 0],
@@ -1396,18 +1431,18 @@ function TileMap(game, ctx) {
         backgroundTileMap =[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0], //the column on the very right has to be all zeroes
                             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 1, 5, 0],
                             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 1, 5, 0],
-                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 1, 5, 0],
-                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 1, 5, 0],
-                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 1, 5, 0],
-                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 5, 0],
-                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 5, 1, 5, 5, 0],
-                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 5, 1, 5, 5, 0],
-                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 5, 1, 5, 5, 0],
-                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 5, 1, 5, 5, 0],
-                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 5, 1, 5, 5, 0], ///// bottom
-                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 5, 1, 5, 5, 0],
-                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 5, 0],
-                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 5, 0],
+                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 0, 1, 5, 0],
+                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 0, 1, 5, 0],
+                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 0, 0, 5, 0],
+                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 5, 0],
+                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0, 0, 0, 5, 0],
+                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0, 0, 0, 5, 0],
+                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0, 0, 0, 5, 0],
+                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0, 0, 0, 5, 0],
+                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0, 0, 0, 5, 0], ///// bottom
+                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0, 0, 0, 5, 0],
+                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0],
+                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0],
                             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
                             [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 5, 0],
                             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 5, 0],
@@ -1618,15 +1653,15 @@ function TileMapFront(game, ctx) {
                             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
                             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
                             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
-                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 0, 1, 5, 0],
-                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 1, 5, 5, 0],
-                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 1, 5, 5, 0],
-                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 1, 5, 5, 0],
-                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 1, 5, 5, 0],
-                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 1, 5, 5, 0], ///// bottom
-                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 1, 5, 5, 0],
-                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 1, 5, 5, 0],
-                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 5, 0],
+                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 0, 0, 1, 5, 0],
+                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 0, 0, 5, 5, 0],
+                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 0, 0, 5, 5, 0],
+                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 0, 0, 5, 5, 0],
+                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 0, 0, 5, 5, 0],
+                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 0, 0, 5, 5, 0], ///// bottom
+                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 0, 0, 5, 5, 0],
+                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 0, 0, 5, 5, 0],
+                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
                             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
                             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
                             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
@@ -1751,7 +1786,10 @@ var flyArr = [];
 var enemiesArr = []
 var dEnemy = [];
 var tileArrBB = [];
+var music;
 ASSET_MANAGER.downloadAll(function () {
+    music = new Audio('./img/music.mp3');
+
     console.log(start);
     var gameEngine = new GameEngine();
     var canvas = document.getElementById('gameWorld');
@@ -1940,23 +1978,23 @@ function startPlaying(gameEngine) {
     gameEngine.addEntity(enemy);
     enemiesArr.push(enemy);
     
-    var duEnemy = new DEnemy(gameEngine, 400, 300, 0.06);
+    var duEnemy = new DEnemy(gameEngine, 800, 300, 0.08, 1);
     gameEngine.addEntity(duEnemy);
     dEnemy.push(duEnemy);
-    duEnemy = new DEnemy(gameEngine, 200, 150, 0.1);
+    duEnemy = new DEnemy(gameEngine, 200, 250, 0.06, 2);
     gameEngine.addEntity(duEnemy);
     dEnemy.push(duEnemy);
 
 
     gameEngine.dEnemy = dEnemy;
 
-    var tMapfront = new TileMapFront(gameEngine);
-    gameEngine.addEntity(tMapfront);
-    gameEngine.tileMapFront = tMapfront;
+    //var tMapfront = new TileMapFront(gameEngine);
+    //gameEngine.addEntity(tMapfront);
+    //gameEngine.tileMapFront = tMapfront;
 
-    var door = new Door(gameEngine, 350, 400);
-    gameEngine.addEntity(door);
-    gameEngine.door = door;
+    //var door = new Door(gameEngine, 350, 400);
+    //gameEngine.addEntity(door);
+    //gameEngine.door = door;
 }
 
 function characterSelection(gameEngine) {
