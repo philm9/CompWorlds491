@@ -1021,28 +1021,39 @@ Fly.prototype.draw = function (ctx) {
 }
 
 function Link(game) {
+   // this.standAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 0, 45, 79, 0.7, 2, true, false);
+   // this.jumpAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 465, 75, 101, 0.20, 3, false, false);
+   // this.runningAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 318, 75, 72, 0.05, 10, true, false);
+   // this.dyingAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 669, 96, 99, 0.15, 3, false, false);
+   // this.deadAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 288, 742, 96, 99, 0.2, 1, true, false);
+   // this.downAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 225, 510, 75, 56, 1, 1, true, false);
+   // this.slash2Animation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 869, 150, 111, 0.05, 2, false, false);
+   // this.slash3Animation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 1093, 125, 93, 0.05, 2, false, false);
+   // this.slash1Animation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 1281, 140, 86, 0.05, 2, false, false);
+   // this.fallAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 150, 465, 75, 101, 0.20, 1, true, false);
+   //this.fallAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 150, 465, 200, 101, 0.24, 1, true, false);
+
    //this.standAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 0, 45, 79, 0.7, 2, true, false);
     //this.standAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 0, 38, 58, 0.4, 3, true, false);
-    this.standAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 0, 24, 53, 0.4, 2, true, false);
+    this.standAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 0, 57, 80, 0.4, 3, true, false);
     //this.jumpAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 465, 75, 101, 0.20, 3, false, false);
-    this.jumpAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 56, 33, 55, 0.7, 1, false, false);
+    this.jumpAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 84, 50, 83, 0.7, 1, false, false);
     //this.runningAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 318, 75, 72, 0.05, 10, true, false);
-    this.runningAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 112, 41, 51, 0.1, 6, true, false);
-   this.dyingAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 669, 96, 99, 0.15, 3, false, false);
-   this.deadAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 288, 742, 96, 99, 0.2, 1, true, false);
-   this.downAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 225, 510, 75, 56, 1, 1, true, false);
+    this.runningAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 168, 61, 77, 0.1, 6, true, false);
+   this.dyingAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 1004, 144, 149, 0.15, 3, false, false);
+   this.deadAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 432, 1113, 144, 149, 0.2, 1, true, false);
+   this.downAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 338, 765, 113, 84, 1, 1, true, false);
    //this.slash2Animation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 869, 150, 111, 0.05, 2, false, false);
-   this.slash2Animation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 380, 190, 117, 79, 0.05, 3, false, false);
+   this.slash2Animation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 570, 285, 176, 119, 0.05, 3, false, false);
    //this.slash3Animation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 1093, 125, 93, 0.05, 2, false, false);
-   this.slash3Animation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 870, 190, 125, 79, 0.05, 2, false, false);
+   this.slash3Animation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 1305, 285, 188, 119, 0.05, 2, false, false);
     //this.slash1Animation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 1281, 140, 86, 0.05, 2, false, false);
-   this.slash1Animation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 200, 88, 79, 0.05, 2, false, false);
+   this.slash1Animation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 300, 132, 119, 0.05, 2, false, false);
     //slash1//this.standAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 200, 88, 79, 0.4, 2, true, false);
     //slash2//this.standAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 380, 190, 117, 79, 0.4, 3, true, false);
    //slash3//this.standAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 870, 190, 125, 79, 0.4, 2, true, false);
    //this.fallAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 150, 465, 75, 101, 0.20, 1, true, false);
-   this.fallAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 56, 33, 55, 0.7, 1, true, false);
-   
+   this.fallAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 84, 50, 83, 0.7, 1, true, false);
 
    this.swordBox = new BoundingBox(this.x - 80, this.y - 15, 96, 99);
    this.lives = 3;
@@ -1058,9 +1069,9 @@ function Link(game) {
    this.fallDead = false;
    this.tileT = tileArrBB[0];
    this.jumpHeight = 200;
-   this.boundingbox = new BoundingBox(this.x + 25, this.y, this.runningAnimation.frameWidth - 15, this.runningAnimation.frameHeight);
+   this.boundingbox = new BoundingBox(this.x + 25, this.y, this.runningAnimation.frameWidth - 40, this.runningAnimation.frameHeight);
    this.boxes = true;
-   Entity.call(this, game, 100, 400);
+   Entity.call(this, game, 50, 100);
 }
 
 var linkSpeed = 4;
@@ -1116,19 +1127,16 @@ Link.prototype.update = function () {
    ////*************************************//
    if (this.game.D) {
        this.slash = false;
+       this.boundingbox = new BoundingBox(this.x+5, this.y, this.runningAnimation.frameWidth -20, this.runningAnimation.frameHeight);
+       for (var i = 0; i < tileArrBB.length; i++) {
+           var tl = tileArrBB[i];
+           if (this.boundingbox.collide(tl)) {
+               this.x -= linkSpeed;//this.x = tl.left - (this.boundingbox.right - this.boundingbox.left);
+           }
+       }
        this.left = false;
        this.running = true;
        this.x += linkSpeed;
-       this.boundingbox = new BoundingBox(this.x, this.y, this.runningAnimation.frameWidth - 10, this.runningAnimation.frameHeight);
-       for (var i = 0; i < tileArrBB.length; i++) {
-           var tl = tileArrBB[i];
-           //if (this.boundingbox.right >= tl.left && this.boundingbox.left < tl.left) {
-               if (this.boundingbox.collide(tl) && tl != this.tileT && this.running) {
-
-               this.x = tl.left - (this.boundingbox.right - this.boundingbox.left);
-               //this.running = false;
-           }
-       }
    }
    
    ////*************************************//
@@ -1136,14 +1144,14 @@ Link.prototype.update = function () {
    ////*************************************//
    if (this.game.A) {
        this.slash = false;
+       this.boundingbox = new BoundingBox(this.x, this.y, this.runningAnimation.frameWidth - 25, this.runningAnimation.frameHeight);
+       for (var i = 0; i < tileArrBB.length; i++) {
+           var tl = tileArrBB[i];
+           if (this.boundingbox.collide(tl)) this.x += linkSpeed; //this.x = tl.right;
+       }
        this.left = true;
        this.running = true;
        this.x -= linkSpeed;
-       this.boundingbox = new BoundingBox(this.x-6, this.y, this.runningAnimation.frameWidth - 5, this.runningAnimation.frameHeight);
-       for (var i = 0; i < tileArrBB.length; i++) {
-           var tl = tileArrBB[i];
-           if (this.boundingbox.collide(tl) && tl != this.tileT && this.running) this.x = tl.right;
-       }
    }
 
    ////*************************************//
@@ -1186,39 +1194,50 @@ Link.prototype.update = function () {
        this.jumping = true;
        this.base = this.y;
    }
+    this.lastBottom = this.boundingbox.bottom;
+    this.lastTop = this.boundingbox.top;
    if (this.jumping) {
        this.slash = false;
        this.running = false;
-       this.falling = false;
        var height = 0;
        var duration = this.jumpAnimation.elapsedTime + this.game.clockTick;
        if (duration > this.jumpAnimation.totalTime / 2) duration = this.jumpAnimation.totalTime - duration;
        duration = duration / this.jumpAnimation.totalTime;
 
-       // quadratic jump
        height = (4 * duration - 4 * duration * duration) * this.jumpHeight;
-       this.lastBottom = this.boundingbox.bottom;
-
-       height = (4 * duration - 4 * duration * duration) * this.jumpHeight;
-       this.lastBottom = this.boundingbox.bottom;
        this.y = this.base - height;
-       if (this.left) this.boundingbox = new BoundingBox(this.x + 5, this.y - 20, this.jumpAnimation.frameWidth, this.jumpAnimation.frameHeight);
-       else this.boundingbox = new BoundingBox(this.x-10, this.y - 20, this.jumpAnimation.frameWidth, this.jumpAnimation.frameHeight);
+       if (this.left) this.boundingbox = new BoundingBox(this.x + 5, this.y, this.jumpAnimation.frameWidth - 25, this.jumpAnimation.frameHeight - 22);
+       else this.boundingbox = new BoundingBox(this.x + 5, this.y, this.jumpAnimation.frameWidth-30, this.jumpAnimation.frameHeight - 22);
 
        for (var i = 0; i < tileArrBB.length; i++) {
            var tl = tileArrBB[i];
-           if (this.boundingbox.collide(tl) && tl && this.lastBottom < tl.top) {
+           // if (this.boundingbox.collide(tl) && this.lastTop <= tl.bottom) {
+           //      this.falling = true;
+           //      this.jumpAnimation.elapsedTime = 0;
+           // }
+           if (this.boundingbox.collide(tl) && tl != this.tileT && this.boundingbox.bottom >= tl.bottom && this.boundingbox.top <= tl.bottom) {
+                console.log('top');
+                this.jumping = false;
+                this.y = tl.bottom+5;
+                this.falling = true;
+                this.jumpAnimation.elapsedTime = 0;
+           }
+           else if (this.boundingbox.collide(tl) && this.lastBottom >= tl.top) {
+            console.log('bottom');
                this.jumping = false;
-               this.y = tl.top - this.jumpAnimation.frameHeight;
+               this.y = tl.top - this.jumpAnimation.frameHeight + 25;
                this.tileT = tl;
                this.jumpAnimation.elapsedTime = 0;
            }
-           if (this.boundingbox.collide(tl) && this.boundingbox.top <= tl.bottom) {
-               this.jumping = false;
-               this.jumpAnimation.elapsedTime = 0;
-               this.tileT = tl;
-               this.falling = true;
-           }
+           // if (this.boundingbox.collide(tl) && this.boundingbox.top < tl.bottom &&
+           //                 this.lastBottom > tl.bottom) {
+           //  if (this.boundingbox.collide(tl) && this.lastTop <= tl.bottom) {
+           //     // this.jumping = false;
+           //     // this.jumpAnimation.elapsedTime = 0;
+           //     // this.tileT = tl; //??????????
+           //     // this.falling = true;
+           //     this.y = tl.bottom+5;
+           // }
        }
    }
    
@@ -1226,20 +1245,32 @@ Link.prototype.update = function () {
        this.slash = false;
        this.running = false;
        this.jumping = false;
-       this.lastBottom = this.boundingbox.bottom;
+       // this.lastBottom = this.boundingbox.bottom;
        this.y += this.game.clockTick / this.jumpAnimation.totalTime * 4 * this.jumpHeight;
 
-       if (this.left) this.boundingbox = new BoundingBox(this.x + 5, this.y - 20, this.jumpAnimation.frameWidth, this.jumpAnimation.frameHeight);
-       else this.boundingbox = new BoundingBox(this.x - 10, this.y - 20, this.jumpAnimation.frameWidth, this.jumpAnimation.frameHeight);
+       if (this.left) this.boundingbox = new BoundingBox(this.x + 10, this.y, this.standAnimation.frameWidth, this.fallAnimation.frameHeight - 20);
+       else this.boundingbox = new BoundingBox(this.x, this.y, this.fallAnimation.frameWidth - 25, this.fallAnimation.frameHeight - 20);
 
        for (var i = 0; i < tileArrBB.length; i++) {
            var tl = tileArrBB[i];
-           if (this.boundingbox.collide(tl)) {
+
+           if (this.boundingbox.collide(tl) && this.lastBottom >= tl.top) {
                this.falling = false;
                this.y = tl.top - this.standAnimation.frameHeight+2;
                this.tileT = tl;
                this.fallAnimation.elapsedTime = 0;
            }
+            // if (this.boundingbox.collide(tl) && this.lastTop <= tl.bottom) {
+           //      // this.falling = true;
+           //      // this.jumpAnimation.elapsedTime = 0;
+           //      // this.y = tl.bottom+5;
+           // }
+          // if (this.boundingbox.collide(tl) && this.lastTop <= tl.bottom) {
+       //         this.falling = false;
+       //         // this.y = tl.top - this.standAnimation.frameHeight+2;
+       //         // this.tileT = tl;
+       //         this.fallAnimation.elapsedTime = 0;
+           // }
        }
    }
 
@@ -1307,8 +1338,8 @@ Link.prototype.update = function () {
    //if standing
    if (!this.dying && !this.dead && !this.running &&
        !this.jumping && !this.down && !this.slash && !this.falling) {
-       if (this.left) this.boundingbox = new BoundingBox(this.x, this.y, this.standAnimation.frameWidth, this.standAnimation.frameHeight);
-       else this.boundingbox = new BoundingBox(this.x, this.y, this.standAnimation.frameWidth, this.standAnimation.frameHeight);
+       if (this.left) this.boundingbox = new BoundingBox(this.x+10, this.y, this.standAnimation.frameWidth, this.standAnimation.frameHeight);
+       else this.boundingbox = new BoundingBox(this.x, this.y, this.standAnimation.frameWidth+5, this.standAnimation.frameHeight);
     //    this.x = this.x - 2;
        //linkSpeed = 4;
    }
@@ -1333,13 +1364,13 @@ Link.prototype.draw = function (ctx) {
        else if (this.jumping) {
            if (this.boxes) {
                ctx.strokeStyle = "red";
-               ctx.strokeRect(this.x+5, this.y-20, this.jumpAnimation.frameWidth, this.jumpAnimation.frameHeight);
+               ctx.strokeRect(this.x+5, this.y, this.jumpAnimation.frameWidth-20, this.jumpAnimation.frameHeight-22);
                ctx.strokeStyle = "green";
                ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
            }
            ctx.save();
            ctx.scale(-1, 1);
-           this.jumpAnimation.drawFrame(this.game.clockTick, ctx, -this.x-40 , this.y - 21);
+           this.jumpAnimation.drawFrame(this.game.clockTick, ctx, -this.x-70, this.y - 21);
            ctx.restore();
            if (this.jumpAnimation.isDone()) {
                this.jumpAnimation.elapsedTime = 0;
@@ -1350,25 +1381,25 @@ Link.prototype.draw = function (ctx) {
        else if (this.falling) {
            if (this.boxes) {
                ctx.strokeStyle = "red";
-               ctx.strokeRect(this.x + 5, this.y - 20, this.jumpAnimation.frameWidth, this.jumpAnimation.frameHeight);
+               ctx.strokeRect(this.x, this.y, this.fallAnimation.frameWidth - 10, this.fallAnimation.frameHeight - 20);
                ctx.strokeStyle = "green";
                ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
            }
            ctx.save();
            ctx.scale(-1, 1);
-           this.fallAnimation.drawFrame(this.game.clockTick, ctx, -this.x-40, this.y - 21);
+           this.fallAnimation.drawFrame(this.game.clockTick, ctx, -this.x-70, this.y - 21);
            ctx.restore();
        }
        else if (this.running) {
            if (this.boxes) {
                ctx.strokeStyle = "red";
-               ctx.strokeRect(this.x, this.y, this.runningAnimation.frameWidth-10, this.runningAnimation.frameHeight);
+               ctx.strokeRect(this.x, this.y, this.runningAnimation.frameWidth-20, this.runningAnimation.frameHeight);
                ctx.strokeStyle = "green";
                ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
            }
            ctx.save();
            ctx.scale(-1, 1);
-           this.runningAnimation.drawFrame(this.game.clockTick, ctx, -this.x - 35, this.y);
+           this.runningAnimation.drawFrame(this.game.clockTick, ctx, -this.x - 75, this.y + 5);
            ctx.restore();
        }
        else if (this.down) {
@@ -1416,13 +1447,13 @@ Link.prototype.draw = function (ctx) {
        else {
            if (this.boxes) {
                ctx.strokeStyle = "red";
-               ctx.strokeRect(this.x, this.y, this.standAnimation.frameWidth, this.standAnimation.frameHeight);
+               ctx.strokeRect(this.x+10, this.y, this.standAnimation.frameWidth, this.standAnimation.frameHeight);
                ctx.strokeStyle = "green";
                ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
            }
            ctx.save();
            ctx.scale(-1, 1);
-           this.standAnimation.drawFrame(this.game.clockTick, ctx, -this.x - 25, this.y);
+           this.standAnimation.drawFrame(this.game.clockTick, ctx, -this.x - 55, this.y);
            ctx.restore();
        }
    }
@@ -1433,11 +1464,11 @@ Link.prototype.draw = function (ctx) {
        else if (this.jumping) {
            if (this.boxes) {
                ctx.strokeStyle = "red";
-               ctx.strokeRect(this.x-10, this.y-20, this.jumpAnimation.frameWidth, this.jumpAnimation.frameHeight);
+               ctx.strokeRect(this.x+5, this.y, this.jumpAnimation.frameWidth-30, this.jumpAnimation.frameHeight-22);
                ctx.strokeStyle = "green";
                ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
            }
-           this.jumpAnimation.drawFrame(this.game.clockTick, ctx, this.x-10, this.y - 21);
+           this.jumpAnimation.drawFrame(this.game.clockTick, ctx, this.x-15, this.y - 21);
            if (this.jumpAnimation.isDone()) {
                this.jumpAnimation.elapsedTime = 0;
                this.jumping = false;
@@ -1447,12 +1478,12 @@ Link.prototype.draw = function (ctx) {
        else if (this.falling) {
            if (this.boxes) {
                ctx.strokeStyle = "red";
-               ctx.strokeRect(this.x - 10, this.y - 20, this.jumpAnimation.frameWidth, this.jumpAnimation.frameHeight);
+               ctx.strokeRect(this.x, this.y, this.fallAnimation.frameWidth-25, this.fallAnimation.frameHeight - 20);
                ctx.strokeStyle = "green";
                ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
            }
            //console.log(this.x);
-           this.fallAnimation.drawFrame(this.game.clockTick, ctx, this.x-10, this.y - 21);
+           this.fallAnimation.drawFrame(this.game.clockTick, ctx, this.x-15, this.y - 21);
        }
        else if (this.running) {
            if (this.boxes) {
@@ -1461,7 +1492,7 @@ Link.prototype.draw = function (ctx) {
                ctx.strokeStyle = "green";
                ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
            }
-           this.runningAnimation.drawFrame(this.game.clockTick, ctx, this.x-10, this.y);
+           this.runningAnimation.drawFrame(this.game.clockTick, ctx, this.x-15, this.y + 5);
        }
        else if (this.down) {
            this.downAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y + 23);
@@ -1532,13 +1563,13 @@ function TileMap(game, ctx) {
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0],
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0],
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 5, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0],
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0],
-                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0],
-                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0],
-                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0],
-                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0],
-                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0],
-                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0],
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0], ///// bottom
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0],
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0],
@@ -1584,17 +1615,17 @@ function TileMap(game, ctx) {
         //background tiles
         backgroundTileMap =[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0], //the column on the very right has to be all zeroes
                             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 1, 5, 0],
-                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
-                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
-                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
-                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0],
-                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0],
-                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 5, 0],
-                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 5, 0],
-                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 5, 0],
-                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 5, 0],
-                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 5, 0], ///// bottom
-                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 5, 0],
+                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 1, 5, 0],
+                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 0, 1, 5, 0],
+                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 0, 1, 5, 0],
+                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 0, 0, 5, 0],
+                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 5, 0],
+                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0, 0, 0, 5, 0],
+                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0, 0, 0, 5, 0],
+                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0, 0, 0, 5, 0],
+                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0, 0, 0, 5, 0],
+                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0, 0, 0, 5, 0], ///// bottom
+                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0, 0, 0, 5, 0],
                             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0],
                             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0],
                             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
@@ -1754,25 +1785,25 @@ function TileMap(game, ctx) {
             }
         }
     }
-    for (var i = 0; i < this.tileMap.length; i++) {
-        for (var j = 0; j < 24; j++) {
-            var x = (i * 32) + movX;
-            var y = (j * 32) + movY;
-            if (this.tileMap[i][j] != 0) {
-                if (this.tileMap[i][j + 1] != 0) {
-                    wid += 32;
-                    jsub++;
-                } else {
-                    if (wid > 0) {
-                        wid += 32;
-                        tileArrBB.push(new BoundingBox(((i) * 32) + movX, ((j - jsub) * 32) + movY, 32, wid));
-                        wid = 0;
-                        jsub = 0;
-                    }
-                }
-            }
-        }
-    }
+    // for (var i = 0; i < this.tileMap.length; i++) {
+    //     for (var j = 0; j < 24; j++) {
+    //         var x = (i * 32) + movX;
+    //         var y = (j * 32) + movY;
+    //         if (this.tileMap[i][j] != 0) {
+    //             if (this.tileMap[i][j + 1] != 0) {
+    //                 wid += 32;
+    //                 jsub++;
+    //             } else {
+    //                 if (wid > 0) {
+    //                     wid += 32;
+    //                     tileArrBB.push(new BoundingBox(((i) * 32) + movX, ((j - jsub) * 32) + movY, 32, wid));
+    //                     wid = 0;
+    //                     jsub = 0;
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 }
 TileMap.prototype = new Entity();
 TileMap.prototype.constructor = TileMap;
@@ -1787,20 +1818,20 @@ TileMap.prototype.draw = function (ctx) {
      }
     /*********************************************************/
     /*****************TILE MAP BACKGROUND*********************/
-    for (var i = 0; i < this.backgroundTileMap.length; i++) {
-        for (var j = 0; j < 24; j++) {
-            var sprite = this.sprites[this.backgroundTileMap[i][j]];
-            if (sprite) ctx.drawImage(sprite, (i * 32) + movX, (j * 32) + movY);
-        }
-    }
-    /*********************************************************/
-    /*****************TILE MAP REAL***************************/
-    for (var i = 0; i < this.tileMap.length; i++) {
-        for (var j = 0; j < 24; j++) {
-            var sprite = this.sprites[this.tileMap[i][j]];
-            if (sprite) ctx.drawImage(sprite, (i * 32) + movX, (j * 32) + movY);
-        }
-    }
+    // for (var i = 0; i < this.backgroundTileMap.length; i++) {
+    //     for (var j = 0; j < 24; j++) {
+    //         var sprite = this.sprites[this.backgroundTileMap[i][j]];
+    //         if (sprite) ctx.drawImage(sprite, (i * 32) + movX, (j * 32) + movY);
+    //     }
+    // }
+    // *******************************************************
+    // /*****************TILE MAP REAL***************************/
+    // for (var i = 0; i < this.tileMap.length; i++) {
+    //     for (var j = 0; j < 24; j++) {
+    //         var sprite = this.sprites[this.tileMap[i][j]];
+    //         if (sprite) ctx.drawImage(sprite, (i * 32) + movX, (j * 32) + movY);
+    //     }
+    // }
 }
 
 
