@@ -1053,7 +1053,7 @@ function Link(game) {
     //slash2//this.standAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 380, 190, 117, 79, 0.4, 3, true, false);
    //slash3//this.standAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 870, 190, 125, 79, 0.4, 2, true, false);
    //this.fallAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 150, 465, 75, 101, 0.20, 1, true, false);
-   this.fallAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 84, 50, 83, 0.7, 1, true, false);
+   this.fallAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 84, 50, 83, 5, 1, true, false);
 
    this.swordBox = new BoundingBox(this.x - 80, this.y - 15, 96, 99);
    this.lives = 3;
@@ -1144,7 +1144,7 @@ Link.prototype.update = function () {
    ////*************************************//
    if (this.game.A) {
        this.slash = false;
-       this.boundingbox = new BoundingBox(this.x, this.y, this.runningAnimation.frameWidth - 25, this.runningAnimation.frameHeight);
+       this.boundingbox = new BoundingBox(this.x, this.y, this.runningAnimation.frameWidth - 30, this.runningAnimation.frameHeight);
        for (var i = 0; i < tileArrBB.length; i++) {
            var tl = tileArrBB[i];
            if (this.boundingbox.collide(tl)) this.x += linkSpeed; //this.x = tl.right;
@@ -1206,8 +1206,8 @@ Link.prototype.update = function () {
 
        height = (4 * duration - 4 * duration * duration) * this.jumpHeight;
        this.y = this.base - height;
-       if (this.left) this.boundingbox = new BoundingBox(this.x + 5, this.y, this.jumpAnimation.frameWidth - 25, this.jumpAnimation.frameHeight - 22);
-       else this.boundingbox = new BoundingBox(this.x + 5, this.y, this.jumpAnimation.frameWidth-30, this.jumpAnimation.frameHeight - 22);
+       if (this.left) this.boundingbox = new BoundingBox(this.x + 20, this.y - 20, this.standAnimation.frameWidth-10, this.fallAnimation.frameHeight);
+       else this.boundingbox = new BoundingBox(this.x - 10, this.y - 20, this.jumpAnimation.frameWidth, this.jumpAnimation.frameHeight);
 
        for (var i = 0; i < tileArrBB.length; i++) {
            var tl = tileArrBB[i];
@@ -1225,7 +1225,7 @@ Link.prototype.update = function () {
            else if (this.boundingbox.collide(tl) && this.lastBottom >= tl.top) {
             console.log('bottom');
                this.jumping = false;
-               this.y = tl.top - this.jumpAnimation.frameHeight + 25;
+               this.y = tl.top - this.jumpAnimation.frameHeight+4;
                this.tileT = tl;
                this.jumpAnimation.elapsedTime = 0;
            }
@@ -1248,8 +1248,8 @@ Link.prototype.update = function () {
        // this.lastBottom = this.boundingbox.bottom;
        this.y += this.game.clockTick / this.jumpAnimation.totalTime * 4 * this.jumpHeight;
 
-       if (this.left) this.boundingbox = new BoundingBox(this.x + 10, this.y, this.standAnimation.frameWidth, this.fallAnimation.frameHeight - 20);
-       else this.boundingbox = new BoundingBox(this.x, this.y, this.fallAnimation.frameWidth - 25, this.fallAnimation.frameHeight - 20);
+       if (this.left) this.boundingbox = new BoundingBox(this.x + 20, this.y-20, this.standAnimation.frameWidth-20, this.fallAnimation.frameHeight);
+       else this.boundingbox = new BoundingBox(this.x - 10, this.y - 20, this.jumpAnimation.frameWidth, this.jumpAnimation.frameHeight);
 
        for (var i = 0; i < tileArrBB.length; i++) {
            var tl = tileArrBB[i];
@@ -1338,8 +1338,8 @@ Link.prototype.update = function () {
    //if standing
    if (!this.dying && !this.dead && !this.running &&
        !this.jumping && !this.down && !this.slash && !this.falling) {
-       if (this.left) this.boundingbox = new BoundingBox(this.x+10, this.y, this.standAnimation.frameWidth, this.standAnimation.frameHeight);
-       else this.boundingbox = new BoundingBox(this.x, this.y, this.standAnimation.frameWidth+5, this.standAnimation.frameHeight);
+       if (this.left) this.boundingbox = new BoundingBox(this.x+10, this.y, this.standAnimation.frameWidth-20, this.standAnimation.frameHeight);
+       else this.boundingbox = new BoundingBox(this.x, this.y, this.standAnimation.frameWidth-15, this.standAnimation.frameHeight);
     //    this.x = this.x - 2;
        //linkSpeed = 4;
    }
@@ -1364,7 +1364,7 @@ Link.prototype.draw = function (ctx) {
        else if (this.jumping) {
            if (this.boxes) {
                ctx.strokeStyle = "red";
-               ctx.strokeRect(this.x+5, this.y, this.jumpAnimation.frameWidth-20, this.jumpAnimation.frameHeight-22);
+               ctx.strokeRect(this.x + 20, this.y - 20, this.standAnimation.frameWidth-10, this.fallAnimation.frameHeight);
                ctx.strokeStyle = "green";
                ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
            }
@@ -1399,7 +1399,7 @@ Link.prototype.draw = function (ctx) {
            }
            ctx.save();
            ctx.scale(-1, 1);
-           this.runningAnimation.drawFrame(this.game.clockTick, ctx, -this.x - 75, this.y + 5);
+           this.runningAnimation.drawFrame(this.game.clockTick, ctx, -this.x - 55, this.y + 5);
            ctx.restore();
        }
        else if (this.down) {
@@ -1453,7 +1453,7 @@ Link.prototype.draw = function (ctx) {
            }
            ctx.save();
            ctx.scale(-1, 1);
-           this.standAnimation.drawFrame(this.game.clockTick, ctx, -this.x - 55, this.y);
+           this.standAnimation.drawFrame(this.game.clockTick, ctx, -this.x - 45, this.y);
            ctx.restore();
        }
    }
@@ -1464,7 +1464,7 @@ Link.prototype.draw = function (ctx) {
        else if (this.jumping) {
            if (this.boxes) {
                ctx.strokeStyle = "red";
-               ctx.strokeRect(this.x+5, this.y, this.jumpAnimation.frameWidth-30, this.jumpAnimation.frameHeight-22);
+               ctx.strokeRect(this.x-10, this.y-20, this.jumpAnimation.frameWidth, this.jumpAnimation.frameHeight);
                ctx.strokeStyle = "green";
                ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
            }
@@ -1527,7 +1527,7 @@ Link.prototype.draw = function (ctx) {
        else {
            if (this.boxes) {
                ctx.strokeStyle = "red";
-               ctx.strokeRect(this.x, this.y, this.standAnimation.frameWidth, this.standAnimation.frameHeight);
+               ctx.strokeRect(this.x, this.y, this.standAnimation.frameWidth-10, this.standAnimation.frameHeight);
                ctx.strokeStyle = "green";
                ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
            }
