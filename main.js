@@ -101,12 +101,12 @@ function reset(game) {
     for (var i = 0; i < this.game.coinsArr.length; i++) this.game.coinsArr[i].removeFromWorld = true;
     for (var i = 0; i < this.game.spikesArr.length; i++) this.game.spikesArr[i].removeFromWorld = true;
     for (var i = 0; i < this.game.flyArr.length; i++) this.game.flyArr[i].removeFromWorld = true;
-    for (var i = 0; i < this.game.enemiesArr.length; i++) this.game.enemiesArr[i].removeFromWorld = true;
+    //for (var i = 0; i < this.game.enemiesArr.length; i++) this.game.enemiesArr[i].removeFromWorld = true;
     for (var i = 0; i < this.game.dEnemy.length; i++) this.game.dEnemy[i].removeFromWorld = true;
     coinsArr = [];
     spikesArr = [];
     flyArr = [];
-    enemiesArr = [];
+    //enemiesArr = [];
     dEnemy = [];
     tileArrBB = [];
     this.game.tileMap.removeFromWorld = true;
@@ -357,12 +357,12 @@ EndScore.prototype.update = function () {
                 for (var i = 0; i < this.game.coinsArr.length; i++) this.game.coinsArr[i].removeFromWorld = true;
                 for (var i = 0; i < this.game.spikesArr.length; i++) this.game.spikesArr[i].removeFromWorld = true;
                 for (var i = 0; i < this.game.flyArr.length; i++) this.game.flyArr[i].removeFromWorld = true;
-                for (var i = 0; i < this.game.enemiesArr.length; i++) this.game.enemiesArr[i].removeFromWorld = true;
+                //for (var i = 0; i < this.game.enemiesArr.length; i++) this.game.enemiesArr[i].removeFromWorld = true;
                 for (var i = 0; i < this.game.dEnemy.length; i++) this.game.dEnemy[i].removeFromWorld = true;
                 coinsArr = [];
                 spikesArr = [];
                 flyArr = [];
-                enemiesArr = [];
+                //enemiesArr = [];
                 dEnemy = [];
                 tileArrBB = [];
                 this.game.tileMap.removeFromWorld = true;
@@ -391,12 +391,12 @@ EndScore.prototype.update = function () {
                 for (var i = 0; i < this.game.coinsArr.length; i++) this.game.coinsArr[i].removeFromWorld = true;
                 for (var i = 0; i < this.game.spikesArr.length; i++) this.game.spikesArr[i].removeFromWorld = true;
                 for (var i = 0; i < this.game.flyArr.length; i++) this.game.flyArr[i].removeFromWorld = true;
-                for (var i = 0; i < this.game.enemiesArr.length; i++) this.game.enemiesArr[i].removeFromWorld = true;
+                //for (var i = 0; i < this.game.enemiesArr.length; i++) this.game.enemiesArr[i].removeFromWorld = true;
                 for (var i = 0; i < this.game.dEnemy.length; i++) this.game.dEnemy[i].removeFromWorld = true;
                 coinsArr = [];
                 spikesArr = [];
                 flyArr = [];
-                enemiesArr = [];
+                //enemiesArr = [];
                 dEnemy = [];
                 tileArrBB = [];
                 this.game.tileMap.removeFromWorld = true;
@@ -477,7 +477,7 @@ Background.prototype.update = function () {
         for (var i = 0; i < this.game.coinsArr.length; i++) this.game.coinsArr[i].x -= 4;
         for (var i = 0; i < this.game.spikesArr.length; i++) this.game.spikesArr[i].x -= 4;
         for (var i = 0; i < this.game.flyArr.length; i++) this.game.flyArr[i].x -= 4;
-        for (var i = 0; i < this.game.enemiesArr.length; i++) this.game.enemiesArr[i].x -= 4;
+        //for (var i = 0; i < this.game.enemiesArr.length; i++) this.game.enemiesArr[i].x -= 4;
         for (var i = 0; i < this.game.dEnemy.length; i++) this.game.dEnemy[i].x -= 4;
     }
     //move map left
@@ -494,7 +494,7 @@ Background.prototype.update = function () {
         for (var i = 0; i < this.game.coinsArr.length; i++)  this.game.coinsArr[i].x += 4;
         for (var i = 0; i < this.game.spikesArr.length; i++)  this.game.spikesArr[i].x += 4;
         for (var i = 0; i < this.game.flyArr.length; i++) this.game.flyArr[i].x += 4;
-        for (var i = 0; i < this.game.enemiesArr.length; i++) this.game.enemiesArr[i].x += 4;
+        //for (var i = 0; i < this.game.enemiesArr.length; i++) this.game.enemiesArr[i].x += 4;
         for (var i = 0; i < this.game.dEnemy.length; i++) this.game.dEnemy[i].x += 4;
     }
     Entity.prototype.update.call(this);
@@ -830,6 +830,13 @@ DEnemy.prototype.update = function () {
         this.boundingboxDanger = new BoundingBox(this.boundingbox.x - 100, this.boundingbox.y, this.boundingbox.width + 200, this.boundingbox.height);
         if (this.boundingbox.right >= this.tileT.right) this.left = true;
         if (this.boundingbox.left <= this.tileT.left) this.left = false;
+        for (var i = 0; i < tileArrBB.length; i++) {
+            var tl = tileArrBB[i];
+            if (this.boundingbox.collide(tl) && tl != this.tileT) {
+                if (this.boundingbox.right >= tl.left && this.boundingbox.right < tl.right) this.left = true;
+                else if (this.boundingbox.left <= tl.right && this.boundingbox.right >= tl.left) this.left = false;
+            }
+        }
     }
 
     if (this.jumpAnimation.currentFrame() >= 3 && this.jumpAnimation.currentFrame() <= 6) {
@@ -860,18 +867,25 @@ DEnemy.prototype.draw = function (ctx) {
 
 function Dragon(game, x, y) {
     //this.mSpeed = moveSpeed;
+    this.startY = y;
     Entity.call(this, game, x, y);
     this.x = x;
     this.y = y;
     this.falling = true;
     this.boxes = true;
     this.left = true;
-    this.standAnimation = new Animation(ASSET_MANAGER.getAsset("./img/dragon.png"), 0, 84, 204, 170, 3, 1, true, false);
-    this.breathAnimation = new Animation(ASSET_MANAGER.getAsset("./img/dragon.png"), 204, 84, 204, 170, 0.18, 2, false, false);
+    this.standAnimation = new Animation(ASSET_MANAGER.getAsset("./img/dragon.png"), 0, 126, 306, 255, 4, 1, true, false);
+    this.breathAnimation = new Animation(ASSET_MANAGER.getAsset("./img/dragon.png"), 306, 126, 306, 255, 0.18, 2, false, false);
+    this.fangAnimation1 = new Animation(ASSET_MANAGER.getAsset("./img/dragon.png"), 0, 549, 260, 306, 0.2, 4, false, false);
+    this.fangAnimation2 = new Animation(ASSET_MANAGER.getAsset("./img/dragon.png"), 1078, 549, 225, 306, 0.1, 4, false, false);
+    this.fangAnimation3 = new Animation(ASSET_MANAGER.getAsset("./img/dragon.png"), 2015, 549, 230, 331, 0.2, 2, false, false);
     this.boundingbox = new BoundingBox(this.x, this.y, 102, 85);
     this.breath = false;
+    this.fang = false;
+    this.fang1 = false;
+    this.fang2 = false;
+    this.fang3 = false;
     this.boundingboxDanger = new BoundingBox(this.x, this.y, 0, 0);
-    this.fireEnabled = false;
 }
 Dragon.prototype = new Entity();
 Dragon.prototype.constructor = Dragon;
@@ -893,11 +907,10 @@ Dragon.prototype.update = function () {
                 this.breathAnimation.elapsedTime = 0;
             }
         }
-
     }
     if (!this.falling) {
-        if (this.left) this.boundingbox = new BoundingBox(this.x - 204, this.y + 70, this.breathAnimation.frameWidth, this.breathAnimation.frameHeight - 70);
-        else this.boundingbox = new BoundingBox(this.x, this.y, this.breathAnimation.frameWidth, this.breathAnimation.frameHeight);
+        if (this.left) this.boundingbox = new BoundingBox(this.x-300, this.y + 70, this.breathAnimation.frameWidth-50, this.breathAnimation.frameHeight - 70);
+        else this.boundingbox = new BoundingBox(this.x-350, this.y+70, this.breathAnimation.frameWidth, this.breathAnimation.frameHeight-70);
         this.boundingboxDanger = new BoundingBox(this.boundingbox.x - 400, this.boundingbox.y, this.boundingbox.width + 800, this.boundingbox.height);
         if (this.boundingbox.right >= this.tileT.right) this.left = true;
         if (this.boundingbox.left <= this.tileT.left) this.left = false;
@@ -907,22 +920,56 @@ Dragon.prototype.update = function () {
         if (this.game.link.left) this.game.link.x += 10;
         if (!this.game.link.left) this.game.link.x -= 10;
     }
-    if (this.game.link.boundingbox.collide(this.boundingboxDanger)) {
-        if (this.game.link.boundingbox.left > this.boundingbox.right) this.left = false;
-        if (this.game.link.boundingbox.right < this.boundingbox.left) this.left = true;
-    }
+    if (this.game.link.boundingbox.left > this.boundingbox.right) this.left = false;
+    if (this.game.link.boundingbox.right < this.boundingbox.left) this.left = true;
     if (this.game.link.swordBox.collide(this.boundingbox)) this.removeFromWorld = true;
 
-    if (this.game.link.boundingbox.right > this.boundingbox.left - 400 && this.game.link.boundingbox.bottom > this.boundingbox.top) {
+    if (this.game.link.boundingbox.collide(this.boundingboxDanger) && this.standAnimation.elapsedTime > 3.9 && this.standAnimation.elapsedTime < 4) {
         this.standAnimation.elapsedTime = 0;
         this.breath = true;
     }
-
+    if (this.game.link.boundingbox.collide(this.boundingboxDanger) && this.standAnimation.elapsedTime > 1.9 && this.standAnimation.elapsedTime < 2) {
+        this.standAnimation.elapsedTime = 2;
+        if(!this.fang) this.fang = true;
+    }
+    if (this.fang) {
+        if (this.left) {
+            if (!this.fangAnimation1.isDone()) {
+                this.x += 1;
+                this.y -= 1;
+            }
+            else if (!this.fangAnimation2.isDone()) {
+                this.x -= 30;
+            }
+            else if (!this.fangAnimation3.isDone()) {
+                this.x -= 2;
+                this.y += 2;
+                if (this.fangAnimation3.isDone()) {
+                    this.y = this.startY;
+                }
+            }
+        }
+        else {
+            if (!this.fangAnimation1.isDone()) {
+                this.x -= 1;
+                this.y -= 1;
+            }
+            else if (!this.fangAnimation2.isDone()) {
+                this.x += 30;
+            }
+            else if (!this.fangAnimation3.isDone()) {
+                this.x += 2;
+                this.y += 2;
+                if (this.fangAnimation3.isDone()) {
+                    this.y = this.startY;
+                }
+            }
+        }
+    }
     if (this.breathAnimation.isDone()) {
-        this.fireEnabled = true;
         this.breathAnimation.elapsedTime = 0;
         this.breath = false;
-        var fire = new Fire(this.game, this.x - 282, this.y)
+        var fire = new Fire(this.game, this.x - 282, this.y, this.left)
         this.game.addEntity(fire);
     }
 }
@@ -930,25 +977,62 @@ Dragon.prototype.draw = function (ctx) {
     if (this.boxes) {
         ctx.strokeStyle = "red";
         ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
-        //ctx.strokeStyle = "black";
-        //ctx.strokeRect(this.boundingboxDanger.x, this.boundingboxDanger.y, this.boundingboxDanger.width, this.boundingboxDanger.height);
+        ctx.strokeStyle = "black";
+        ctx.strokeRect(this.boundingboxDanger.x, this.boundingboxDanger.y, this.boundingboxDanger.width, this.boundingboxDanger.height);
     }
-    ctx.save();
-    ctx.scale(-1, 1);
-    if (this.breath) this.breathAnimation.drawFrame(this.game.clockTick, ctx, -this.x, this.y + 5);
-    else this.standAnimation.drawFrame(this.game.clockTick, ctx, -this.x, this.y + 5);
-    ctx.restore();
+    if (this.left) {
+        ctx.save();
+        ctx.scale(-1, 1);
+        if (this.breath) this.breathAnimation.drawFrame(this.game.clockTick, ctx, -this.x, this.y + 5);
+        else if (this.fang) {
+            this.fangAnimation1.drawFrame(this.game.clockTick, ctx, -this.x, this.y -50);
+            if (this.fangAnimation1.isDone()) {
+                this.fangAnimation2.drawFrame(this.game.clockTick, ctx, -this.x, this.y -50);
+                if (this.fangAnimation2.isDone()) {
+                    this.fangAnimation3.drawFrame(this.game.clockTick, ctx, -this.x, this.y -80);
+                    if (this.fangAnimation3.isDone()) {
+                        this.fangAnimation1.elapsedTime = 0;
+                        this.fangAnimation2.elapsedTime = 0;
+                        this.fangAnimation3.elapsedTime = 0;
+                        this.fang = false;
+                    }
+                }
+            }
+        }
+        else this.standAnimation.drawFrame(this.game.clockTick, ctx, -this.x, this.y + 5);
+        ctx.restore();
+    }
+    else {
+        if (this.breath) this.breathAnimation.drawFrame(this.game.clockTick, ctx, this.x - 350, this.y + 5);
+        else if (this.fang) {
+            this.fangAnimation1.drawFrame(this.game.clockTick, ctx, -this.x, this.y - 50);
+            if (this.fangAnimation1.isDone()) {
+                this.fangAnimation2.drawFrame(this.game.clockTick, ctx, -this.x, this.y - 50);
+                if (this.fangAnimation2.isDone()) {
+                    this.fangAnimation3.drawFrame(this.game.clockTick, ctx, -this.x, this.y - 80);
+                    if (this.fangAnimation3.isDone()) {
+                        this.fangAnimation1.elapsedTime = 0;
+                        this.fangAnimation2.elapsedTime = 0;
+                        this.fangAnimation3.elapsedTime = 0;
+                        this.fang = false;
+                    }
+                }
+            }
+        }
+        else this.standAnimation.drawFrame(this.game.clockTick, ctx, this.x-350, this.y + 5);
+
+    }
     Entity.prototype.draw.call(this);
 }
 
-function Fire(game, x, y) {
+function Fire(game, x, y, left) {
     Entity.call(this, game, x, y);
     this.x = x;
     this.y = y;
     this.boxes = true;
-    this.left = true;
-    this.fireAnimation1 = new Animation(ASSET_MANAGER.getAsset("./img/dragon.png"), 612, 62, 282, 124, 0.18, 4, false, false);
-    this.fireAnimation2 = new Animation(ASSET_MANAGER.getAsset("./img/dragon.png"), 612, 186, 292, 147, 0.18, 4, false, false);
+    this.left = left;
+    this.fireAnimation1 = new Animation(ASSET_MANAGER.getAsset("./img/dragon.png"), 918, 93, 423, 186, 0.18, 4, false, false);
+    this.fireAnimation2 = new Animation(ASSET_MANAGER.getAsset("./img/dragon.png"), 918, 280, 438, 221, 0.18, 4, false, false);
     this.boundingbox = new BoundingBox(this.x, this.y, 102, 85);
     this.fire1 = true;
 }
@@ -956,7 +1040,14 @@ Fire.prototype = new Entity();
 Fire.prototype.constructor = Fire;
 
 Fire.prototype.update = function () {
-    this.x -= 5;
+    if (this.left) {
+        this.boundingbox = new BoundingBox(this.x-400, this.y + 140, this.fireAnimation1.frameWidth, this.fireAnimation1.frameHeight-50);
+    }
+    else {
+        this.boundingbox = new BoundingBox(this.x +200, this.y + 140, this.fireAnimation1.frameWidth, this.fireAnimation1.frameHeight - 50);
+    }
+    if (this.left) this.x -= 5;
+    else this.x += 5;
 }
 Fire.prototype.draw = function (ctx) {
     if (this.boxes) {
@@ -965,19 +1056,33 @@ Fire.prototype.draw = function (ctx) {
         //ctx.strokeStyle = "black";
         //ctx.strokeRect(this.boundingboxDanger.x, this.boundingboxDanger.y, this.boundingboxDanger.width, this.boundingboxDanger.height);
     }
-    ctx.save();
-    ctx.scale(-1, 1);
-    if (this.fire1) {
-        this.fireAnimation1.drawFrame(this.game.clockTick, ctx, -this.x - 80, this.y + 80);
-        if (this.fireAnimation1.isDone()) this.fire1 = false;
+    if (this.left) {
+        ctx.save();
+        ctx.scale(-1, 1);
+        if (this.fire1) {
+            this.fireAnimation1.drawFrame(this.game.clockTick, ctx, -this.x , this.y + 130);
+            if (this.fireAnimation1.isDone()) this.fire1 = false;
+        }
+        else {
+            if (this.fireAnimation1.isDone()) {
+                this.fireAnimation2.drawFrame(this.game.clockTick, ctx, -this.x, this.y + 130);
+                if (this.fireAnimation2.isDone()) this.removeFromWorld = true;
+            }
+        }
+        ctx.restore();
     }
     else {
-        if (this.fireAnimation1.isDone()) {
-            this.fireAnimation2.drawFrame(this.game.clockTick, ctx, -this.x - 80, this.y + 80);
-            if (this.fireAnimation2.isDone()) this.removeFromWorld = true;
+        if (this.fire1) {
+            this.fireAnimation1.drawFrame(this.game.clockTick, ctx, this.x+200, this.y + 130);
+            if (this.fireAnimation1.isDone()) this.fire1 = false;
+        }
+        else {
+            if (this.fireAnimation1.isDone()) {
+                this.fireAnimation2.drawFrame(this.game.clockTick, ctx, this.x+200, this.y + 130);
+                if (this.fireAnimation2.isDone()) this.removeFromWorld = true;
+            }
         }
     }
-    ctx.restore();
     Entity.prototype.draw.call(this);
 }
 
@@ -1035,25 +1140,25 @@ function Link(game) {
 
    //this.standAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 0, 45, 79, 0.7, 2, true, false);
     //this.standAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 0, 38, 58, 0.4, 3, true, false);
-    this.standAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 0, 57, 80, 0.4, 3, true, false);
+    this.standAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 0, 57, 80, 0.4, 3, true, false); //0.4
     //this.jumpAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 465, 75, 101, 0.20, 3, false, false);
-    this.jumpAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 84, 50, 83, 0.7, 1, false, false);
+    this.jumpAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 84, 50, 83, 0.7, 1, false, false); //0.7
     //this.runningAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 318, 75, 72, 0.05, 10, true, false);
     this.runningAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 168, 61, 77, 0.1, 6, true, false);
    this.dyingAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 1004, 144, 149, 0.15, 3, false, false);
    this.deadAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 432, 1113, 144, 149, 0.2, 1, true, false);
    this.downAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 338, 765, 113, 84, 1, 1, true, false);
    //this.slash2Animation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 869, 150, 111, 0.05, 2, false, false);
-   this.slash2Animation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 570, 285, 176, 119, 0.05, 3, false, false);
+   this.slash2Animation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 579, 331, 182, 73, 0.05, 3, false, false); //0.05
    //this.slash3Animation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 1093, 125, 93, 0.05, 2, false, false);
-   this.slash3Animation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 1305, 285, 188, 119, 0.05, 2, false, false);
+   this.slash3Animation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 1344, 312, 170, 92, 0.05, 2, false, false); //0.05
     //this.slash1Animation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 1281, 140, 86, 0.05, 2, false, false);
-   this.slash1Animation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 300, 132, 119, 0.05, 2, false, false);
+   this.slash1Animation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 305, 140, 99, 0.05, 2, false, false); //0.05
     //slash1//this.standAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 200, 88, 79, 0.4, 2, true, false);
     //slash2//this.standAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 380, 190, 117, 79, 0.4, 3, true, false);
    //slash3//this.standAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 870, 190, 125, 79, 0.4, 2, true, false);
    //this.fallAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 150, 465, 75, 101, 0.20, 1, true, false);
-   this.fallAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 84, 50, 83, 5, 1, true, false);
+   this.fallAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 84, 50, 83, 5, 1, true, false); //5?
 
    this.swordBox = new BoundingBox(this.x - 80, this.y - 15, 96, 99);
    this.lives = 3;
@@ -1144,7 +1249,7 @@ Link.prototype.update = function () {
    ////*************************************//
    if (this.game.A) {
        this.slash = false;
-       this.boundingbox = new BoundingBox(this.x, this.y, this.runningAnimation.frameWidth - 30, this.runningAnimation.frameHeight);
+       this.boundingbox = new BoundingBox(this.x-10, this.y, this.runningAnimation.frameWidth - 30, this.runningAnimation.frameHeight);
        for (var i = 0; i < tileArrBB.length; i++) {
            var tl = tileArrBB[i];
            if (this.boundingbox.collide(tl)) this.x += linkSpeed; //this.x = tl.right;
@@ -1169,10 +1274,14 @@ Link.prototype.update = function () {
        slash = new Audio('./img/sword.mp3');
        slash.play();
        if (this.left) {
-           this.swordBox = new BoundingBox(this.x - 80, this.y - 15, 96, 99);
+           if (animNum === 1) this.swordBox = new BoundingBox(this.x - 60, this.y - 15, 96, 99);
+           else if (animNum === 2) this.swordBox = new BoundingBox(this.x-80, this.y - 15, 130, 99);
+           else if (animNum === 3) this.swordBox = new BoundingBox(this.x-80, this.y - 15, 130, 99);
        }
        else {
-           this.swordBox = new BoundingBox(this.x + 32, this.y - 15, 96, 99);
+           if (animNum === 1) this.swordBox = new BoundingBox(this.x, this.y - 15, 96, 99);
+           else if (animNum === 2) this.swordBox = new BoundingBox(this.x, this.y - 15, 130, 99);
+           else if (animNum === 3) this.swordBox = new BoundingBox(this.x, this.y - 15, 130, 99);
        }
        this.slash = true;
    }
@@ -1206,8 +1315,8 @@ Link.prototype.update = function () {
 
        height = (4 * duration - 4 * duration * duration) * this.jumpHeight;
        this.y = this.base - height;
-       if (this.left) this.boundingbox = new BoundingBox(this.x + 20, this.y - 20, this.standAnimation.frameWidth-10, this.fallAnimation.frameHeight);
-       else this.boundingbox = new BoundingBox(this.x - 10, this.y - 20, this.jumpAnimation.frameWidth, this.jumpAnimation.frameHeight);
+       if (this.left) this.boundingbox = new BoundingBox(this.x + 10, this.y - 20, this.standAnimation.frameWidth - 10, this.fallAnimation.frameHeight);
+       else this.boundingbox = new BoundingBox(this.x, this.y - 20, this.jumpAnimation.frameWidth-10, this.jumpAnimation.frameHeight);
 
        for (var i = 0; i < tileArrBB.length; i++) {
            var tl = tileArrBB[i];
@@ -1248,7 +1357,7 @@ Link.prototype.update = function () {
        // this.lastBottom = this.boundingbox.bottom;
        this.y += this.game.clockTick / this.jumpAnimation.totalTime * 4 * this.jumpHeight;
 
-       if (this.left) this.boundingbox = new BoundingBox(this.x + 20, this.y-20, this.standAnimation.frameWidth-20, this.fallAnimation.frameHeight);
+       if (this.left) this.boundingbox = new BoundingBox(this.x + 10, this.y - 20, this.standAnimation.frameWidth - 20, this.fallAnimation.frameHeight);
        else this.boundingbox = new BoundingBox(this.x - 10, this.y - 20, this.jumpAnimation.frameWidth, this.jumpAnimation.frameHeight);
 
        for (var i = 0; i < tileArrBB.length; i++) {
@@ -1364,13 +1473,13 @@ Link.prototype.draw = function (ctx) {
        else if (this.jumping) {
            if (this.boxes) {
                ctx.strokeStyle = "red";
-               ctx.strokeRect(this.x + 20, this.y - 20, this.standAnimation.frameWidth-10, this.fallAnimation.frameHeight);
+               ctx.strokeRect(this.x + 10, this.y - 20, this.standAnimation.frameWidth-20, this.fallAnimation.frameHeight);
                ctx.strokeStyle = "green";
                ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
            }
            ctx.save();
            ctx.scale(-1, 1);
-           this.jumpAnimation.drawFrame(this.game.clockTick, ctx, -this.x-70, this.y - 21);
+           this.jumpAnimation.drawFrame(this.game.clockTick, ctx, -this.x-60, this.y - 21);
            ctx.restore();
            if (this.jumpAnimation.isDone()) {
                this.jumpAnimation.elapsedTime = 0;
@@ -1381,13 +1490,13 @@ Link.prototype.draw = function (ctx) {
        else if (this.falling) {
            if (this.boxes) {
                ctx.strokeStyle = "red";
-               ctx.strokeRect(this.x, this.y, this.fallAnimation.frameWidth - 10, this.fallAnimation.frameHeight - 20);
+               ctx.strokeRect(this.x + 10, this.y - 20, this.standAnimation.frameWidth - 30, this.fallAnimation.frameHeight);
                ctx.strokeStyle = "green";
                ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
            }
            ctx.save();
            ctx.scale(-1, 1);
-           this.fallAnimation.drawFrame(this.game.clockTick, ctx, -this.x-70, this.y - 21);
+           this.fallAnimation.drawFrame(this.game.clockTick, ctx, -this.x-60, this.y - 21);
            ctx.restore();
        }
        else if (this.running) {
@@ -1430,18 +1539,20 @@ Link.prototype.draw = function (ctx) {
            if (this.boxes) {
                ctx.strokeStyle = "red";
                ctx.strokeRect(this.x - 80, this.y - 15, 96, 99);
+               ctx.strokeStyle = "green";
+               ctx.strokeRect(this.swordBox.x, this.swordBox.y, this.swordBox.width, this.swordBox.height);
            }
            ctx.save();
            ctx.scale(-1, 1);
-           if (animNum == 1) this.slash1Animation.drawFrame(this.game.clockTick, ctx, -this.x - 55, this.y - 7); //OK
+           if (animNum == 1) this.slash1Animation.drawFrame(this.game.clockTick, ctx, -this.x - 82, this.y - 17); //OK
            ctx.restore();
            ctx.save();
            ctx.scale(-1, 1);
-           if (animNum == 2) this.slash2Animation.drawFrame(this.game.clockTick, ctx, -this.x - 55, this.y - 32); //OK
+           if (animNum == 2) this.slash2Animation.drawFrame(this.game.clockTick, ctx, -this.x - 100, this.y +8); //OK
            ctx.restore();
            ctx.save();
            ctx.scale(-1, 1);
-           if (animNum == 3) this.slash3Animation.drawFrame(this.game.clockTick, ctx, -this.x - 55, this.y - 5); //OK
+           if (animNum == 3) this.slash3Animation.drawFrame(this.game.clockTick, ctx, -this.x - 85, this.y - 12); //OK
            ctx.restore();
        }
        else {
@@ -1518,11 +1629,13 @@ Link.prototype.draw = function (ctx) {
        else if (this.slash) {
            if (this.boxes) {
                ctx.strokeStyle = "red";
-               ctx.strokeRect(this.x + 32, this.y-15, 96, 99);
+               ctx.strokeRect(this.x + 32, this.y - 15, 96, 99);
+               ctx.strokeStyle = "green";
+               ctx.strokeRect(this.swordBox.x, this.swordBox.y, this.swordBox.width, this.swordBox.height);
            }
-           if (animNum == 1) this.slash1Animation.drawFrame(this.game.clockTick, ctx, this.x - 15, this.y - 7); //OK
-           if (animNum == 2) this.slash2Animation.drawFrame(this.game.clockTick, ctx, this.x - 22, this.y - 32); //OK
-           if (animNum == 3) this.slash3Animation.drawFrame(this.game.clockTick, ctx, this.x, this.y - 5); //OK
+           if (animNum == 1) this.slash1Animation.drawFrame(this.game.clockTick, ctx, this.x - 40, this.y - 17); //OK
+           if (animNum == 2) this.slash2Animation.drawFrame(this.game.clockTick, ctx, this.x - 55, this.y+8); //OK
+           if (animNum == 3) this.slash3Animation.drawFrame(this.game.clockTick, ctx, this.x-37, this.y - 12); //OK
        }
        else {
            if (this.boxes) {
@@ -1559,25 +1672,25 @@ function TileMap(game, ctx) {
     var backgroundTileMap;
     if (level === 1) {
         //active/colliding tiles
-        testTileMap = [ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 5, 5, 5, 5, 1, 1, 1, 1, 1, 0, 0], //the column on the very right has to be all zeroes
-                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0],
-                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0],
-                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0],
-                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0],
+        testTileMap = [ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 1, 1, 1, 1, 1, 0, 0], //the column on the very right has to be all zeroes
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0],
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0],
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 5, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0],
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0],
-                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0],
-                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0],
-                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0],
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0], ///// bottom
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0],
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
-                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0],
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0],
-                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0],
-                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0],
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
@@ -1777,33 +1890,50 @@ function TileMap(game, ctx) {
                         isub = 0;
                     }
                     else {
-                        tileArrBB.push(new BoundingBox(((i - isub) * 32) + movX, ((j) * 32) + movY, 32, 32));
-                        len = 0;
-                        isub = 0;
+                        if (this.tileMap[i][j + 1] === 0 && this.tileMap[i][j - 1] === 0) {
+                            tileArrBB.push(new BoundingBox(((i - isub) * 32) + movX, ((j) * 32) + movY, 32, 32));
+                            len = 0;
+                            isub = 0;
+                        }
                     }
                 }
             }
         }
     }
-    // for (var i = 0; i < this.tileMap.length; i++) {
-    //     for (var j = 0; j < 24; j++) {
-    //         var x = (i * 32) + movX;
-    //         var y = (j * 32) + movY;
-    //         if (this.tileMap[i][j] != 0) {
-    //             if (this.tileMap[i][j + 1] != 0) {
-    //                 wid += 32;
-    //                 jsub++;
-    //             } else {
-    //                 if (wid > 0) {
-    //                     wid += 32;
-    //                     tileArrBB.push(new BoundingBox(((i) * 32) + movX, ((j - jsub) * 32) + movY, 32, wid));
-    //                     wid = 0;
-    //                     jsub = 0;
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
+     for (var i = 0; i < this.tileMap.length; i++) {
+         for (var j = 0; j < 24; j++) {
+             var x = (i * 32) + movX;
+             var y = (j * 32) + movY;
+             if (this.tileMap[i][j] != 0) {
+                 if (i > 0) {
+                     if (this.tileMap[i][j + 1] != 0 && this.tileMap[i + 1][j] === 0) {
+                         wid += 32;
+                         jsub++;
+                     } else {
+                         if (wid > 0) {
+                             wid += 32;
+                             tileArrBB.push(new BoundingBox(((i) * 32) + movX, ((j - jsub) * 32) + movY, 32, wid));
+                             wid = 0;
+                             jsub = 0;
+                         }
+                     }
+                 }
+                 else {
+                     if (this.tileMap[i][j + 1] != 0 && this.tileMap[i + 1][j] === 0 && this.tileMap[i + 1][j + 1] === 0) {
+                         wid += 32;
+                         jsub++;
+                     } else {
+                         if (wid > 0) {
+                             wid += 32;
+                             tileArrBB.push(new BoundingBox(((i) * 32) + movX, ((j - jsub) * 32) + movY, 32, wid));
+                             wid = 0;
+                             jsub = 0;
+                         }
+                     }
+                 }
+             }
+         }
+     }
 }
 TileMap.prototype = new Entity();
 TileMap.prototype.constructor = TileMap;
@@ -1818,20 +1948,20 @@ TileMap.prototype.draw = function (ctx) {
      }
     /*********************************************************/
     /*****************TILE MAP BACKGROUND*********************/
-    // for (var i = 0; i < this.backgroundTileMap.length; i++) {
-    //     for (var j = 0; j < 24; j++) {
-    //         var sprite = this.sprites[this.backgroundTileMap[i][j]];
-    //         if (sprite) ctx.drawImage(sprite, (i * 32) + movX, (j * 32) + movY);
-    //     }
-    // }
+     for (var i = 0; i < this.backgroundTileMap.length; i++) {
+         for (var j = 0; j < 24; j++) {
+             var sprite = this.sprites[this.backgroundTileMap[i][j]];
+             if (sprite) ctx.drawImage(sprite, (i * 32) + movX, (j * 32) + movY);
+         }
+     }
     // *******************************************************
     // /*****************TILE MAP REAL***************************/
-    // for (var i = 0; i < this.tileMap.length; i++) {
-    //     for (var j = 0; j < 24; j++) {
-    //         var sprite = this.sprites[this.tileMap[i][j]];
-    //         if (sprite) ctx.drawImage(sprite, (i * 32) + movX, (j * 32) + movY);
-    //     }
-    // }
+     for (var i = 0; i < this.tileMap.length; i++) {
+         for (var j = 0; j < 24; j++) {
+             var sprite = this.sprites[this.tileMap[i][j]];
+             if (sprite) ctx.drawImage(sprite, (i * 32) + movX, (j * 32) + movY);
+         }
+     }
 }
 
 
@@ -2166,20 +2296,20 @@ function startPlaying(gameEngine) {
     gameEngine.health = hp;
     gameEngine.addEntity(hp);
 
-    var enemy = new Enemy(gameEngine, 1400, 110, 150);
-    gameEngine.enemiesArr = enemiesArr;
-    gameEngine.addEntity(enemy);
-    enemiesArr.push(enemy);
+    //var enemy = new Enemy(gameEngine, 1400, 110, 150);
+    //gameEngine.enemiesArr = enemiesArr;
+    //gameEngine.addEntity(enemy);
+    //enemiesArr.push(enemy);
 
-    enemy = new Enemy(gameEngine, 1700, 110, 20);
-    gameEngine.addEntity(enemy);
-    enemiesArr.push(enemy);
-    enemy = new Enemy(gameEngine, 4000, 400, 300);
-    gameEngine.addEntity(enemy);
-    enemiesArr.push(enemy);
-    enemy = new Enemy(gameEngine, 4500, 165, 100);
-    gameEngine.addEntity(enemy);
-    enemiesArr.push(enemy);
+    //enemy = new Enemy(gameEngine, 1700, 110, 20);
+    //gameEngine.addEntity(enemy);
+    //enemiesArr.push(enemy);
+    //enemy = new Enemy(gameEngine, 4000, 400, 300);
+    //gameEngine.addEntity(enemy);
+    //enemiesArr.push(enemy);
+    //enemy = new Enemy(gameEngine, 4500, 165, 100);
+    //gameEngine.addEntity(enemy);
+    //enemiesArr.push(enemy);
     
     var duEnemy = new DEnemy(gameEngine, 800, 300, 0.08, 1);
     gameEngine.addEntity(duEnemy);
