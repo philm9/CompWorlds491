@@ -464,7 +464,7 @@ Background.prototype.update = function () {
     // move the map slowly
     /**************************/
     //move map right
-    if (!(this.x + 2600 < 1280) && this.game.link.x >= 400) {
+    if (!(this.x + 5000 < 1280) && this.game.link.x >= 400) {
         this.tileX -= 4;
         this.game.link.x = 396;
         this.x -= 1;
