@@ -1700,9 +1700,9 @@ function TileMap(game, ctx) {
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0], /// --> bottom
-                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
-                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
-                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 22, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 63, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0], ///30
@@ -1813,10 +1813,10 @@ function TileMap(game, ctx) {
 						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 5, 0],
 						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 5, 5, 0],
 						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 5, 5, 5, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 5, 5, 5, 5, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 5, 5, 5, 5, 5, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 5, 5, 5, 5, 5, 5, 0],///140
-						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 5, 5, 5, 5, 5, 5, 5, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 5, 5, 5, 5, 5, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 5, 5, 5, 5, 5, 5, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 5, 5, 5, 5, 5, 5, 5, 0],///140
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 5, 5, 5, 5, 5, 5, 5, 5, 0],
 						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0],
 						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0],
 						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0],
@@ -1875,18 +1875,88 @@ function TileMap(game, ctx) {
 						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
 						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
 						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 1, 5, 5, 0], ///200
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0], ///200
 						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0], 
 						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 1, 0, 0, 1, 5, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 5, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],///210
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 7, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],///220
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 7, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 7, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],///210
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 7, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],///220
+						[0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 1, 5, 0],
 						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 1, 5, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],///210
-						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 7, 1, 5, 5, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0], ///230
+						[0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
+						[0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
+						[7, 7, 7, 7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
+						[0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
+						[0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0], ///240
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 5, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 5, 5, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 5, 5, 5, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 5, 5, 5, 5, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 5, 5, 5, 5, 5, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 5, 5, 5, 5, 5, 5, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 5, 5, 5, 5, 5, 5, 5, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 5, 5, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 5, 5, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 5, 5, 5, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 1, 0, 0, 0, 1, 5, 5, 5, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7, 1, 0, 0, 0, 1, 5, 5, 5, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7, 7, 1, 0, 0, 0, 1, 5, 5, 5, 0],
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7, 7, 7, 1, 0, 0, 0, 1, 5, 5, 5, 0], ///250,
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7, 7, 7, 7, 1, 5, 5, 5, 5, 5, 5, 5, 0],
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] //this row has to be all zeroes
 
         ];
@@ -2037,8 +2107,8 @@ function TileMap(game, ctx) {
 							[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 							[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 							[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-							[0, 39, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 							[0, 38, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+							[0, 39, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 							[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 							[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 							[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ///150
@@ -2172,7 +2242,7 @@ function TileMap(game, ctx) {
     this.tileMap = testTileMap;
     this.backgroundTileMap = backgroundTileMap;
 
-    this.sprites[0] = null;
+        this.sprites[0] = null;
     this.sprites[1] = ASSET_MANAGER.getAsset("./img/separatePng/tile_00.png");
     this.sprites[2] = ASSET_MANAGER.getAsset("./img/separatePng/tile_01.png");
     this.sprites[3] = ASSET_MANAGER.getAsset("./img/separatePng/tile_02.png");
@@ -2182,6 +2252,61 @@ function TileMap(game, ctx) {
     this.sprites[7] = ASSET_MANAGER.getAsset("./img/separatePng/tile_06.png");
     this.sprites[8] = ASSET_MANAGER.getAsset("./img/separatePng/tile_07.png");
     this.sprites[9] = ASSET_MANAGER.getAsset("./img/separatePng/tile_08.png");
+	this.sprites[10] = ASSET_MANAGER.getAsset("./img/separatePng/tile_09.png");
+	this.sprites[11] = ASSET_MANAGER.getAsset("./img/separatePng/tile_10.png");
+	this.sprites[12] = ASSET_MANAGER.getAsset("./img/separatePng/tile_11.png");
+	this.sprites[13] = ASSET_MANAGER.getAsset("./img/separatePng/tile_12.png");
+	this.sprites[14] = ASSET_MANAGER.getAsset("./img/separatePng/tile_13.png");
+	this.sprites[15] = ASSET_MANAGER.getAsset("./img/separatePng/tile_14.png");
+	this.sprites[16] = ASSET_MANAGER.getAsset("./img/separatePng/tile_15.png");
+	this.sprites[17] = ASSET_MANAGER.getAsset("./img/separatePng/tile_16.png");
+	this.sprites[18] = ASSET_MANAGER.getAsset("./img/separatePng/tile_17.png");
+	this.sprites[19] = ASSET_MANAGER.getAsset("./img/separatePng/tile_18.png");
+	this.sprites[20] = ASSET_MANAGER.getAsset("./img/separatePng/tile_19.png");
+	this.sprites[21] = ASSET_MANAGER.getAsset("./img/separatePng/tile_20.png");
+	this.sprites[22] = ASSET_MANAGER.getAsset("./img/separatePng/tile_21.png");
+	this.sprites[23] = ASSET_MANAGER.getAsset("./img/separatePng/tile_22.png");
+	this.sprites[24] = ASSET_MANAGER.getAsset("./img/separatePng/tile_23.png");
+	this.sprites[25] = ASSET_MANAGER.getAsset("./img/separatePng/tile_24.png");
+	this.sprites[26] = ASSET_MANAGER.getAsset("./img/separatePng/tile_25.png");
+	this.sprites[27] = ASSET_MANAGER.getAsset("./img/separatePng/tile_26.png");
+	this.sprites[28] = ASSET_MANAGER.getAsset("./img/separatePng/tile_27.png");
+	this.sprites[29] = ASSET_MANAGER.getAsset("./img/separatePng/tile_28.png");
+	this.sprites[30] = ASSET_MANAGER.getAsset("./img/separatePng/tile_29.png");
+	this.sprites[31] = ASSET_MANAGER.getAsset("./img/separatePng/tile_30.png");
+	this.sprites[32] = ASSET_MANAGER.getAsset("./img/separatePng/tile_31.png");
+	this.sprites[33] = ASSET_MANAGER.getAsset("./img/separatePng/tile_32.png");
+	this.sprites[34] = ASSET_MANAGER.getAsset("./img/separatePng/tile_33.png");
+	this.sprites[35] = ASSET_MANAGER.getAsset("./img/separatePng/tile_34.png");
+	this.sprites[36] = ASSET_MANAGER.getAsset("./img/separatePng/tile_35.png");
+	this.sprites[37] = ASSET_MANAGER.getAsset("./img/separatePng/tile_36.png");
+	this.sprites[38] = ASSET_MANAGER.getAsset("./img/separatePng/tile_37.png");
+	this.sprites[39] = ASSET_MANAGER.getAsset("./img/separatePng/tile_38.png");
+	this.sprites[40] = ASSET_MANAGER.getAsset("./img/separatePng/tile_39.png");
+	this.sprites[41] = ASSET_MANAGER.getAsset("./img/separatePng/tile_40.png");
+	this.sprites[42] = ASSET_MANAGER.getAsset("./img/separatePng/tile_41.png");
+	this.sprites[43] = ASSET_MANAGER.getAsset("./img/separatePng/tile_42.png");
+	this.sprites[44] = ASSET_MANAGER.getAsset("./img/separatePng/tile_43.png");
+	this.sprites[45] = ASSET_MANAGER.getAsset("./img/separatePng/tile_44.png");
+	this.sprites[46] = ASSET_MANAGER.getAsset("./img/separatePng/tile_45.png");
+	this.sprites[47] = ASSET_MANAGER.getAsset("./img/separatePng/tile_46.png");
+	this.sprites[48] = ASSET_MANAGER.getAsset("./img/separatePng/tile_47.png");
+	this.sprites[49] = ASSET_MANAGER.getAsset("./img/separatePng/tile_48.png");
+	this.sprites[50] = ASSET_MANAGER.getAsset("./img/separatePng/tile_49.png");
+	this.sprites[51] = ASSET_MANAGER.getAsset("./img/separatePng/tile_50.png");
+	this.sprites[52] = ASSET_MANAGER.getAsset("./img/separatePng/tile_51.png");
+	this.sprites[53] = ASSET_MANAGER.getAsset("./img/separatePng/tile_52.png");
+	this.sprites[54] = ASSET_MANAGER.getAsset("./img/separatePng/tile_53.png");
+	this.sprites[55] = ASSET_MANAGER.getAsset("./img/separatePng/tile_54.png");
+	this.sprites[56] = ASSET_MANAGER.getAsset("./img/separatePng/tile_55.png");
+	this.sprites[57] = ASSET_MANAGER.getAsset("./img/separatePng/tile_56.png");
+	this.sprites[58] = ASSET_MANAGER.getAsset("./img/separatePng/tile_57.png");
+	this.sprites[59] = ASSET_MANAGER.getAsset("./img/separatePng/tile_58.png");
+	this.sprites[60] = ASSET_MANAGER.getAsset("./img/separatePng/tile_59.png");
+	this.sprites[61] = ASSET_MANAGER.getAsset("./img/separatePng/tile_60.png");
+	this.sprites[62] = ASSET_MANAGER.getAsset("./img/separatePng/tile_61.png");
+	this.sprites[63] = ASSET_MANAGER.getAsset("./img/separatePng/tile_62.png");
+	this.sprites[64] = ASSET_MANAGER.getAsset("./img/separatePng/tile_63.png");
 
     var len = 0;
     var wid = 0;
@@ -2257,10 +2382,10 @@ TileMap.prototype.update = function () {
     Entity.prototype.update.call(this);
 }
 TileMap.prototype.draw = function (ctx) {
-     for(var i = 0; i < tileArrBB.length; i++) {
-         ctx.strokeStyle = "red";
-         ctx.strokeRect(tileArrBB[i].left, tileArrBB[i].top, tileArrBB[i].right - tileArrBB[i].left, tileArrBB[i].bottom - tileArrBB[i].top);
-     }
+     //for(var i = 0; i < tileArrBB.length; i++) {
+     //    ctx.strokeStyle = "red";
+     //    ctx.strokeRect(tileArrBB[i].left, tileArrBB[i].top, tileArrBB[i].right - tileArrBB[i].left, tileArrBB[i].bottom - tileArrBB[i].top);
+     //}
     /*********************************************************/
     /*****************TILE MAP BACKGROUND*********************/
      for (var i = 0; i < this.backgroundTileMap.length; i++) {
@@ -2381,6 +2506,61 @@ function TileMapFront(game, ctx) {
     this.sprites[7] = ASSET_MANAGER.getAsset("./img/separatePng/tile_06.png");
     this.sprites[8] = ASSET_MANAGER.getAsset("./img/separatePng/tile_07.png");
     this.sprites[9] = ASSET_MANAGER.getAsset("./img/separatePng/tile_08.png");
+	this.sprites[10] = ASSET_MANAGER.getAsset("./img/separatePng/tile_09.png");
+	this.sprites[11] = ASSET_MANAGER.getAsset("./img/separatePng/tile_10.png");
+	this.sprites[12] = ASSET_MANAGER.getAsset("./img/separatePng/tile_11.png");
+	this.sprites[13] = ASSET_MANAGER.getAsset("./img/separatePng/tile_12.png");
+	this.sprites[14] = ASSET_MANAGER.getAsset("./img/separatePng/tile_13.png");
+	this.sprites[15] = ASSET_MANAGER.getAsset("./img/separatePng/tile_14.png");
+	this.sprites[16] = ASSET_MANAGER.getAsset("./img/separatePng/tile_15.png");
+	this.sprites[17] = ASSET_MANAGER.getAsset("./img/separatePng/tile_16.png");
+	this.sprites[18] = ASSET_MANAGER.getAsset("./img/separatePng/tile_17.png");
+	this.sprites[19] = ASSET_MANAGER.getAsset("./img/separatePng/tile_18.png");
+	this.sprites[20] = ASSET_MANAGER.getAsset("./img/separatePng/tile_19.png");
+	this.sprites[21] = ASSET_MANAGER.getAsset("./img/separatePng/tile_20.png");
+	this.sprites[22] = ASSET_MANAGER.getAsset("./img/separatePng/tile_21.png");
+	this.sprites[23] = ASSET_MANAGER.getAsset("./img/separatePng/tile_22.png");
+	this.sprites[24] = ASSET_MANAGER.getAsset("./img/separatePng/tile_23.png");
+	this.sprites[25] = ASSET_MANAGER.getAsset("./img/separatePng/tile_24.png");
+	this.sprites[26] = ASSET_MANAGER.getAsset("./img/separatePng/tile_25.png");
+	this.sprites[27] = ASSET_MANAGER.getAsset("./img/separatePng/tile_26.png");
+	this.sprites[28] = ASSET_MANAGER.getAsset("./img/separatePng/tile_27.png");
+	this.sprites[29] = ASSET_MANAGER.getAsset("./img/separatePng/tile_28.png");
+	this.sprites[30] = ASSET_MANAGER.getAsset("./img/separatePng/tile_29.png");
+	this.sprites[31] = ASSET_MANAGER.getAsset("./img/separatePng/tile_30.png");
+	this.sprites[32] = ASSET_MANAGER.getAsset("./img/separatePng/tile_31.png");
+	this.sprites[33] = ASSET_MANAGER.getAsset("./img/separatePng/tile_32.png");
+	this.sprites[34] = ASSET_MANAGER.getAsset("./img/separatePng/tile_33.png");
+	this.sprites[35] = ASSET_MANAGER.getAsset("./img/separatePng/tile_34.png");
+	this.sprites[36] = ASSET_MANAGER.getAsset("./img/separatePng/tile_35.png");
+	this.sprites[37] = ASSET_MANAGER.getAsset("./img/separatePng/tile_36.png");
+	this.sprites[38] = ASSET_MANAGER.getAsset("./img/separatePng/tile_37.png");
+	this.sprites[39] = ASSET_MANAGER.getAsset("./img/separatePng/tile_38.png");
+	this.sprites[40] = ASSET_MANAGER.getAsset("./img/separatePng/tile_39.png");
+	this.sprites[41] = ASSET_MANAGER.getAsset("./img/separatePng/tile_40.png");
+	this.sprites[42] = ASSET_MANAGER.getAsset("./img/separatePng/tile_41.png");
+	this.sprites[43] = ASSET_MANAGER.getAsset("./img/separatePng/tile_42.png");
+	this.sprites[44] = ASSET_MANAGER.getAsset("./img/separatePng/tile_43.png");
+	this.sprites[45] = ASSET_MANAGER.getAsset("./img/separatePng/tile_44.png");
+	this.sprites[46] = ASSET_MANAGER.getAsset("./img/separatePng/tile_45.png");
+	this.sprites[47] = ASSET_MANAGER.getAsset("./img/separatePng/tile_46.png");
+	this.sprites[48] = ASSET_MANAGER.getAsset("./img/separatePng/tile_47.png");
+	this.sprites[49] = ASSET_MANAGER.getAsset("./img/separatePng/tile_48.png");
+	this.sprites[50] = ASSET_MANAGER.getAsset("./img/separatePng/tile_49.png");
+	this.sprites[51] = ASSET_MANAGER.getAsset("./img/separatePng/tile_50.png");
+	this.sprites[52] = ASSET_MANAGER.getAsset("./img/separatePng/tile_51.png");
+	this.sprites[53] = ASSET_MANAGER.getAsset("./img/separatePng/tile_52.png");
+	this.sprites[54] = ASSET_MANAGER.getAsset("./img/separatePng/tile_53.png");
+	this.sprites[55] = ASSET_MANAGER.getAsset("./img/separatePng/tile_54.png");
+	this.sprites[56] = ASSET_MANAGER.getAsset("./img/separatePng/tile_55.png");
+	this.sprites[57] = ASSET_MANAGER.getAsset("./img/separatePng/tile_56.png");
+	this.sprites[58] = ASSET_MANAGER.getAsset("./img/separatePng/tile_57.png");
+	this.sprites[59] = ASSET_MANAGER.getAsset("./img/separatePng/tile_58.png");
+	this.sprites[60] = ASSET_MANAGER.getAsset("./img/separatePng/tile_59.png");
+	this.sprites[61] = ASSET_MANAGER.getAsset("./img/separatePng/tile_60.png");
+	this.sprites[62] = ASSET_MANAGER.getAsset("./img/separatePng/tile_61.png");
+	this.sprites[63] = ASSET_MANAGER.getAsset("./img/separatePng/tile_62.png");
+	this.sprites[64] = ASSET_MANAGER.getAsset("./img/separatePng/tile_63.png");
 }
 TileMapFront.prototype = new Entity();
 TileMapFront.prototype.constructor = TileMapFront;
@@ -2417,6 +2597,60 @@ ASSET_MANAGER.queueDownload("./img/separatePng/tile_06.png");
 ASSET_MANAGER.queueDownload("./img/separatePng/tile_07.png");
 ASSET_MANAGER.queueDownload("./img/separatePng/tile_08.png");
 ASSET_MANAGER.queueDownload("./img/separatePng/tile_09.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_10.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_11.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_12.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_13.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_14.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_15.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_16.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_17.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_18.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_19.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_20.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_21.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_22.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_23.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_24.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_25.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_26.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_27.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_28.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_29.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_30.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_31.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_32.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_33.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_34.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_35.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_36.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_37.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_38.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_39.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_40.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_41.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_42.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_43.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_44.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_45.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_46.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_47.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_48.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_49.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_50.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_51.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_52.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_53.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_54.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_55.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_56.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_57.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_58.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_59.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_60.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_61.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_62.png");
+ASSET_MANAGER.queueDownload("./img/separatePng/tile_63.png");
 
 ASSET_MANAGER.queueDownload("./img/level1.png");
 ASSET_MANAGER.queueDownload("./img/frame.png");
