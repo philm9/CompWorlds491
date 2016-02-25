@@ -605,7 +605,7 @@ Restart.prototype.update = function () {
 }
 
 Restart.prototype.draw = function (ctx) {
-    if (this.game.link.fallDead) {
+    if (this.game.link.fallDead || this.game.link.dying) {
         ctx.font = "24px serif";
         ctx.fillText("YOU DIED", 375, 280);
     }
@@ -673,6 +673,37 @@ Spikes.prototype.update = function () {
             this.removeFromWorld = true;
         }
         else this.game.link.fallDead = true;
+        lives = lives - 1;
+        if (lives == 0) {
+            this.game.link.removeFromWorld = true;
+        }
+        else {
+            this.game.link.removeFromWorld = true;
+            health = 150;
+            this.game.background.removeFromWorld = true;
+            for (var i = 0; i < this.game.coinsArr.length; i++) this.game.coinsArr[i].removeFromWorld = true;
+            for (var i = 0; i < this.game.spikesArr.length; i++) this.game.spikesArr[i].removeFromWorld = true;
+            for (var i = 0; i < this.game.flyArr.length; i++) this.game.flyArr[i].removeFromWorld = true;
+            for (var i = 0; i < this.game.dEnemy.length; i++) this.game.dEnemy[i].removeFromWorld = true;
+            coinsArr = [];
+            spikesArr = [];
+            flyArr = [];
+            dEnemy = [];
+            tileArrBB = [];
+            this.game.door.removeFromWorld = true;
+            this.game.dragon.removeFromWorld = true;
+            this.game.tileMap.removeFromWorld = true;
+            this.game.score.removeFromWorld = true;
+            this.game.lives.removeFromWorld = true;
+            this.game.skills.removeFromWorld = true;
+            this.game.restart.removeFromWorld = true;
+            this.game.spikes.removeFromWorld = true;
+            this.game.health.removeFromWorld = true;
+            movX = 0;
+            movY = 0;
+            startPlaying(this.game);
+
+        }
     }
 }
 
@@ -790,7 +821,7 @@ function Dragon(game, x, y) {
     this.y = y;
     this.falling = true;
     this.boxes = true;
-    this.health = 300;
+    this.health = 100;
     this.left = true;
     this.slained = false;
     this.hybernate = false;
@@ -956,10 +987,10 @@ Dragon.prototype.draw = function (ctx) {
     if (this.health > 0) {
         if (this.left) {
             ctx.fillStyle = "Red";
-            ctx.fillRect(this.x -400, this.y, this.health, 5);
+            ctx.fillRect(this.x - 400, this.y, this.health, 5);
         } else {
             ctx.fillStyle = "Red";
-            ctx.fillRect(this.x -400, this.y, this.health, 5);
+            ctx.fillRect(this.x - 400, this.y, this.health, 5);
 
         }
     }
@@ -1121,6 +1152,37 @@ Link.prototype.constructor = Link;
 Link.prototype.update = function () {
     if (this.boundingbox.bottom > 768) {
         this.fallDead = true;
+        lives = lives - 1;
+        if (lives == 0) {
+            this.game.link.removeFromWorld = true;
+        }
+        else {
+            this.game.link.removeFromWorld = true;
+            health = 150;
+            this.game.background.removeFromWorld = true;
+            for (var i = 0; i < this.game.coinsArr.length; i++) this.game.coinsArr[i].removeFromWorld = true;
+            for (var i = 0; i < this.game.spikesArr.length; i++) this.game.spikesArr[i].removeFromWorld = true;
+            for (var i = 0; i < this.game.flyArr.length; i++) this.game.flyArr[i].removeFromWorld = true;
+            for (var i = 0; i < this.game.dEnemy.length; i++) this.game.dEnemy[i].removeFromWorld = true;
+            coinsArr = [];
+            spikesArr = [];
+            flyArr = [];
+            dEnemy = [];
+            tileArrBB = [];
+            this.game.door.removeFromWorld = true;
+            this.game.dragon.removeFromWorld = true;
+            this.game.tileMap.removeFromWorld = true;
+            this.game.score.removeFromWorld = true;
+            this.game.lives.removeFromWorld = true;
+            this.game.skills.removeFromWorld = true;
+            this.game.restart.removeFromWorld = true;
+            this.game.spikes.removeFromWorld = true;
+            this.game.health.removeFromWorld = true;
+            movX = 0;
+            movY = 0;
+            startPlaying(this.game);
+
+        }
     }
     if (this.boundingbox.bottom > 3000) {
         //reset(this.game);
@@ -1277,10 +1339,40 @@ Link.prototype.update = function () {
             this.dying = false;
             this.dead = true;
             this.dyingAnimation.elapsedTime = 0;
-
+            lives = lives - 1;
+            if (lives == 0) {
+                this.game.link.removeFromWorld = true;
+            }
+            else {
+                this.game.link.removeFromWorld = true;
+                health = 150;
+                this.game.background.removeFromWorld = true;
+                for (var i = 0; i < this.game.coinsArr.length; i++) this.game.coinsArr[i].removeFromWorld = true;
+                for (var i = 0; i < this.game.spikesArr.length; i++) this.game.spikesArr[i].removeFromWorld = true;
+                for (var i = 0; i < this.game.flyArr.length; i++) this.game.flyArr[i].removeFromWorld = true;
+                for (var i = 0; i < this.game.dEnemy.length; i++) this.game.dEnemy[i].removeFromWorld = true;
+                coinsArr = [];
+                spikesArr = [];
+                flyArr = [];
+                dEnemy = [];
+                tileArrBB = [];
+                this.game.door.removeFromWorld = true;
+                this.game.dragon.removeFromWorld = true;
+                this.game.tileMap.removeFromWorld = true;
+                this.game.score.removeFromWorld = true;
+                this.game.lives.removeFromWorld = true;
+                this.game.skills.removeFromWorld = true;
+                this.game.restart.removeFromWorld = true;
+                this.game.spikes.removeFromWorld = true;
+                this.game.health.removeFromWorld = true;
+                movX = 0;
+                movY = 0;
+                startPlaying(this.game);
+                
+            }
         }
-    }
 
+    }
     //*************************************//
     //**************DEAD LOGIC*************//
     //*************************************//
@@ -1288,6 +1380,7 @@ Link.prototype.update = function () {
         if (this.deadAnimation.isDone()) {
             this.deadAnimation.elapsedTime = 0;
             this.fallDead;
+
         }
     }
 
@@ -1518,7 +1611,7 @@ function TileMap(game, ctx) {
     var backgroundTileMap;
     if (level === 1) {
         //active/colliding tiles
-        testTileMap = [ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0], //start of map ///0
+        testTileMap = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0], //start of map ///0
 						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0],
 						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 6, 6, 6, 6, 6, 6, 6, 6, 5, 5, 0], //the column on the very right has to be all zeroes
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 1, 5, 0],
@@ -1800,7 +1893,7 @@ function TileMap(game, ctx) {
 						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7, 7, 1, 0, 0, 0, 1, 5, 5, 5, 0],
 						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7, 7, 7, 1, 0, 0, 0, 1, 5, 5, 5, 0], ///260,
 						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7, 7, 7, 7, 1, 5, 5, 5, 5, 5, 5, 5, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -1810,7 +1903,7 @@ function TileMap(game, ctx) {
 						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0],
 						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0], ///270
 						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0],
-						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0], 
+						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0],
 						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7, 0, 0, 0, 0, 0, 0, 0],
 						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0],
 						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0],
