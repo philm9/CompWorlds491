@@ -678,11 +678,31 @@ Spikes.prototype.update = function () {
             this.game.link.removeFromWorld = true;
         }
         else {
+            this.game.link.removeFromWorld = true;
             health = 150;
+            this.game.background.removeFromWorld = true;
+            for (var i = 0; i < this.game.coinsArr.length; i++) this.game.coinsArr[i].removeFromWorld = true;
+            for (var i = 0; i < this.game.spikesArr.length; i++) this.game.spikesArr[i].removeFromWorld = true;
+            for (var i = 0; i < this.game.flyArr.length; i++) this.game.flyArr[i].removeFromWorld = true;
+            for (var i = 0; i < this.game.dEnemy.length; i++) this.game.dEnemy[i].removeFromWorld = true;
+            coinsArr = [];
+            spikesArr = [];
+            flyArr = [];
+            dEnemy = [];
+            tileArrBB = [];
+            this.game.door.removeFromWorld = true;
+            this.game.dragon.removeFromWorld = true;
+            this.game.tileMap.removeFromWorld = true;
+            this.game.score.removeFromWorld = true;
+            this.game.lives.removeFromWorld = true;
+            this.game.skills.removeFromWorld = true;
+            this.game.restart.removeFromWorld = true;
+            this.game.spikes.removeFromWorld = true;
+            this.game.health.removeFromWorld = true;
             movX = 0;
             movY = 0;
-            this.game.link.removeFromWorld = true;
             startPlaying(this.game);
+
         }
     }
 }
@@ -1137,11 +1157,31 @@ Link.prototype.update = function () {
             this.game.link.removeFromWorld = true;
         }
         else {
+            this.game.link.removeFromWorld = true;
             health = 150;
+            this.game.background.removeFromWorld = true;
+            for (var i = 0; i < this.game.coinsArr.length; i++) this.game.coinsArr[i].removeFromWorld = true;
+            for (var i = 0; i < this.game.spikesArr.length; i++) this.game.spikesArr[i].removeFromWorld = true;
+            for (var i = 0; i < this.game.flyArr.length; i++) this.game.flyArr[i].removeFromWorld = true;
+            for (var i = 0; i < this.game.dEnemy.length; i++) this.game.dEnemy[i].removeFromWorld = true;
+            coinsArr = [];
+            spikesArr = [];
+            flyArr = [];
+            dEnemy = [];
+            tileArrBB = [];
+            this.game.door.removeFromWorld = true;
+            this.game.dragon.removeFromWorld = true;
+            this.game.tileMap.removeFromWorld = true;
+            this.game.score.removeFromWorld = true;
+            this.game.lives.removeFromWorld = true;
+            this.game.skills.removeFromWorld = true;
+            this.game.restart.removeFromWorld = true;
+            this.game.spikes.removeFromWorld = true;
+            this.game.health.removeFromWorld = true;
             movX = 0;
             movY = 0;
-            this.game.link.removeFromWorld = true;
             startPlaying(this.game);
+
         }
     }
     if (this.boundingbox.bottom > 3000) {
@@ -1304,11 +1344,31 @@ Link.prototype.update = function () {
                 this.game.link.removeFromWorld = true;
             }
             else {
+                this.game.link.removeFromWorld = true;
                 health = 150;
+                this.game.background.removeFromWorld = true;
+                for (var i = 0; i < this.game.coinsArr.length; i++) this.game.coinsArr[i].removeFromWorld = true;
+                for (var i = 0; i < this.game.spikesArr.length; i++) this.game.spikesArr[i].removeFromWorld = true;
+                for (var i = 0; i < this.game.flyArr.length; i++) this.game.flyArr[i].removeFromWorld = true;
+                for (var i = 0; i < this.game.dEnemy.length; i++) this.game.dEnemy[i].removeFromWorld = true;
+                coinsArr = [];
+                spikesArr = [];
+                flyArr = [];
+                dEnemy = [];
+                tileArrBB = [];
+                this.game.door.removeFromWorld = true;
+                this.game.dragon.removeFromWorld = true;
+                this.game.tileMap.removeFromWorld = true;
+                this.game.score.removeFromWorld = true;
+                this.game.lives.removeFromWorld = true;
+                this.game.skills.removeFromWorld = true;
+                this.game.restart.removeFromWorld = true;
+                this.game.spikes.removeFromWorld = true;
+                this.game.health.removeFromWorld = true;
                 movX = 0;
                 movY = 0;
-                this.game.link.removeFromWorld = true;
                 startPlaying(this.game);
+                
             }
         }
 
