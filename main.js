@@ -435,7 +435,7 @@ Background.prototype.update = function () {
         this.currentTime = 0;
         this.play();
     }, false);
-    //music.play();
+    music.play();
 
     // move the map slowly
     /**************************/
