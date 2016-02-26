@@ -363,6 +363,51 @@ EndScore.prototype.draw = function (ctx) {
     Entity.prototype.draw.call(this);
 }
 
+
+
+function GameOver(game) {
+    this.game = game;
+    this.boundingbox = new BoundingBox(590, 786 / 2 - 80, 120, 40)
+    this.clickReplay = false;
+    this.clickContinue = false;
+    Entity.call(this, game, 1280 / 2 - 200, 786 / 2 - 100);
+}
+GameOver.prototype = new Entity();
+GameOver.prototype.constructor = GameOver;
+
+GameOver.prototype.update = function () {
+    if (this.game.mouse) {
+        if (this.game.mouse.x > this.boundingbox.left &&
+            this.game.mouse.x < this.boundingbox.right &&
+            this.game.mouse.y > this.boundingbox.top &&
+            this.game.mouse.y < this.boundingbox.bottom) {
+            if (this.game.click) {
+                character = 1;
+                score = 0;
+                lives = 3;
+                health = 150;
+                reset(this.game);
+            }
+        } 
+    }
+}
+
+GameOver.prototype.draw = function (ctx) {
+    ctx.strokeStyle = "red";
+    ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
+    ctx.fillStyle = "red";
+    ctx.font = "40px serif";
+    ctx.fillText("Your Score: " + score, 1280 / 2 - 100, 786 / 2 - 100);
+    ctx.fillStyle = "red";
+    ctx.font = "40px serif";
+    ctx.fillText("Replay", 1480 / 2 - 150, 786 / 2 - 50);
+    ctx.fillStyle = "red";
+    ctx.font = "50px serif";
+    ctx.fillText("GAME OVER :(", 490 / 2 + 260, 786 / 2 - 160);
+    Entity.prototype.draw.call(this);
+}
+
+
 //sleep, dealy, wait function
 function sleep(milliseconds) {
     var start = new Date().getTime();
@@ -390,7 +435,7 @@ Background.prototype.update = function () {
         this.currentTime = 0;
         this.play();
     }, false);
-    music.play();
+    //music.play();
 
     // move the map slowly
     /**************************/
@@ -932,7 +977,7 @@ function Coin(game) {
     for (var i = 0; i < this.coins.length; i++) {
         for (var j = 0; j < 24; j++) {
             if (this.coins[i][j] != 0) {
-                coinsMap.push(new BoundingBox(i*32, j*32, 21.5, 17));
+                coinsMap.push(new BoundingBox(i * 32, j * 32, 21.5, 17));
             }
         }
     }
@@ -943,7 +988,7 @@ Coin.prototype.constructor = Coin;
 
 Coin.prototype.update = function () {
     for (var i = 0; i < coinsMap.length; i++) {
-        if(coinsMap[i].collide(this.game.link.boundingbox) && coinsMap[i] != 0) {
+        if (coinsMap[i].collide(this.game.link.boundingbox) && coinsMap[i] != 0) {
             var index = i;
             if (index > -1) {
                 coinsMap.splice(index, 1);
@@ -962,7 +1007,7 @@ Coin.prototype.draw = function (ctx) {
     //    ctx.strokeRect(coinsMap[i].left, coinsMap[i].top, coinsMap[i].right, coinsMap[i].bottom);
     // }
     for (var i = 0; i < coinsMap.length; i++) {
-        if(coinsMap[i] != 0)
+        if (coinsMap[i] != 0)
             this.coinAnimation.drawFrame(this.game.clockTick, ctx, (coinsMap[i].left), (coinsMap[i].top));
     }
     Entity.prototype.draw.call(this);
@@ -1311,7 +1356,7 @@ function Spikes(game) {
     for (var i = 0; i < this.spikes.length; i++) {
         for (var j = 0; j < 24; j++) {
             if (this.spikes[i][j] != 0) {
-                spikesMap.push(new BoundingBox(i*32, j*32-10, 32, 20));
+                spikesMap.push(new BoundingBox(i * 32, j * 32 - 10, 32, 20));
             }
         }
     }
@@ -1322,18 +1367,18 @@ Spikes.prototype.constructor = Spikes;
 
 Spikes.prototype.update = function () {
     for (var i = 0; i < spikesMap.length; i++) {
-        if(spikesMap[i].collide(this.game.link.boundingbox) && spikesMap[i] != 0) {
+        if (spikesMap[i].collide(this.game.link.boundingbox) && spikesMap[i] != 0) {
             var index = i;
             if (index > -1) spikesMap.splice(index, 1);
-            if(health > 0) health -= 10;
+            if (health > 0) health -= 10;
         }
     }
 }
 
 Spikes.prototype.draw = function (ctx) {
     for (var i = 0; i < spikesMap.length; i++) {
-        if(spikesMap[i] != 0)
-            this.spikeAnimation.drawFrame(this.game.clockTick, ctx, spikesMap[i].left, spikesMap[i].top-10);
+        if (spikesMap[i] != 0)
+            this.spikeAnimation.drawFrame(this.game.clockTick, ctx, spikesMap[i].left, spikesMap[i].top - 10);
     }
     Entity.prototype.draw.call(this);
 }
@@ -1376,8 +1421,8 @@ function DEnemy(game, x, y, speed, moveSpeed) {
     this.boxes = false;
     this.left = false;
     var colorRand = Math.random();
-    if(colorRand < 0.33) this.jumpAnimation = new Animation(ASSET_MANAGER.getAsset("./img/Slime_First Gen_Weak.png"), 12, 15, 40, 53, speed, 9, true, false);
-    else if(colorRand >= 0.33 && colorRand < 0.66) this.jumpAnimation = new Animation(ASSET_MANAGER.getAsset("./img/Slime_First Gen_Weak.png"), 12, 211, 40, 53, speed, 9, true, false);
+    if (colorRand < 0.33) this.jumpAnimation = new Animation(ASSET_MANAGER.getAsset("./img/Slime_First Gen_Weak.png"), 12, 15, 40, 53, speed, 9, true, false);
+    else if (colorRand >= 0.33 && colorRand < 0.66) this.jumpAnimation = new Animation(ASSET_MANAGER.getAsset("./img/Slime_First Gen_Weak.png"), 12, 211, 40, 53, speed, 9, true, false);
     else this.jumpAnimation = new Animation(ASSET_MANAGER.getAsset("./img/Slime_First Gen_Weak.png"), 12, 110, 40, 53, speed, 9, true, false);
     this.dyingAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 1330, 172, 65, 58, 0.07, 8, false, false);
     this.dying = false;
@@ -1567,12 +1612,12 @@ Dragon.prototype.update = function () {
     }
 }
 Dragon.prototype.draw = function (ctx) {
-     if (this.boxes) {
-         ctx.strokeStyle = "red";
-         ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
-         ctx.strokeStyle = "black";
-         ctx.strokeRect(this.boundingboxDanger.x, this.boundingboxDanger.y, this.boundingboxDanger.width, this.boundingboxDanger.height);
-     }
+    if (this.boxes) {
+        ctx.strokeStyle = "red";
+        ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
+        ctx.strokeStyle = "black";
+        ctx.strokeRect(this.boundingboxDanger.x, this.boundingboxDanger.y, this.boundingboxDanger.width, this.boundingboxDanger.height);
+    }
     if (this.left) {
         ctx.save();
         ctx.scale(-1, 1);
@@ -1600,11 +1645,11 @@ Dragon.prototype.draw = function (ctx) {
         if (this.breath) this.breathAnimation.drawFrame(this.game.clockTick, ctx, this.x - 350, this.y + 5);
         else if (this.hybernate) this.hybernateAnimation.drawFrame(this.game.clockTick, ctx, this.x - 350, this.y - 50);
         else if (this.fang) {
-            this.fangAnimation1.drawFrame(this.game.clockTick, ctx, this.x-300, this.y - 50);
+            this.fangAnimation1.drawFrame(this.game.clockTick, ctx, this.x - 300, this.y - 50);
             if (this.fangAnimation1.isDone()) {
-                this.fangAnimation2.drawFrame(this.game.clockTick, ctx, this.x-300, this.y - 50);
+                this.fangAnimation2.drawFrame(this.game.clockTick, ctx, this.x - 300, this.y - 50);
                 if (this.fangAnimation2.isDone()) {
-                    this.fangAnimation3.drawFrame(this.game.clockTick, ctx, this.x-300, this.y - 80);
+                    this.fangAnimation3.drawFrame(this.game.clockTick, ctx, this.x - 300, this.y - 80);
                     if (this.fangAnimation3.isDone()) {
                         this.fangAnimation1.elapsedTime = 0;
                         this.fangAnimation2.elapsedTime = 0;
@@ -1739,7 +1784,7 @@ function Link(game) {
     this.jumpAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 84, 50, 83, 0.7, 1, false, false); //0.7
     this.runningAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 168, 61, 77, 0.1, 6, true, false);
     this.dyingAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 95, 84, 60, 80, 0.25, 3, false, false);
-    this.deadAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 315, 115, 100, 45, 0.25, 1, true, false);
+    this.deadAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 315, 115, 100, 45, 0.75, 1, false, false);
     this.slash2Animation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 579, 331, 182, 73, 0.05, 3, false, false); //0.05
     this.slash3Animation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 1344, 312, 170, 92, 0.05, 2, false, false); //0.05
     this.slash1Animation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 305, 140, 99, 0.05, 2, false, false); //0.05
@@ -1790,12 +1835,16 @@ Link.prototype.update = function () {
         lives = lives - 1;
         if (lives == 0) {
             this.game.link.removeFromWorld = true;
+            var end = new GameOver(this.game);
+            this.game.addEntity(end);
+            this.game.end = end;
         }
         else {
             health = 150;
             reset(this.game);
 
         }
+
     }
     //if (this.boundingbox.bottom > 3000) {
     //    //reset(this.game);
@@ -1948,41 +1997,17 @@ Link.prototype.update = function () {
     //*************************************//
     if (this.dying) {
         health = -1001;
+        if (health = -1001) {
+            this.game.D = false;
+            this.game.A = false;
+            this.game.link.running = false;
+            this.game.link.left = false;
+            this.dyingAnimation;
+        }
         if (this.dyingAnimation.isDone()) {
             this.dying = false;
             this.dead = true;
-            this.dyingAnimation.elapsedTime = 0;
-            lives = lives - 1;
-            if (lives == 0) {
-                this.game.link.removeFromWorld = true;
-            }
-            else {
-                //this.game.link.removeFromWorld = true;
-                health = 150;
-                //this.game.background.removeFromWorld = true;
-                //for (var i = 0; i < this.game.coinsArr.length; i++) this.game.coinsArr[i].removeFromWorld = true;
-                //for (var i = 0; i < this.game.spikesArr.length; i++) this.game.spikesArr[i].removeFromWorld = true;
-                //for (var i = 0; i < this.game.flyArr.length; i++) this.game.flyArr[i].removeFromWorld = true;
-                //for (var i = 0; i < this.game.dEnemy.length; i++) this.game.dEnemy[i].removeFromWorld = true;
-                ////coinsArr = [];
-                //spikesArr = [];
-                //flyArr = [];
-                //dEnemy = [];
-                //tileArrBB = [];
-                //this.game.door.removeFromWorld = true;
-                //this.game.dragon.removeFromWorld = true;
-                //this.game.tileMap.removeFromWorld = true;
-                //this.game.score.removeFromWorld = true;
-                //this.game.lives.removeFromWorld = true;
-                //this.game.skills.removeFromWorld = true;
-                //this.game.restart.removeFromWorld = true;
-                //this.game.spikes.removeFromWorld = true;
-                //this.game.health.removeFromWorld = true;
-                //movX = 0;
-                //movY = 0;
-                //startPlaying(this.game);
-                reset(this.game);
-            }
+            this.dyingAnimation.elapsedTime = 0;  
         }
 
     }
@@ -1990,10 +2015,25 @@ Link.prototype.update = function () {
     //**************DEAD LOGIC*************//
     //*************************************//
     if (this.dead) {
+            this.game.D = false;
+            this.game.A = false;
+            this.game.link.running = false;
+            this.game.link.left = false;
+            this.deadAnimation;
         if (this.deadAnimation.isDone()) {
             this.deadAnimation.elapsedTime = 0;
             this.fallDead;
-
+            lives = lives - 1;
+            if (lives == 0) {
+                this.game.link.removeFromWorld = true;
+                var end = new GameOver(this.game);
+                this.game.addEntity(end);
+                this.game.end = end;
+            }
+            else {
+                health = 150;
+                reset(this.game);
+            }
         }
     }
 
@@ -2244,7 +2284,7 @@ function TileMap(game, ctx) {
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
-                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0], 
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0], ///20
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0],
@@ -2274,7 +2314,7 @@ function TileMap(game, ctx) {
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
-                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0], 
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0], ///50
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 22, 18, 18, 18, 1, 0, 0],
 						[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 23, 5, 0, 0, 1, 0, 0],
@@ -3351,8 +3391,8 @@ function startPlaying(gameEngine) {
     var tMap = new TileMap(gameEngine);
     gameEngine.addEntity(tMap);
     gameEngine.tileMap = tMap;
-
-    var door = new Door(gameEngine, 12032, 288-143+224);
+    
+    var door = new Door(gameEngine, 12032, 288-143+204);
     gameEngine.addEntity(door);
     gameEngine.door = door;
 
@@ -3481,7 +3521,7 @@ function startPlaying(gameEngine) {
     dEnemy.push(duEnemy);
 
     gameEngine.dEnemy = dEnemy;
-
+    
     var drag = new Dragon(gameEngine, 11000, 500);
     gameEngine.addEntity(drag);
     gameEngine.dragon = drag;
