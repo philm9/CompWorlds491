@@ -176,6 +176,7 @@ PlayGame.prototype.draw = function (ctx) {
 function LevelSelect(game) {
     this.animationBackground = new Animation(ASSET_MANAGER.getAsset("./img/aliencraft1.png"), 0, 0, 1280, 768, 1, 1, true, false);
     this.animationLevel1 = new Animation(ASSET_MANAGER.getAsset("./img/level1.png"), 0, 0, 200, 150, 1, 1, true, false);
+    this.animationLevel2 = new Animation(ASSET_MANAGER.getAsset("./img/level2.png"), 0, 0, 200, 150, 1, 1, true, false);
     Entity.call(this, game, 0, 0);
 }
 
@@ -189,7 +190,7 @@ LevelSelect.prototype.update = function () {
             this.removeFromWorld = true;
             level = 1;
         }
-        else {
+        else if (this.game.click.x < 600 && this.game.click.y < 250 && this.game.click.x > 400 && this.game.click.y > 100) {
             start3 = true;
             this.removeFromWorld = true;
             level = 2;
@@ -204,6 +205,7 @@ LevelSelect.prototype.update = function () {
 LevelSelect.prototype.draw = function (ctx) {
     this.animationBackground.drawFrame(this.game.clockTick, ctx, this.x, this.y);
     this.animationLevel1.drawFrame(this.game.clockTick, ctx, 100, 100);
+    this.animationLevel2.drawFrame(this.game.clockTick, ctx, 400, 100);
     Entity.prototype.draw.call(this);
 }
 
@@ -3532,6 +3534,7 @@ ASSET_MANAGER.queueDownload("./img/separatePng/tile_62.png");
 ASSET_MANAGER.queueDownload("./img/separatePng/tile_63.png");
 
 ASSET_MANAGER.queueDownload("./img/level1.png");
+ASSET_MANAGER.queueDownload("./img/level2.png");
 ASSET_MANAGER.queueDownload("./img/frame.png");
 ASSET_MANAGER.queueDownload("./img/aliencraft1.png");
 ASSET_MANAGER.queueDownload("./img/coins.png");
