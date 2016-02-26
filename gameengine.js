@@ -113,6 +113,13 @@ GameEngine.prototype.addEntity = function (entity) {
     this.entities.push(entity);
 }
 
+GameEngine.prototype.removeAllEntities = function () {
+    //console.log('added entity');
+    //console.log(this.entities.length)
+    this.entities = [];
+    //console.log(this.entities.length)
+}
+
 GameEngine.prototype.draw = function (drawCallback) {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     this.ctx.save();
