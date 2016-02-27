@@ -98,6 +98,7 @@ function reset(game) {
     dEnemy = [];
     tileArrBB = [];
     coinsMap = [];
+    spikesMap = [];
     movX = 0;
     movY = 0;
     this.game.removeAllEntities();
