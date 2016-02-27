@@ -420,7 +420,7 @@ function sleep(milliseconds) {
 }
 
 function Background(game, x, y) {
-    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/background0.png"), 0, 0, 3840, 1080, 1, 1, true, false);
+    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/background0.png"), 0, 0, 7680, 1080, 1, 1, true, false);
     this.startX = x;
     this.startY = y;
     this.tileX = 0;
