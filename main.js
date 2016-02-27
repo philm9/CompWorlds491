@@ -1609,7 +1609,7 @@ function Dragon(game, x, y) {
     this.x = x;
     this.y = y;
     this.falling = true;
-    this.boxes = true;
+    this.boxes = false;
     this.health = 100;
     this.left = true;
     this.slained = false;
@@ -3690,7 +3690,7 @@ function startPlaying(gameEngine) {
         gameEngine.addEntity(drag);
 
     } else if (level === 2) {
-        var door = new Door(gameEngine, 12032, 288 - 143 + 204);
+        var door = new Door(gameEngine, 12032, 288 - 143 + 204 +32);
         gameEngine.addEntity(door);
 
         var fly = new Fly(gameEngine, 1400, 110);
