@@ -2035,6 +2035,7 @@ function Link(game) {
     this.slash2Animation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 579, 331, 182, 73, 0.05, 3, false, false); //0.05
     this.slash3Animation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 1344, 312, 170, 92, 0.05, 2, false, false); //0.05
     this.slash1Animation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 305, 140, 99, 0.05, 2, false, false); //0.05
+    this.shootAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 405, 228, 99, 0.1, 4, false, false); //0.1
     this.fallAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 0, 84, 50, 83, 5, 1, true, false); //5?
 
     this.game = game;
@@ -2047,6 +2048,7 @@ function Link(game) {
     this.dying = false;
     this.dead = false;
     this.slash = false;
+    this.shoot = false;
     this.falling = true;
     this.fallDead = false;
     this.tileT = tileArrBB[0];
@@ -2154,6 +2156,7 @@ Link.prototype.update = function () {
     ////*************************************//
     if (this.game.D) {
         this.slash = false;
+        this.shoot = false;
         this.boundingbox = new BoundingBox(this.x, this.y, this.runningAnimation.frameWidth - 15, this.runningAnimation.frameHeight);
         for (var i = 0; i < tileArrBB.length; i++) {
             var tl = tileArrBB[i];
@@ -2171,6 +2174,7 @@ Link.prototype.update = function () {
     ////*************************************//
     if (this.game.A) {
         this.slash = false;
+        this.shoot = false;
         this.boundingbox = new BoundingBox(this.x - 10, this.y, this.runningAnimation.frameWidth - 20, this.runningAnimation.frameHeight);
         for (var i = 0; i < tileArrBB.length; i++) {
             var tl = tileArrBB[i];
@@ -2188,7 +2192,7 @@ Link.prototype.update = function () {
     ////*************************************//
     ////*********ACTIVATE SLASH**************//
     ////*************************************//
-    if (this.game.Q && !this.falling && !this.jumping && !this.running) {
+    if (this.game.Q && !this.falling && !this.jumping && !this.running && !this.shoot) {
         slash = new Audio('./img/sword.mp3');
         slash.play();
         if (this.left) {
@@ -2211,6 +2215,18 @@ Link.prototype.update = function () {
     }
 
 
+
+    //*************************************//
+    //**************SHOOT LOGIC*************//
+    //*************************************//
+    if (this.game.E && !this.falling && !this.jumping && !this.running && !this.slash) this.shoot = true;
+        if (this.shoot) {
+            if (this.shootAnimation.isDone()) {
+                this.shootAnimation.elapsedTime = 0;
+                this.shoot = false;
+            }
+        }
+    
 
     //*************************************//
     //***********JUMPING LOGIC*************//
@@ -2383,7 +2399,7 @@ Link.prototype.update = function () {
 
     //if standing
     if (!this.dying && !this.dead && !this.running &&
-        !this.jumping && !this.slash && !this.falling) {
+        !this.jumping && !this.slash && !this.falling && !this.shoot) {
         if (this.left) this.boundingbox = new BoundingBox(this.x + 10, this.y, this.standAnimation.frameWidth - 20, this.standAnimation.frameHeight);
         else this.boundingbox = new BoundingBox(this.x, this.y, this.standAnimation.frameWidth - 15, this.standAnimation.frameHeight);
     }
@@ -2490,6 +2506,12 @@ Link.prototype.draw = function (ctx) {
             if (animNum == 3) this.slash3Animation.drawFrame(this.game.clockTick, ctx, -this.x - 85, this.y - 12); //OK
             ctx.restore();
         }
+        else if (this.shoot) {
+            ctx.save();
+            ctx.scale(-1, 1);
+            this.shootAnimation.drawFrame(this.game.clockTick, ctx, -this.x - 75, this.y - 20);
+            ctx.restore();
+        }
         else {
             if (this.boxes) {
                 ctx.strokeStyle = "red";
@@ -2565,6 +2587,9 @@ Link.prototype.draw = function (ctx) {
             if (animNum == 2) this.slash2Animation.drawFrame(this.game.clockTick, ctx, this.x - 55, this.y + 8); //OK
             if (animNum == 3) this.slash3Animation.drawFrame(this.game.clockTick, ctx, this.x - 37, this.y - 12); //OK
         }
+        else if (this.shoot) {
+            this.shootAnimation.drawFrame(this.game.clockTick, ctx, this.x - 35, this.y - 20);
+        }
         else {
             if (this.boxes) {
                 ctx.strokeStyle = "red";
@@ -2578,6 +2603,50 @@ Link.prototype.draw = function (ctx) {
     Entity.prototype.draw.call(this);
 }
 
+
+//function Arrow(game, x, y, left) {
+//    Entity.call(this, game, x, y);
+//    this.x = x;
+//    this.y = y;
+//    this.boxes = true;
+//    this.left = left;
+//    this.arrowAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 180, 0, 48, 80, 0.08, 5, true, false); //0.08
+//    this.boundingbox = new BoundingBox(this.x, this.y, 102, 85);
+//    this.arrow = true;
+//}
+//Arrow.prototype = new Entity();
+//Arrow.prototype.constructor = Arrow;
+
+//Arrow.prototype.update = function () {
+//    if (this.game.Dragon.boundingbox.collide(this.boundingbox)) {
+//        this.game.Dragon.Health -= 0.1;
+//    }
+//    if (this.game.dEnemy.boundingbox.collide(this.boundingbox)){   
+//        this.game.dEnemy.Health -= 0.1;
+//    }
+
+//    if (this.game.DEnemy.boundingbox.collide(this.boundingbox)) {
+//        this.game.DEnemy.Health -= 0.1;
+//    }
+//}
+//Arrow.prototype.draw = function (ctx) {
+//    if (this.left) {
+//        ctx.save();
+//        ctx.scale(-1, 1);
+//        if (this.arrow) {
+//            this.arrowAnimation.drawFrame(this.game.clockTick, ctx, -this.x, this.y);
+//            if (this.arrowAnimation.isDone()) this.arrow = false;
+//        }
+//        ctx.restore();
+//    }
+//    else {
+//        if (this.arrow) {
+//            this.arrowAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+//            if (this.fireAnimation1.isDone()) this.arrow = false;
+//        }
+//    }
+//    Entity.prototype.draw.call(this);
+//}
 
 
 function TileMap(game, ctx) {
