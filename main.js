@@ -4,7 +4,7 @@ var start3 = false;
 var character = 0;
 var score = 0;
 var lives = 3;
-this.damage = 0.3;
+var damage = 1;
 var originalHealth = 150;
 var health = 150;
 var scrollSpeed = 4;
@@ -585,20 +585,20 @@ Lives.prototype.draw = function (ctx) {
 //}
 
 
-function Score(game) {
-    Entity.call(this, game, 0, 200);
-}
-Score.prototype = new Entity();
-Score.prototype.constructor = Score;
+//function Score(game) {
+//    Entity.call(this, game, 0, 200);
+//}
+//Score.prototype = new Entity();
+//Score.prototype.constructor = Score;
 
-Score.prototype.update = function () {
-}
+//Score.prototype.update = function () {
+//}
 
-Score.prototype.draw = function (ctx) {
-    ctx.font = "24px verdana";
-    ctx.fillText("Score: " + score, 10, 30);
-    Entity.prototype.draw.call(this);
-}
+//Score.prototype.draw = function (ctx) {
+//    ctx.font = "24px verdana";
+//    ctx.fillText("Score: " + score, 10, 30);
+//    Entity.prototype.draw.call(this);
+//}
 
 function Restart(game) {
     Entity.call(this, game, 0, 200);
@@ -619,18 +619,111 @@ Restart.prototype.draw = function (ctx) {
 }
 
 
-function Skills(game) {
-    Entity.call(this, game, 0, 200);
+function Damage(game, x, y) {
+    this.startY = y;
+    this.startX = x;
+    this.x = x;
+    this.y = y;
+    Entity.call(this, game, this.x, this.y);
 }
-Skills.prototype = new Entity();
-Skills.prototype.constructor = Skills;
+Damage.prototype = new Entity();
+Damage.prototype.constructor = Damage;
 
-Skills.prototype.update = function () {
+Damage.prototype.update = function () {
+    this.y -= 2;
+    if (this.startY - this.y > 100) {
+        this.removeFromWorld = true;
+    }
 }
 
-Skills.prototype.draw = function (ctx) {
+Damage.prototype.draw = function (ctx) {
+    ctx.font = "15px verdana";
+    ctx.fillText(damage, this.x, this.y);
+    Entity.prototype.draw.call(this);
+}
+
+function PowerUp(game, x, y) {
+    this.x = x;
+    this.y = y;
+    this.healthAnimation = new Animation(ASSET_MANAGER.getAsset("./img/health.png"), 0, 0, 30, 30, 1, 1, true, false);
+    this.damageAnimation = new Animation(ASSET_MANAGER.getAsset("./img/damage.png"), 0, 0, 30, 30, 5, 1, true, false);
+    this.runAnimation = new Animation(ASSET_MANAGER.getAsset("./img/runSpeed.png"), 0, 0, 30, 30, 10, 1, true, false);
+    this.jumpAnimation = new Animation(ASSET_MANAGER.getAsset("./img/jumpBoost.png"), 0, 0, 30, 30, 10, 1, true, false);
+    this.coinAnimation = new Animation(ASSET_MANAGER.getAsset("./img/coins2.png"), 0, 0, 44, 40, 0.1, 10, true, false);
+    this.run = false;
+    this.jump = false;
+    this.damage = false;
+    Entity.call(this, game, x, y);
+}
+PowerUp.prototype = new Entity();
+PowerUp.prototype.constructor = PowerUp;
+
+PowerUp.prototype.update = function () {
+    //start damage boost for 5 seconds
+    if (this.game.DMG && !this.damage) {
+        if (score >= 50) {
+            this.damageAnimation.elapsedTime = 0;
+            score -= 50;
+            damage = 5;
+            this.damage = true;
+        }
+    }
+    //cancel damage boost after 10 seconds
+    if (this.damageAnimation.elapsedTime >= 4.90 && this.damage) {
+        damage = 1;
+        this.damage = false;
+    }
+
+    if (this.game.JMP && !this.jump) {
+        if (score >= 40) {
+            this.jumpAnimation.elapsedTime = 0;
+            score -= 40;
+            this.game.link.jumpHeight = 300;
+            this.jump = true;
+        }
+    }
+    //cancel jump boost after 10 seconds
+    if (this.jumpAnimation.elapsedTime >= 9.95 && this.jump) {
+        this.game.link.jumpHeight = 200;
+        this.jump = false;
+    }
+
+    //give 30 hp
+    if (this.game.HP) {
+        if (health < originalHealth - 20 && score >= 20) {
+            score -= 20;
+            health += 30;
+        }
+    }
+    //start run boost
+    if (this.game.RN && !this.run) {
+        if (score >= 30) {
+            this.runAnimation.elapsedTime = 0;
+            score -= 30;
+            scrollSpeed = 8;
+            this.run = true;
+        }
+    }
+    //cancel run boost after 10 seconds
+    if (this.runAnimation.elapsedTime >= 9.95 && this.run) {
+        scrollSpeed = 4;
+        this.run = false;
+    }
+}
+
+PowerUp.prototype.draw = function (ctx) {
+    this.healthAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+    this.runAnimation.drawFrame(this.game.clockTick, ctx, this.x+50, this.y);
+    this.jumpAnimation.drawFrame(this.game.clockTick, ctx, this.x+100, this.y);
+    this.damageAnimation.drawFrame(this.game.clockTick, ctx, this.x + 150, this.y);
+    this.coinAnimation.drawFrame(this.game.clockTick, ctx, 10, 10);
     ctx.font = "24px verdana";
-    ctx.fillText("Score: " + score, 10, 30);
+    ctx.fillStyle = "Black";
+    ctx.fillText(" x " + score, 54, 30);
+    ctx.fillText("20", this.x, this.y + 50);
+    ctx.fillText("30", this.x + 50, this.y + 50);
+    ctx.fillText("40", this.x + 100, this.y + 50);
+    ctx.fillText("50", this.x + 150, this.y + 50);
     Entity.prototype.draw.call(this);
 }
 
@@ -1433,8 +1526,8 @@ Health.prototype.draw = function (ctx) {
     ctx.lineWidth = 3;
     ctx.strokeRect(this.x - 3, this.y - 3, 150 + 6, this.height + 6);
     if (health > 0) {
-        if (health < originalHealth / 1.5 && health > originalHealth / 3) ctx.fillStyle = "Yellow";
-        else if (health < originalHealth / 3) ctx.fillStyle = "Red";
+        if (health <= originalHealth / 1.5 && health > originalHealth / 3) ctx.fillStyle = "Yellow";
+        else if (health <= originalHealth / 3) ctx.fillStyle = "Red";
         else ctx.fillStyle = "Green";
         ctx.fillRect(this.x, this.y, health, this.height);
     }
@@ -1452,10 +1545,25 @@ function DEnemy(game, x, y, speed, moveSpeed) {
     this.falling = true;
     this.boxes = false;
     this.left = false;
+    this.health = 3;
+    this.originalHealth = 3;
+    this.takingDamage = false;
     var colorRand = Math.random();
-    if (colorRand < 0.33) this.jumpAnimation = new Animation(ASSET_MANAGER.getAsset("./img/Slime_First Gen_Weak.png"), 12, 15, 40, 53, speed, 9, true, false);
-    else if (colorRand >= 0.33 && colorRand < 0.66) this.jumpAnimation = new Animation(ASSET_MANAGER.getAsset("./img/Slime_First Gen_Weak.png"), 12, 211, 40, 53, speed, 9, true, false);
-    else this.jumpAnimation = new Animation(ASSET_MANAGER.getAsset("./img/Slime_First Gen_Weak.png"), 12, 110, 40, 53, speed, 9, true, false);
+    if (colorRand < 0.33) {
+        this.jumpAnimation = new Animation(ASSET_MANAGER.getAsset("./img/Slime_First Gen_Weak.png"), 12, 15, 40, 53, speed, 9, true, false);
+        this.health = 1;
+        this.originalHealth = 1;
+    }
+    else if (colorRand >= 0.33 && colorRand < 0.66) {
+        this.jumpAnimation = new Animation(ASSET_MANAGER.getAsset("./img/Slime_First Gen_Weak.png"), 12, 211, 40, 53, speed, 9, true, false);
+        this.health = 2;
+        this.originalHealth = 2;
+    }
+    else {
+        this.jumpAnimation = new Animation(ASSET_MANAGER.getAsset("./img/Slime_First Gen_Weak.png"), 12, 110, 40, 53, speed, 9, true, false);
+        this.health = 3;
+        this.originalHealth = 3;
+    }
     this.dyingAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 1330, 172, 65, 58, 0.05, 8, false, false);
     this.dying = false;
     this.boundingbox = new BoundingBox(this.x, this.y, 39, 53);
@@ -1517,9 +1625,23 @@ DEnemy.prototype.update = function () {
         if (this.game.link.boundingbox.left > this.boundingbox.right) this.left = false;
         if (this.game.link.boundingbox.right < this.boundingbox.left) this.left = true;
     }
-    if (this.game.link.swordBox.collide(this.boundingbox) && this.game.link.slash) {this.dying = true; }
+    if (this.game.link.swordBox.collide(this.boundingbox) && this.game.link.slash && !this.dying && !this.takingDamage) {
+        var dama = new Damage(this.game, this.x, this.y);
+        this.game.addEntity(dama);
+        this.takingDamage = true;
+        this.health -= damage;
+    }
+    if (!this.game.link.slash) this.takingDamage = false;
+    if (this.health <= 0) {
+        this.dying = true;
+    }
 
-    if (this.dyingAnimation.isDone()) { score += 10; this.removeFromWorld = true; }
+    if (this.dyingAnimation.isDone()) {
+        if (this.originalHealth === 1) score += 10;
+        else if (this.originalHealth === 2) score += 12;
+        else score += 15;
+        this.removeFromWorld = true;
+    }
 }
 DEnemy.prototype.draw = function (ctx) {
     if (this.boxes) {
@@ -1542,6 +1664,10 @@ function FlyEnemy(game, x, y, speed, moveSpeed) {
     this.startY = y;
     this.boxes = false;
     this.left = true;
+    this.moving = false;
+    this.speedX = 0;
+    this.speedY = 0;
+    this.health = 4;
     this.flyAnimation = new Animation(ASSET_MANAGER.getAsset("./img/flying.png"), 0, 0, 95, 60, speed, 16, true, false);
     this.dyingAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 1330, 172, 65, 58, 0.05, 8, false, false);
     this.dying = false;
@@ -1549,6 +1675,7 @@ function FlyEnemy(game, x, y, speed, moveSpeed) {
     this.boundingboxDanger = new BoundingBox(this.x, this.y, 0, 0);
     var wings = new Audio('./img/wings.mp3');
     this.wings = wings;
+    this.takingDamage = false;
 }
 FlyEnemy.prototype = new Entity();
 FlyEnemy.prototype.constructor = FlyEnemy;
@@ -1576,11 +1703,20 @@ FlyEnemy.prototype.update = function () {
         var distanceX = this.x - this.game.link.x;
         var distanceY = this.y - this.game.link.y;
 
-        this.x -= distanceX /100 *2;
-        this.y -= distanceY / 100 *2;
+        this.x -= distanceX / 100 * 2;
+        this.y -= distanceY / 100 * 2;
     }
-    if (this.game.link.swordBox.collide(this.boundingbox) && this.game.link.slash) { this.dying = true; }
-    if (this.dyingAnimation.isDone()) { score += 10; this.removeFromWorld = true; }
+    if (this.game.link.swordBox.collide(this.boundingbox) && this.game.link.slash && !this.dying && !this.takingDamage) {
+        var dama = new Damage(this.game, this.x, this.y);
+        this.game.addEntity(dama);
+        this.takingDamage = true;
+        this.health -= damage;
+    }
+    if (!this.game.link.slash) this.takingDamage = false;
+    if (this.health <= 0) {
+        this.dying = true;
+    }
+    if (this.dyingAnimation.isDone()) { score += 20; this.removeFromWorld = true; }
 }
 FlyEnemy.prototype.draw = function (ctx) {
     if (this.boxes) {
@@ -1610,18 +1746,19 @@ function Dragon(game, x, y) {
     this.y = y;
     this.falling = true;
     this.boxes = false;
-    this.health = 100;
+    this.health = 300;
     this.left = true;
     this.slained = false;
-    this.hybernate = false;
     this.standAnimation = new Animation(ASSET_MANAGER.getAsset("./img/dragon.png"), 0, 126, 306, 255, 4, 1, true, false);
     this.breathAnimation = new Animation(ASSET_MANAGER.getAsset("./img/dragon.png"), 306, 126, 306, 255, 0.18, 2, false, false);
     this.fangAnimation1 = new Animation(ASSET_MANAGER.getAsset("./img/dragon.png"), 0, 549, 260, 306, 0.2, 4, false, false);
     this.fangAnimation2 = new Animation(ASSET_MANAGER.getAsset("./img/dragon.png"), 1078, 549, 225, 306, 0.1, 4, false, false);
     this.fangAnimation3 = new Animation(ASSET_MANAGER.getAsset("./img/dragon.png"), 2015, 549, 230, 331, 0.2, 2, false, false);
     this.hybernateAnimation = new Animation(ASSET_MANAGER.getAsset("./img/dragon.png"), 0, 549, 260, 306, 1, 1, true, false);
+    this.dyingAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 301, 1153, 200, 244, 0.07, 8, false, false);
     this.boundingbox = new BoundingBox(this.x, this.y, 102, 85);
     this.breath = false;
+    this.dying = false;
     this.fang = false;
     this.fang1 = false;
     this.fang2 = false;
@@ -1632,13 +1769,18 @@ Dragon.prototype = new Entity();
 Dragon.prototype.constructor = Dragon;
 
 Dragon.prototype.update = function () {
-    if (this.game.link.swordBox.collide(this.boundingbox) && this.game.link.slash && !this.hybernate) {
-        this.health -= 1;
+    if (this.game.link.swordBox.collide(this.boundingbox) && this.game.link.slash && !this.dying) {
+        this.health -= damage;
+        var dama = new Damage(this.game, this.x, this.y);
+        this.game.addEntity(dama);
     }
     if (this.health <= 0) {
         this.slained = true;
-        this.hybernate = true;
-        //this.removeFromWorld = true;
+        this.dying = true;
+    }
+    if (this.dyingAnimation.isDone()) {
+        score += 50;
+        this.removeFromWorld = true;
     }
 
     if (this.falling) {
@@ -1661,22 +1803,20 @@ Dragon.prototype.update = function () {
         if (this.left) this.boundingbox = new BoundingBox(this.x - 300, this.y + 70, this.breathAnimation.frameWidth - 50, this.breathAnimation.frameHeight - 70);
         else this.boundingbox = new BoundingBox(this.x - 350, this.y + 70, this.breathAnimation.frameWidth, this.breathAnimation.frameHeight - 70);
         this.boundingboxDanger = new BoundingBox(this.boundingbox.x - 400, this.boundingbox.y, this.boundingbox.width + 800, this.boundingbox.height);
-        //if (this.boundingbox.right >= this.tileT.right) this.left = true;
-        //if (this.boundingbox.left <= this.tileT.left) this.left = false;
     }
-    if (this.game.link.boundingbox.collide(this.boundingbox) && !this.hybernate) {
+    if (this.game.link.boundingbox.collide(this.boundingbox) && !this.dying) {
         health -= 5;
         if (this.game.link.left && !this.fang) this.game.link.x += 10;
         if (!this.game.link.left && !this.fang) this.game.link.x -= 10;
     }
-    if (this.game.link.boundingbox.left > this.boundingbox.right && !this.fang && !this.hybernate) this.left = false;
-    if (this.game.link.boundingbox.right < this.boundingbox.left && !this.fang && !this.hybernate) this.left = true;
+    if (this.game.link.boundingbox.left > this.boundingbox.right && !this.fang && !this.dying) this.left = false;
+    if (this.game.link.boundingbox.right < this.boundingbox.left && !this.fang && !this.dying) this.left = true;
 
-    if (this.game.link.boundingbox.collide(this.boundingboxDanger) && this.standAnimation.elapsedTime > 3.9 && this.standAnimation.elapsedTime < 4 && !this.hybernate) {
+    if (this.game.link.boundingbox.collide(this.boundingboxDanger) && this.standAnimation.elapsedTime > 3.9 && this.standAnimation.elapsedTime < 4 && !this.dying) {
         this.standAnimation.elapsedTime = 0;
         this.breath = true;
     }
-    if (this.game.link.boundingbox.collide(this.boundingboxDanger) && this.standAnimation.elapsedTime > 1.9 && this.standAnimation.elapsedTime < 2 && !this.hybernate) {
+    if (this.game.link.boundingbox.collide(this.boundingboxDanger) && this.standAnimation.elapsedTime > 1.9 && this.standAnimation.elapsedTime < 2 && !this.dying) {
         this.standAnimation.elapsedTime = 2;
         if (!this.fang) this.fang = true;
     }
@@ -1728,11 +1868,11 @@ Dragon.prototype.draw = function (ctx) {
         ctx.strokeStyle = "black";
         ctx.strokeRect(this.boundingboxDanger.x, this.boundingboxDanger.y, this.boundingboxDanger.width, this.boundingboxDanger.height);
     }
-    if (this.left) {
+    if(this.dying) this.dyingAnimation.drawFrame(this.game.clockTick, ctx, this.x - 350, this.y + 50);
+    else if (this.left) {
         ctx.save();
         ctx.scale(-1, 1);
         if (this.breath) this.breathAnimation.drawFrame(this.game.clockTick, ctx, -this.x, this.y + 5);
-        else if (this.hybernate) this.hybernateAnimation.drawFrame(this.game.clockTick, ctx, -this.x, this.y - 50);
         else if (this.fang) {
             this.fangAnimation1.drawFrame(this.game.clockTick, ctx, -this.x, this.y - 50);
             if (this.fangAnimation1.isDone()) {
@@ -1753,7 +1893,6 @@ Dragon.prototype.draw = function (ctx) {
     }
     else {
         if (this.breath) this.breathAnimation.drawFrame(this.game.clockTick, ctx, this.x - 350, this.y + 5);
-        else if (this.hybernate) this.hybernateAnimation.drawFrame(this.game.clockTick, ctx, this.x - 350, this.y - 50);
         else if (this.fang) {
             this.fangAnimation1.drawFrame(this.game.clockTick, ctx, this.x - 300, this.y - 50);
             if (this.fangAnimation1.isDone()) {
@@ -1770,7 +1909,6 @@ Dragon.prototype.draw = function (ctx) {
             }
         }
         else this.standAnimation.drawFrame(this.game.clockTick, ctx, this.x - 350, this.y + 5);
-
     }
 
     if (this.health > 0) {
@@ -1783,7 +1921,6 @@ Dragon.prototype.draw = function (ctx) {
 
         }
     }
-    else this.removeFromWorld = true;
 
     Entity.prototype.draw.call(this);
 }
@@ -2055,14 +2192,14 @@ Link.prototype.update = function () {
         slash = new Audio('./img/sword.mp3');
         slash.play();
         if (this.left) {
-            if (animNum === 1) this.swordBox = new BoundingBox(this.x - 60, this.y - 15, 96, 99);
-            else if (animNum === 2) this.swordBox = new BoundingBox(this.x - 80, this.y - 15, 130, 99);
-            else if (animNum === 3) this.swordBox = new BoundingBox(this.x - 80, this.y - 15, 130, 99);
+            if (animNum === 1) this.swordBox = new BoundingBox(this.x - 70, this.y - 15, 86, 99);
+            else if (animNum === 2) this.swordBox = new BoundingBox(this.x - 90, this.y - 15, 120, 99);
+            else if (animNum === 3) this.swordBox = new BoundingBox(this.x - 90, this.y - 15, 120, 99);
         }
         else {
-            if (animNum === 1) this.swordBox = new BoundingBox(this.x, this.y - 15, 96, 99);
-            else if (animNum === 2) this.swordBox = new BoundingBox(this.x, this.y - 15, 130, 99);
-            else if (animNum === 3) this.swordBox = new BoundingBox(this.x, this.y - 15, 130, 99);
+            if (animNum === 1) this.swordBox = new BoundingBox(this.x, this.y - 15, 86, 99);
+            else if (animNum === 2) this.swordBox = new BoundingBox(this.x, this.y - 15, 120, 99);
+            else if (animNum === 3) this.swordBox = new BoundingBox(this.x, this.y - 15, 120, 99);
         }
         this.slash = true;
     }
@@ -2090,13 +2227,13 @@ Link.prototype.update = function () {
     if (this.jumping) {
         this.slash = false;
         this.running = false;
-        var height = 0;
+        var height2 = 0;
         var duration = this.jumpAnimation.elapsedTime + this.game.clockTick;
         if (duration > this.jumpAnimation.totalTime / 2) duration = this.jumpAnimation.totalTime - duration;
         duration = duration / this.jumpAnimation.totalTime;
 
-        height = (4 * duration - 4 * duration * duration) * this.jumpHeight;
-        this.y = this.base - height;
+        height2 = (4 * duration - 4 * duration * duration) * this.jumpHeight;
+        this.y = this.base - height2;
         if (this.left) this.boundingbox = new BoundingBox(this.x + 10, this.y - 20, this.standAnimation.frameWidth - 20, this.fallAnimation.frameHeight);
         else this.boundingbox = new BoundingBox(this.x, this.y - 20, this.jumpAnimation.frameWidth - 20, this.jumpAnimation.frameHeight);
 
@@ -3705,6 +3842,11 @@ ASSET_MANAGER.queueDownload("./img/spikes.png");
 ASSET_MANAGER.queueDownload("./img/door.png");
 ASSET_MANAGER.queueDownload("./img/dragon.png");
 ASSET_MANAGER.queueDownload("./img/flying.png");
+ASSET_MANAGER.queueDownload("./img/health.png");
+ASSET_MANAGER.queueDownload("./img/runSpeed.png");
+ASSET_MANAGER.queueDownload("./img/damage.png");
+ASSET_MANAGER.queueDownload("./img/jumpBoost.png");
+ASSET_MANAGER.queueDownload("./img/coins2.png");
 
 var flyArr = [];
 var dEnemy = [];
@@ -3713,6 +3855,7 @@ var music;
 var coinsMap = [];
 var spikesMap = [];
 var flyEnemyArr = [];
+var boostsArr = [];
 ASSET_MANAGER.downloadAll(function () {
     music = new Audio('./img/music.mp3');
 
@@ -3755,18 +3898,9 @@ function startPlaying(gameEngine) {
     gameEngine.addEntity(coin);
     gameEngine.coin = coin;
 
-    
-    var score = new Score(gameEngine);
-    gameEngine.score = score;
-    gameEngine.addEntity(score);
-
     var lives = new Lives(gameEngine);
     gameEngine.lives = lives;
     gameEngine.addEntity(lives);
-
-    var skills = new Skills(gameEngine);
-    gameEngine.skills = skills;
-    gameEngine.addEntity(skills);
 
     var restart = new Restart(gameEngine);
     gameEngine.restart = restart;
@@ -3779,11 +3913,17 @@ function startPlaying(gameEngine) {
     gameEngine.addEntity(sp);
     gameEngine.spikes = sp;
 
-    var hp = new Health(gameEngine, 600, 20, health, 20);
+    var hp = new Health(gameEngine, 1100, 20, health, 20);
     gameEngine.health = hp;
     gameEngine.addEntity(hp);
 
+    var boosts = new PowerUp(gameEngine, 400, 10);
+    gameEngine.addEntity(boosts);
+    boostsArr.push(boosts);
+    
+
     if (level === 1) {
+
         var door = new Door(gameEngine, 12032, 288 - 143 + 204);
         gameEngine.addEntity(door);
 
@@ -3861,25 +4001,17 @@ function startPlaying(gameEngine) {
         gameEngine.addEntity(duEnemy);
         dEnemy.push(duEnemy);
 
-        //duEnemy = new DEnemy(gameEngine, 200, 250, 0.06, 2);
-        //gameEngine.addEntity(duEnemy);
-        //dEnemy.push(duEnemy);
-
         var drag = new Dragon(gameEngine, 11000, 500);
         gameEngine.addEntity(drag);
 
     }
 
+    gameEngine.boosts = boostsArr;
     gameEngine.flyEnemyArr = flyEnemyArr;
     gameEngine.flyArr = flyArr;
     gameEngine.door = door;
     gameEngine.dEnemy = dEnemy;
     gameEngine.dragon = drag;
-
-    //var tMapfront = new TileMapFront(gameEngine);
-    //gameEngine.addEntity(tMapfront);
-    //gameEngine.tileMapFront = tMapfront;
-
 }
 
 function characterSelection(gameEngine) {
