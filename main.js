@@ -2107,6 +2107,7 @@ Link.prototype.update = function () {
     ////*************************************//
     ////*********ACTIVATE SLASH**************//
     ////*************************************//
+
     if (this.game.Q && !this.falling && !this.running && !this.shoot) {
         slash = new Audio('./img/sword.mp3');
         slash.play();
@@ -2134,6 +2135,7 @@ Link.prototype.update = function () {
     //*************************************//
     //**************SHOOT LOGIC*************//
     //*************************************//
+
     if (this.game.E && !this.running && !this.slash) this.shoot = true; //&& !this.falling && !this.jumping
     if (this.shoot) {
         if (!this.created) {
@@ -2530,7 +2532,6 @@ Link.prototype.draw = function (ctx) {
     }
     Entity.prototype.draw.call(this);
 }
-
 
 function Arrow(game, x, y, left) {
     Entity.call(this, game, x, y);
