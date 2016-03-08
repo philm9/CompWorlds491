@@ -176,8 +176,8 @@ PlayGame.prototype.draw = function (ctx) {
 
 function LevelSelect(game) {
     this.animationBackground = new Animation(ASSET_MANAGER.getAsset("./img/aliencraft1.png"), 0, 0, 1280, 768, 1, 1, true, false);
-    this.animationLevel1 = new Animation(ASSET_MANAGER.getAsset("./img/level1.png"), 0, 0, 200, 150, 1, 1, true, false);
-    this.animationLevel2 = new Animation(ASSET_MANAGER.getAsset("./img/level2.png"), 0, 0, 200, 150, 1, 1, true, false);
+    this.animationLevel1 = new Animation(ASSET_MANAGER.getAsset("./img/level0.png"), 0, 0, 200, 150, 1, 1, true, false);
+    this.animationLevel2 = new Animation(ASSET_MANAGER.getAsset("./img/level1.png"), 0, 0, 200, 150, 1, 1, true, false);
     Entity.call(this, game, 0, 0);
 }
 
@@ -189,12 +189,12 @@ LevelSelect.prototype.update = function () {
         if (this.game.click.x < 300 && this.game.click.y < 250 && this.game.click.x > 100 && this.game.click.y > 100) {
             start3 = true;
             this.removeFromWorld = true;
-            level = 1;
+            level = 2;
         }
         else if (this.game.click.x < 600 && this.game.click.y < 250 && this.game.click.x > 400 && this.game.click.y > 100) {
             start3 = true;
             this.removeFromWorld = true;
-            level = 2;
+            level = 1;
         }
     }
     if (start3) {
@@ -310,8 +310,8 @@ Door.prototype.draw = function (ctx) {
 
 function EndScore(game) {
     this.game = game;
-    this.boundingbox = new BoundingBox(490, 786 / 2 - 80, 120, 40)
-    this.boundingbox2 = new BoundingBox(660, 786 / 2 - 80, 160, 40)
+    this.boundingbox = new BoundingBox(490, 786 / 2 - 80, 140, 40)
+    this.boundingbox2 = new BoundingBox(660, 786 / 2 - 80, 180, 40)
     this.clickReplay = false;
     this.clickContinue = false;
     Entity.call(this, game, 1280 / 2 - 200, 786 / 2 - 100);
@@ -368,7 +368,7 @@ EndScore.prototype.draw = function (ctx) {
 
 function GameOver(game) {
     this.game = game;
-    this.boundingbox = new BoundingBox(590, 786 / 2 - 80, 120, 40)
+    this.boundingbox = new BoundingBox(590, 786 / 2 - 80, 140, 40)
     this.clickReplay = false;
     this.clickContinue = false;
     Entity.call(this, game, 1280 / 2 - 200, 786 / 2 - 100);
@@ -464,6 +464,8 @@ Background.prototype.update = function () {
         for (var i = 0; i < this.game.flyArr.length; i++) this.game.flyArr[i].x -= scrollSpeed;
         for (var i = 0; i < this.game.dEnemy.length; i++) this.game.dEnemy[i].x -= scrollSpeed;
         for (var i = 0; i < this.game.flyEnemyArr.length; i++) this.game.flyEnemyArr[i].x -= scrollSpeed;
+        for (var i = 0; i < flyShootEnemyArr.length; i++) flyShootEnemyArr[i].x -= scrollSpeed;
+        for (var i = 0; i < fireBallArr.length; i++) fireBallArr[i].x -= scrollSpeed;
     }
     //move map left
     if (!(this.x >= 0) && this.game.link.x <= 350) {
@@ -488,6 +490,8 @@ Background.prototype.update = function () {
         for (var i = 0; i < this.game.flyArr.length; i++) this.game.flyArr[i].x += scrollSpeed;
         for (var i = 0; i < this.game.dEnemy.length; i++) this.game.dEnemy[i].x += scrollSpeed;
         for (var i = 0; i < this.game.flyEnemyArr.length; i++) this.game.flyEnemyArr[i].x += scrollSpeed;
+        for (var i = 0; i < flyShootEnemyArr.length; i++) flyShootEnemyArr[i].x += scrollSpeed;
+        for (var i = 0; i < fireBallArr.length; i++) fireBallArr[i].x -= scrollSpeed;
     }
     Entity.prototype.update.call(this);
 }
@@ -1621,7 +1625,7 @@ FlyEnemy.prototype.update = function () {
         this.y -= distanceY / 100 * 2;
     }
     if (this.game.link.swordBox.collide(this.boundingbox) && this.game.link.slash && !this.dying && !this.takingDamage) {
-        var dama = new Damage(this.game, this.x, this.y);
+        var dama = new Damage(this.game, this.x, this.y, damage);
         this.game.addEntity(dama);
         this.takingDamage = true;
         this.health -= damage;
@@ -1649,6 +1653,132 @@ FlyEnemy.prototype.draw = function (ctx) {
             ctx.restore();
         }
     }
+    Entity.prototype.draw.call(this);
+}
+
+function FlyShootEnemy(game, x, y, speed, moveSpeed) {
+    this.mSpeed = moveSpeed;
+    Entity.call(this, game, x, y);
+    this.x = x;
+    this.y = y;
+    this.startX = x;
+    this.startY = y;
+    this.boxes = false;
+    this.left = true;
+    this.moving = false;
+    this.speedX = 0;
+    this.speedY = 0;
+    this.health = 4;
+    this.flyAnimation = new Animation(ASSET_MANAGER.getAsset("./img/flying2.png"), 0, 0, 95, 60, speed, 16, true, false);
+    this.dyingAnimation = new Animation(ASSET_MANAGER.getAsset("./img/link-blueQUICK1.png"), 1330, 172, 65, 58, 0.05, 8, false, false);
+    this.dying = false;
+    this.boundingbox = new BoundingBox(this.x, this.y, 95, 60);
+    this.boundingboxDanger = new BoundingBox(this.x, this.y, 0, 0);
+    var wings = new Audio('./img/wings.mp3');
+    this.wings = wings;
+    this.takingDamage = false;
+    this.shooting = false;
+}
+FlyShootEnemy.prototype = new Entity();
+FlyShootEnemy.prototype.constructor = FlyShootEnemy;
+
+FlyShootEnemy.prototype.update = function () {
+    this.boundingbox = new BoundingBox(this.x, this.y, this.flyAnimation.frameWidth, this.flyAnimation.frameHeight);
+    this.boundingboxDanger = new BoundingBox(this.boundingbox.x - 200, this.boundingbox.y - 200, this.boundingbox.width + 400, this.boundingbox.height + 400);
+    if (this.game.link.boundingbox.collide(this.boundingbox) && !this.dying && !this.game.link.dying && !this.game.link.dead) {
+        health -= 5;
+        if (this.left) this.game.link.x -= scrollSpeed;
+        if (!this.left) this.game.link.x += scrollSpeed;
+    }
+
+    if (this.x < 1280 && this.x > 0) {
+        if (this.flyAnimation.currentFrame() === 7) {
+            this.wings.volume = 0.04;
+            this.wings.play();
+        }
+    }
+
+    if (this.game.link.boundingbox.collide(this.boundingboxDanger)) {
+        if (this.game.link.boundingbox.left > this.boundingbox.right) this.left = false;
+        if (this.game.link.boundingbox.right < this.boundingbox.left) this.left = true;
+        if (!this.shooting) {
+            this.shooting = true;
+            var fireBall = new FireBall(this, this.game, this.x, this.y, this.x - this.game.link.x, this.y - this.game.link.y);
+            this.game.addEntity(fireBall);
+            fireBallArr.push(fireBall);
+        }
+    }
+    if (this.game.link.swordBox.collide(this.boundingbox) && this.game.link.slash && !this.dying && !this.takingDamage) {
+        var dama = new Damage(this.game, this.x, this.y, damage);
+        this.game.addEntity(dama);
+        this.takingDamage = true;
+        this.health -= damage;
+    }
+    if (!this.game.link.slash) this.takingDamage = false;
+    if (this.health <= 0) {
+        this.dying = true;
+    }
+    if (this.dyingAnimation.isDone()) { score += 20; this.removeFromWorld = true; }
+}
+FlyShootEnemy.prototype.draw = function (ctx) {
+    if (this.boxes) {
+        ctx.strokeStyle = "red";
+        ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
+        ctx.strokeStyle = "black";
+        ctx.strokeRect(this.boundingboxDanger.x, this.boundingboxDanger.y, this.boundingboxDanger.width, this.boundingboxDanger.height);
+    }
+    if (this.dying) this.dyingAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+    else {
+        if (this.left) this.flyAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+        else {
+            ctx.save();
+            ctx.scale(-1, 1);
+            this.flyAnimation.drawFrame(this.game.clockTick, ctx, -this.x - 90, this.y);
+            ctx.restore();
+        }
+    }
+    Entity.prototype.draw.call(this);
+}
+
+function FireBall(enemy, game, x, y, distanceX, distanceY) {
+    this.enemy = enemy;
+    Entity.call(this, game, x, y);
+    this.x = x;
+    this.y = y;
+    this.startX = x;
+    this.startY = y;
+    this.distanceX = distanceX;
+    this.distanceY = distanceY;
+    this.boxes = false;
+    this.game = game;
+    this.traveled = 0;
+    this.fireBallAnimation = new Animation(ASSET_MANAGER.getAsset("./img/fireball.png"), 0, 0, 50, 46, 0.01, 1, true, false); //0.08
+    this.boundingbox = new BoundingBox(this.x, this.y, 50, 46);
+    //this.arrow = true;
+    //this.arrowF = false;
+    //this.targeting = false;
+}
+FireBall.prototype = new Entity();
+FireBall.prototype.constructor = FireBall;
+
+FireBall.prototype.update = function () {
+    this.boundingbox = new BoundingBox(this.x, this.y, 48, 46);
+    if (this.x < 0 || this.x > 1280 || this.y > 768 || this.boundingbox.collide(this.game.link.boundingbox)) {
+        this.enemy.shooting = false;
+        this.removeFromWorld = true;
+    }
+    if (this.boundingbox.collide(this.game.link.boundingbox)) health -= 5;
+
+    if (this.x > 1280) this.removeFromWorld = true;
+    if (this.x < 0) this.removeFromWorld = true;
+    this.x -= this.distanceX / 50;
+    this.y -= this.distanceY / 50;
+    this.traveled += this.startX - this.x;
+    console.log(this.traveled)
+    if (this.traveled > 200) this.removeFromWorld;
+}
+FireBall.prototype.draw = function (ctx) {
+    this.fireBallAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
     Entity.prototype.draw.call(this);
 }
 
@@ -1685,7 +1815,7 @@ Dragon.prototype.constructor = Dragon;
 Dragon.prototype.update = function () {
     if (this.game.link.swordBox.collide(this.boundingbox) && this.game.link.slash && !this.dying) {
         this.health -= damage;
-        var dama = new Damage(this.game, this.x, this.y);
+        var dama = new Damage(this.game, this.x, this.y, damage);
         this.game.addEntity(dama);
     }
     if (this.health <= 0) {
@@ -2026,6 +2156,10 @@ Link.prototype.update = function () {
                 flyEnemyArr[i].x = this.game.flyEnemyArr[i].startX;
                 flyEnemyArr[i].y = this.game.flyEnemyArr[i].startY;
             }
+            for (var i = 0; i < flyShootEnemyArr.length; i++) {
+                flyShootEnemyArr[i].x = flyShootEnemyArr[i].startX;
+                flyShootEnemyArr[i].y = flyShootEnemyArr[i].startY;
+            }
             for (var i = 0; i < tileArrBB.length; i++) {
                 tileArrBB[i].right = tileArrBB[i].right - movX;
                 tileArrBB[i].left = tileArrBB[i].left - movX;
@@ -2284,6 +2418,10 @@ Link.prototype.update = function () {
                 for (var i = 0; i < this.game.flyEnemyArr.length; i++) {
                     flyEnemyArr[i].x = this.game.flyEnemyArr[i].startX;
                     flyEnemyArr[i].y = this.game.flyEnemyArr[i].startY;
+                }
+                for (var i = 0; i < flyShootEnemyArr.length; i++) {
+                    flyShootEnemyArr[i].x = flyShootEnemyArr[i].startX;
+                    flyShootEnemyArr[i].y = flyShootEnemyArr[i].startY;
                 }
                 for (var i = 0; i < tileArrBB.length; i++) {
                     tileArrBB[i].right = tileArrBB[i].right - movX;
@@ -2577,9 +2715,19 @@ Arrow.prototype.update = function () {
             this.removeFromWorld = true;
         }
     }
-    //if (flyEnemyArr[i].boundingbox.collide(this.boundingbox) && !flyEnemyArr[i].removeFromWorld) {
-    if (this.game.dragon.boundingbox.collide(this.boundingbox) && !this.game.dragon.removeFromWorld) {
-        this.game.dragon.health -= damage / 2;
+
+    for (var i = 0; i < flyShootEnemyArr.length; i++) {
+        if (flyShootEnemyArr[i].boundingbox.collide(this.boundingbox) && !flyShootEnemyArr[i].removeFromWorld) {
+
+            var dama = new Damage(this.game, this.x, this.y, damage / 2);
+            this.game.addEntity(dama);
+
+            flyShootEnemyArr[i].health -= damage / 2;
+            this.removeFromWorld = true;
+        }
+    }
+    if (this.game.dragon.boundingbox.collide(this.boundingbox)) {
+        this.game.dragon.health -= 0;
     }
 
 }
@@ -4301,8 +4449,7 @@ ASSET_MANAGER.queueDownload("./img/separatePng/tile_62.png");
 ASSET_MANAGER.queueDownload("./img/separatePng/tile_63.png");
 
 ASSET_MANAGER.queueDownload("./img/level1.png");
-ASSET_MANAGER.queueDownload("./img/level2.png");
-ASSET_MANAGER.queueDownload("./img/frame.png");
+ASSET_MANAGER.queueDownload("./img/level0.png");
 ASSET_MANAGER.queueDownload("./img/aliencraft1.png");
 ASSET_MANAGER.queueDownload("./img/coins.png");
 ASSET_MANAGER.queueDownload("./img/background0.png");
@@ -4311,11 +4458,13 @@ ASSET_MANAGER.queueDownload("./img/spikes.png");
 ASSET_MANAGER.queueDownload("./img/door.png");
 ASSET_MANAGER.queueDownload("./img/dragon.png");
 ASSET_MANAGER.queueDownload("./img/flying.png");
+ASSET_MANAGER.queueDownload("./img/flying2.png");
 ASSET_MANAGER.queueDownload("./img/health.png");
 ASSET_MANAGER.queueDownload("./img/runSpeed.png");
 ASSET_MANAGER.queueDownload("./img/damage.png");
 ASSET_MANAGER.queueDownload("./img/jumpBoost.png");
 ASSET_MANAGER.queueDownload("./img/coins2.png");
+ASSET_MANAGER.queueDownload("./img/fireball.png");
 
 var flyArr = [];
 var dEnemy = [];
@@ -4324,7 +4473,9 @@ var music;
 var coinsMap = [];
 var spikesMap = [];
 var flyEnemyArr = [];
+var flyShootEnemyArr = [];
 var boostsArr = [];
+var fireBallArr = [];
 ASSET_MANAGER.downloadAll(function () {
     music = new Audio('./img/music.mp3');
 
@@ -4393,7 +4544,7 @@ function startPlaying(gameEngine) {
 
     if (level === 1) {
 
-        var door = new Door(gameEngine, 12032, 288 - 143 + 204);
+        var door = new Door(gameEngine, 12032, 288 - 143 + 204 +32);
         gameEngine.addEntity(door);
 
         var fly = new Fly(gameEngine, 1400, 110);
@@ -4454,6 +4605,22 @@ function startPlaying(gameEngine) {
         var flyEnemy = new FlyEnemy(gameEngine, 187 * 32, 15 * 32, 0.08, 1);
         gameEngine.addEntity(flyEnemy);
         flyEnemyArr.push(flyEnemy);
+
+        var flyShootEnemy = new FlyShootEnemy(gameEngine, 70*32, 9*32, 0.08, 1);
+        gameEngine.addEntity(flyShootEnemy);
+        flyShootEnemyArr.push(flyShootEnemy);
+
+        var flyShootEnemy = new FlyShootEnemy(gameEngine, 107 * 32, 9 * 32, 0.08, 1);
+        gameEngine.addEntity(flyShootEnemy);
+        flyShootEnemyArr.push(flyShootEnemy);
+
+        var flyShootEnemy = new FlyShootEnemy(gameEngine, 160 * 32, 8 * 32, 0.08, 1);
+        gameEngine.addEntity(flyShootEnemy);
+        flyShootEnemyArr.push(flyShootEnemy);
+
+        var flyShootEnemy = new FlyShootEnemy(gameEngine, 195 * 32, 20 * 32, 0.08, 1);
+        gameEngine.addEntity(flyShootEnemy);
+        flyShootEnemyArr.push(flyShootEnemy);
 
         var drag = new Dragon(gameEngine, 11000, 500);
         gameEngine.addEntity(drag);
