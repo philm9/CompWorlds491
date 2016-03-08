@@ -87,6 +87,7 @@ GameEngine.prototype.startInput = function () {
             if (String.fromCharCode(e.which) === 'D') that.D = true;
             if (String.fromCharCode(e.which) === 'A') that.A = true;
             if (String.fromCharCode(e.which) === 'Q') that.Q = true;
+            if (String.fromCharCode(e.which) === 'E') that.E = true;
             if (e.keyCode == 49) that.HP = true;
             if (e.keyCode == 50) that.RN = true;
             if (e.keyCode == 51) that.JMP = true;
@@ -107,7 +108,7 @@ GameEngine.prototype.startInput = function () {
 
         if (String.fromCharCode(e.which) === 'D') that.D = false;
         if (String.fromCharCode(e.which) === 'A') that.A = false;
-
+        //if (String.fromCharCode(e.which) === 'E') that.E = false;
         if (e.keyCode == 49) that.HP = false;
         if (e.keyCode == 50) that.RN = true;
         if (e.keyCode == 51) that.JMP = true;
@@ -171,6 +172,7 @@ GameEngine.prototype.loop = function () {
     this.space = null;
     this.click = null;
     this.Q = null;
+    this.E = null;
     this.HP = null;
     this.RN = null;
     this.JMP = null;
