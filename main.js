@@ -1980,7 +1980,7 @@ FlyShootEnemy.prototype.constructor = FlyShootEnemy;
 
 FlyShootEnemy.prototype.update = function () {
     this.boundingbox = new BoundingBox(this.x, this.y, this.flyAnimation.frameWidth, this.flyAnimation.frameHeight);
-    this.boundingboxDanger = new BoundingBox(this.boundingbox.x - 200, this.boundingbox.y - 200, this.boundingbox.width + 400, this.boundingbox.height + 400);
+    this.boundingboxDanger = new BoundingBox(this.boundingbox.x - 400, this.boundingbox.y - 200, this.boundingbox.width + 800, this.boundingbox.height + 400);
     if (this.game.link.boundingbox.collide(this.boundingbox) && !this.dying && !this.game.link.dying && !this.game.link.dead) {
         health -= 5;
         if (this.left) this.game.link.x -= scrollSpeed;
@@ -4846,9 +4846,25 @@ function startPlaying(gameEngine) {
         flyArr.push(fly);
         gameEngine.addEntity(fly);
 
-        var duEnemy = new DEnemy(gameEngine, 1200, 600, 0.08, 1);
+        var duEnemy = new DEnemy(gameEngine, 1600, 200, 0.08, 1);
         gameEngine.addEntity(duEnemy);
         dEnemy.push(duEnemy);
+
+        duEnemy = new DEnemy(gameEngine, 2000, 200, 0.08, 1);
+        gameEngine.addEntity(duEnemy);
+        dEnemy.push(duEnemy);
+
+        duEnemy = new DEnemy(gameEngine, 2500, 200, 0.08, 1);
+        gameEngine.addEntity(duEnemy);
+        dEnemy.push(duEnemy);
+
+        var flyEnemy = new FlyEnemy(gameEngine, 80 * 32, 19 * 32, 0.08, 1);
+        gameEngine.addEntity(flyEnemy);
+        flyEnemyArr.push(flyEnemy);
+
+        var flyShootEnemy = new FlyShootEnemy(gameEngine, 190 * 32, 19 * 32, 0.08, 1);
+        gameEngine.addEntity(flyShootEnemy);
+        flyShootEnemyArr.push(flyShootEnemy);
 
         var drag = new Dragon(gameEngine, 11000, 500);
         gameEngine.addEntity(drag);
